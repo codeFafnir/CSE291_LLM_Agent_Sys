@@ -1,0 +1,18 @@
+# Course proposal (kept local, not committed)
+proposal.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Downloaded traces, model weights, and raw experiment output (large, reproducible)
+data/
+models/
+runs/
+*.gguf
+*.safetensors
+
+# OS
+.DS_Store
