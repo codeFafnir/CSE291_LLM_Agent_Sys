@@ -139,10 +139,10 @@ is a throttled run; flag it or repeat it.
 
 | Item | Value |
 |---|---|
-| GPU name / memory.total / driver / compute cap | |
-| OS (native Linux / WSL2) | |
-| torch version / CUDA version | |
-| KV tokens, no speculation (vLLM log) vs fit_check ≈ 35,508 | |
-| KV tokens with draft_model / eagle3 | |
+| GPU name / memory.total / driver / compute cap | NVIDIA GeForce RTX 5070 Laptop GPU, 12231 MiB, 616.56, 12.0, 115.00 W|
+| OS (native Linux / WSL2) |WSL2|
+| torch version / CUDA version |2.13.0+cu132 13.2 |
+| KV tokens, no speculation (vLLM log) vs fit_check ≈ 35,508 | GPU KV cache size: 39,744 tokens, Maximum concurrency for 16,384 tokens per request: 2.43x |
+| KV tokens with draft_model / eagle3 | Draft model GPU KV cache size: 16,672 tokens, Maximum concurrency for 16,384 tokens per request: 1.02x, Eagle3 GPU KV cache size: 31,872 tokens, Maximum concurrency for 16,384 tokens per request: 1.95x|
 | Extra flags needed (attention backend, etc.) | |
 | Exact metric names for KV usage, prefix hits, spec tokens | |
