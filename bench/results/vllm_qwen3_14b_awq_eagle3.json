@@ -1,0 +1,164 @@
+[
+  {
+    "prompt_id": "p01",
+    "prompt_tokens": 5696,
+    "output_tokens": 128,
+    "latency_s": 4.697999992989935,
+    "first_token_s": 0.0,
+    "accept_length": 2.54,
+    "accept_rate": 0.5133333333333333
+  },
+  {
+    "prompt_id": "p02",
+    "prompt_tokens": 5574,
+    "output_tokens": 128,
+    "latency_s": 4.130400694091804,
+    "first_token_s": 0.0,
+    "accept_length": 2.5918367346938775,
+    "accept_rate": 0.5306122448979592
+  },
+  {
+    "prompt_id": "p03",
+    "prompt_tokens": 5695,
+    "output_tokens": 128,
+    "latency_s": 4.2692008529556915,
+    "first_token_s": 0.0,
+    "accept_length": 2.4901960784313726,
+    "accept_rate": 0.49673202614379086
+  },
+  {
+    "prompt_id": "p04",
+    "prompt_tokens": 5615,
+    "output_tokens": 128,
+    "latency_s": 4.2310981310438365,
+    "first_token_s": 0.0,
+    "accept_length": 2.4901960784313726,
+    "accept_rate": 0.49673202614379086
+  },
+  {
+    "prompt_id": "p05",
+    "prompt_tokens": 5574,
+    "output_tokens": 128,
+    "latency_s": 4.222898346022703,
+    "first_token_s": 0.0,
+    "accept_length": 2.4901960784313726,
+    "accept_rate": 0.49673202614379086
+  },
+  {
+    "prompt_id": "p06",
+    "prompt_tokens": 5615,
+    "output_tokens": 128,
+    "latency_s": 4.157238097046502,
+    "first_token_s": 0.0,
+    "accept_length": 2.5918367346938775,
+    "accept_rate": 0.5306122448979592
+  },
+  {
+    "prompt_id": "p07",
+    "prompt_tokens": 5615,
+    "output_tokens": 128,
+    "latency_s": 4.15726990706753,
+    "first_token_s": 0.0,
+    "accept_length": 2.612244897959184,
+    "accept_rate": 0.5374149659863946
+  },
+  {
+    "prompt_id": "p08",
+    "prompt_tokens": 5574,
+    "output_tokens": 128,
+    "latency_s": 4.223966624005698,
+    "first_token_s": 0.0,
+    "accept_length": 2.4901960784313726,
+    "accept_rate": 0.49673202614379086
+  },
+  {
+    "prompt_id": "p09",
+    "prompt_tokens": 5534,
+    "output_tokens": 128,
+    "latency_s": 3.9406488209497184,
+    "first_token_s": 0.0,
+    "accept_length": 2.909090909090909,
+    "accept_rate": 0.6363636363636364
+  },
+  {
+    "prompt_id": "p10",
+    "prompt_tokens": 5533,
+    "output_tokens": 128,
+    "latency_s": 4.156166884000413,
+    "first_token_s": 0.0,
+    "accept_length": 2.56,
+    "accept_rate": 0.52
+  },
+  {
+    "prompt_id": "p11",
+    "prompt_tokens": 5615,
+    "output_tokens": 128,
+    "latency_s": 4.354111716966145,
+    "first_token_s": 0.0,
+    "accept_length": 2.309090909090909,
+    "accept_rate": 0.43636363636363634
+  },
+  {
+    "prompt_id": "p12",
+    "prompt_tokens": 5736,
+    "output_tokens": 128,
+    "latency_s": 4.236555779003538,
+    "first_token_s": 0.0,
+    "accept_length": 2.6,
+    "accept_rate": 0.5333333333333333
+  },
+  {
+    "prompt_id": "p13",
+    "prompt_tokens": 5534,
+    "output_tokens": 128,
+    "latency_s": 4.173218400916085,
+    "first_token_s": 0.0,
+    "accept_length": 2.549019607843137,
+    "accept_rate": 0.5163398692810458
+  },
+  {
+    "prompt_id": "p14",
+    "prompt_tokens": 5534,
+    "output_tokens": 128,
+    "latency_s": 4.20980791200418,
+    "first_token_s": 0.0,
+    "accept_length": 2.4615384615384617,
+    "accept_rate": 0.48717948717948717
+  },
+  {
+    "prompt_id": "p15",
+    "prompt_tokens": 5574,
+    "output_tokens": 128,
+    "latency_s": 4.2004441960016266,
+    "first_token_s": 0.0,
+    "accept_length": 2.549019607843137,
+    "accept_rate": 0.5163398692810458
+  },
+  {
+    "prompt_id": "p16",
+    "prompt_tokens": 5615,
+    "output_tokens": 128,
+    "latency_s": 4.461861384916119,
+    "first_token_s": 0.0,
+    "accept_length": 2.2241379310344827,
+    "accept_rate": 0.40804597701149425
+  },
+  {
+    "prompt_id": "p17",
+    "prompt_tokens": 5695,
+    "output_tokens": 128,
+    "latency_s": 4.084994667908177,
+    "first_token_s": 0.0,
+    "accept_length": 2.782608695652174,
+    "accept_rate": 0.5942028985507246
+  },
+  {
+    "prompt_id": "p18",
+    "prompt_tokens": 5574,
+    "output_tokens": 128,
+    "latency_s": 4.112569023040123,
+    "first_token_s": 0.0,
+    "accept_length": 2.6875,
+    "accept_rate": 0.5625
+  }
+]
