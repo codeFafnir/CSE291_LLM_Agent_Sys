@@ -81,6 +81,8 @@ def run(prompts: tuple[LongPrompt, ...]) -> tuple[BenchRow, ...]:
         gpu_memory_utilization=GPU_MEMORY_UTILIZATION,
         max_num_seqs=1,
         enable_prefix_caching=False,
+        # RequestOutput.metrics (TTFT, token timestamps) is None while stats are off.
+        disable_log_stats=False,
         spec_method="eagle3",
         spec_model=SPECULATOR_MODEL,
         spec_tokens=SPECULATIVE_TOKENS,

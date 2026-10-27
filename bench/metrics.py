@@ -1,11 +1,16 @@
-"""Shared bench rows. Peak memory is device-wide, sampled while the engine runs."""
+"""Shared bench rows. Peak memory is sampled while the engine runs.
+NVIDIA: device-wide used memory. Apple silicon: phys_footprint of this process tree.
+"""
 
+import ctypes
 import threading
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
 
-import pynvml
-
 SAMPLE_INTERVAL_S = 0.05
+# rusage_info_v0: 16-byte uuid, then seven uint64 fields before ri_phys_footprint.
+_RUSAGE_INFO_V0 = 0
+_PHYS_FOOTPRINT_OFFSET = 72
 
 
 @dataclass(frozen=True)
@@ -43,21 +48,45 @@ def decode_tok_s(tpot: float | None) -> float | None:
 
 
 def gpu_used_bytes() -> int:
+    # Imported here so Apple silicon runs do not need NVML.
+    import pynvml
+
     pynvml.nvmlInit()
     handle = pynvml.nvmlDeviceGetHandleByIndex(0)
     return int(pynvml.nvmlDeviceGetMemoryInfo(handle).used)
 
 
-def _sample_loop(stop: threading.Event, peak: list[int], interval_s: float) -> None:
+def unified_used_bytes() -> int:
+    # Unified memory has no device counter. phys_footprint is Activity Monitor's Memory
+    # column and includes Metal buffers. vLLM runs EngineCore as a child process.
+    import psutil
+
+    me = psutil.Process()
+    pids = [me.pid, *(child.pid for child in me.children(recursive=True))]
+    return sum(_phys_footprint(pid) for pid in pids)
+
+
+def _phys_footprint(pid: int) -> int:
+    buffer = ctypes.create_string_buffer(256)
+    if ctypes.CDLL("/usr/lib/libproc.dylib").proc_pid_rusage(pid, _RUSAGE_INFO_V0, buffer) != 0:
+        return 0  # Child exited between listing and reading.
+    return int.from_bytes(buffer.raw[_PHYS_FOOTPRINT_OFFSET : _PHYS_FOOTPRINT_OFFSET + 8], "little")
+
+
+def _sample_loop(
+    stop: threading.Event, peak: list[int], interval_s: float, read_bytes: Callable[[], int]
+) -> None:
     while not stop.is_set():
-        peak[0] = max(peak[0], gpu_used_bytes())
+        peak[0] = max(peak[0], read_bytes())
         stop.wait(interval_s)
 
 
-def start_gpu_sampler(interval_s: float) -> tuple[threading.Event, threading.Thread, list[int]]:
+def start_gpu_sampler(
+    interval_s: float, read_bytes: Callable[[], int] = gpu_used_bytes
+) -> tuple[threading.Event, threading.Thread, list[int]]:
     stop = threading.Event()
-    peak = [gpu_used_bytes()]
-    thread = threading.Thread(target=_sample_loop, args=(stop, peak, interval_s), daemon=True)
+    peak = [read_bytes()]
+    thread = threading.Thread(target=_sample_loop, args=(stop, peak, interval_s, read_bytes), daemon=True)
     thread.start()
     return stop, thread, peak
 

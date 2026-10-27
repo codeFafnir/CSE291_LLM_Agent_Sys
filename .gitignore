@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Course proposal (kept local, not committed)
 proposal.txt
 
@@ -17,8 +16,6 @@ runs/
 
 # OS
 .DS_Store
-=======
 graphify-out/
 .env
 
->>>>>>> raghu

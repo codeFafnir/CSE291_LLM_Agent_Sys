@@ -19,6 +19,7 @@ so the two tracks' harness code and metrics line up.
 brew tap vllm-project/vllm-metal https://github.com/vllm-project/vllm-metal
 brew install vllm-project/vllm-metal/vllm-metal      # gives the `vllm` command
 uv sync                                               # harness environment
+git submodule update --init third_party/vllm-metal third_party/mlx-lm third_party/mlx   # engine sources
 ```
 
 ## Before every benchmark run
@@ -53,6 +54,44 @@ The startup log line `KV cache size: N tokens` is the KV capacity. Then run the 
 uv run python -I tools/quick_load.py data/raw/hermes/data/train.jsonl --port 8100 --concurrency 1 4 8
 curl -s 127.0.0.1:8100/metrics | grep -E "^vllm:(prefix_cache|spec_decode|num_preemptions)"
 ```
+
+## Long-context bench (`bench/`, in-process, one request at a time)
+
+Same 18 prompts (5.5K–5.7K tokens), greedy decoding and 128 output tokens as the NVIDIA bench, which runs
+Qwen3-14B AWQ with an EAGLE3 head. The Mac runs Qwen3-4B 4-bit with a Qwen3-0.6B 4-bit draft model at k=3:
+vllm-metal has no EAGLE3 path, and this is the pair the Mac track already measured.
+
+```bash
+/opt/homebrew/opt/vllm-metal/libexec/bin/python3.12 bench/run_vllm_metal.py   # -> bench/results/vllm_metal_*.json
+uv run python bench/run_mlx.py                                                 # -> bench/results/mlx_*.json
+MTL_CAPTURE_ENABLED=1 uv run python bench/profile_mlx.py                      # -> /tmp/llm-traces/mlx/*.gputrace
+```
+
+- **Context limit 8192, not 12288.** vllm-metal shrinks its KV pool to what free memory can hold. With apps open it
+  fit 8,736 tokens and refused 12,288. The longest prompt plus output is ~5.8K tokens.
+- **Peak memory** is the `phys_footprint` of the Python process and its children, sampled every 50 ms. That is
+  Activity Monitor's Memory column and includes Metal buffers. vLLM's EngineCore is a child process.
+- **Acceptance on MLX** is rebuilt from mlx-lm's per-token `from_draft` flags with vLLM's definitions
+  (length = 1 + accepted / rounds, rate = accepted / drafted). Both engines agree: ~3.3 tokens per round, ~76%.
+- **Profiling.** `profile_mlx.py` writes Metal frame captures: 2.9 GB for one prefill, 4.3 GB for 16 decode tokens,
+  so it captures one prompt. Opening them needs full Xcode (only Command Line Tools are installed now).
+  vllm-metal frame capture is not practical at this length: one prefill capture took ~10 min, wrote 6.4 GB in
+  over a million files, and the engine died before decode. For vllm-metal timelines, use Instruments'
+  Metal System Trace (`xcrun xctrace record --template 'Metal System Trace' --attach <EngineCore pid>`,
+  also needs Xcode).
+
+Smoke test (2026-10-27, **not a result**: on battery at 7% with apps open; vllm-metal swapped ~1.7 GB). Medians
+over 18 prompts:
+
+| Engine | TTFT p50 | TPOT p50 | Decode tok/s | Tokens per round | Peak memory |
+|---|---:|---:|---:|---:|---:|
+| vllm-metal, draft k=3 | 2.93 s | 18.1 ms | ~55 | ~3.3 | 9.3–9.7 GB |
+| mlx-lm, draft k=3 | 3.03 s | 11.7 ms | ~85 | ~3.3 | 5.5–6.6 GB |
+
+At one request in flight, MLX decodes ~1.5× faster with the same models and the same acceptance. vllm-metal pays
+per-step scheduler and paged-KV overhead, plus two preallocated KV pools. Its gains show up with many requests in
+flight and prefix reuse (table below), which this bench does not exercise. Rerun both plugged in, with apps
+closed, before saving results.
 
 ## First results (2026-10-21, single runs, other apps open)
 
