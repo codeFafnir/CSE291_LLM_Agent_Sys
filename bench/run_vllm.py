@@ -4,13 +4,26 @@ float16 because a 24GB RTX 6000 is Turing. The head was trained on the bf16 targ
 
 import json
 import time
-from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from vllm import LLM, SamplingParams
 from vllm.outputs import RequestOutput
 
 from long_prompts import LongPrompt, long_prompts
+from metrics import (
+    SAMPLE_INTERVAL_S,
+    BenchRow,
+    decode_tok_s,
+    format_row,
+    format_summary,
+    mib,
+    prefill_tok_s,
+    row_dict,
+    start_gpu_sampler,
+    stop_gpu_sampler,
+    summarize,
+    tpot_s,
+)
 
 TARGET_MODEL = "Qwen/Qwen3-14B-AWQ"
 SPECULATOR_MODEL = "RedHatAI/Qwen3-14B-speculator.eagle3"
@@ -21,24 +34,22 @@ SPECULATIVE_TOKENS = 3
 RESULT_PATH = Path(__file__).resolve().parent / "results" / "vllm_qwen3_14b_awq_eagle3.json"
 
 
-@dataclass(frozen=True)
-class RunRow:
-    prompt_id: str
-    prompt_tokens: int
-    output_tokens: int
-    latency_s: float
-    first_token_s: float
-    accept_length: float | None
-    accept_rate: float | None
+def _clocks(output: RequestOutput, output_tokens: int, e2e_s: float) -> tuple[float, float | None]:
+    metrics = output.metrics
+    if metrics is None or metrics.first_token_latency <= 0.0:
+        return e2e_s, None
+    ttft = float(metrics.first_token_latency)
+    if metrics.last_token_ts > metrics.first_token_ts and output_tokens > 1:
+        decode_s = metrics.last_token_ts - metrics.first_token_ts
+        return ttft, decode_s / (output_tokens - 1)
+    return ttft, tpot_s(ttft, e2e_s, output_tokens)
 
 
-def _row(prompt: LongPrompt, started: float, finished: float, output: RequestOutput) -> RunRow:
-    prompt_token_ids = output.prompt_token_ids or ()
-    prompt_tokens = len(prompt_token_ids)
+def _row(prompt: LongPrompt, e2e_s: float, peak_bytes: int, output: RequestOutput) -> BenchRow:
+    prompt_tokens = len(output.prompt_token_ids or ())
     completion = output.outputs[0]
     output_tokens = len(completion.token_ids)
-    metrics = output.metrics
-    first_token_s = float(metrics.first_token_latency) if metrics is not None else 0.0
+    ttft, tpot = _clocks(output, output_tokens, e2e_s)
     spec = completion.spec_decode_metrics
     accept_length = None
     accept_rate = None
@@ -46,18 +57,22 @@ def _row(prompt: LongPrompt, started: float, finished: float, output: RequestOut
         payload = spec.to_dict()
         accept_length = float(payload["mean_acceptance_length"])
         accept_rate = float(payload["draft_acceptance_rate"])
-    return RunRow(
+    return BenchRow(
         prompt_id=prompt.prompt_id,
         prompt_tokens=prompt_tokens,
         output_tokens=output_tokens,
-        latency_s=finished - started,
-        first_token_s=first_token_s,
+        e2e_s=e2e_s,
+        ttft_s=ttft,
+        tpot_s=tpot,
+        prefill_tok_s=prefill_tok_s(prompt_tokens, ttft),
+        decode_tok_s=decode_tok_s(tpot),
+        peak_gpu_mib=mib(peak_bytes),
         accept_length=accept_length,
         accept_rate=accept_rate,
     )
 
 
-def run(prompts: tuple[LongPrompt, ...]) -> tuple[RunRow, ...]:
+def run(prompts: tuple[LongPrompt, ...]) -> tuple[BenchRow, ...]:
     engine = LLM(
         model=TARGET_MODEL,
         dtype="float16",
@@ -77,27 +92,31 @@ def run(prompts: tuple[LongPrompt, ...]) -> tuple[RunRow, ...]:
         max_tokens=MAX_NEW_TOKENS,
         ignore_eos=True,
     )
-    rows: list[RunRow] = []
+    rows: list[BenchRow] = []
     for prompt in prompts:
+        stop, thread, peak = start_gpu_sampler(SAMPLE_INTERVAL_S)
         started = time.perf_counter()
-        outputs = engine.generate([prompt.rendered()], params, use_tqdm=False)
-        finished = time.perf_counter()
-        rows.append(_row(prompt, started, finished, outputs[0]))
-        print(
-            f"{prompt.prompt_id} prompt_tokens={rows[-1].prompt_tokens} "
-            f"latency_s={rows[-1].latency_s:.2f} accept_length={rows[-1].accept_length}"
-        )
+        try:
+            outputs = engine.generate([prompt.rendered()], params, use_tqdm=False)
+        finally:
+            e2e_s = time.perf_counter() - started
+            peak_bytes = stop_gpu_sampler(stop, thread, peak)
+        rows.append(_row(prompt, e2e_s, peak_bytes, outputs[0]))
+        print(format_row(rows[-1]))
     return tuple(rows)
 
 
-def write_rows(rows: tuple[RunRow, ...], path: Path) -> None:
+def write_report(rows: tuple[BenchRow, ...], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps([asdict(row) for row in rows], indent=2))
+    summary = summarize(rows)
+    payload = {"summary": summary, "rows": [row_dict(row) for row in rows]}
+    path.write_text(json.dumps(payload, indent=2))
+    print(format_summary(summary))
 
 
 def main() -> None:
     rows = run(long_prompts())
-    write_rows(rows, RESULT_PATH)
+    write_report(rows, RESULT_PATH)
     print(f"wrote {RESULT_PATH}")
 
 
