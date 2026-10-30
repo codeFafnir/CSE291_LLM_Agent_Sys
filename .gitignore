@@ -16,3 +16,6 @@ runs/
 
 # OS
 .DS_Store
+graphify-out/
+.env
+
