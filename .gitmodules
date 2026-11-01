@@ -4,3 +4,6 @@
 [submodule "third_party/sglang"]
 	path = third_party/sglang
 	url = git@github.com:codeFafnir/sglang.git
+[submodule "SWE-bench_Pro-os"]
+	path = SWE-bench_Pro-os
+	url = git@github.com:yue-hua-x/SWE-bench_Pro-os.git

@@ -13,6 +13,7 @@ models/
 runs/
 *.gguf
 *.safetensors
+jobs/
 
 # OS
 .DS_Store
