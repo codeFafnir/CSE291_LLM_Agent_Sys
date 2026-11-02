@@ -4,6 +4,7 @@
 
 turn.json is either the chat `messages` list or an object with a `messages` key.
 vLLM must be started with PROFILE_DIR and VLLM_SERVER_DEV_MODE=1 set (the latter exposes /reset_prefix_cache). Traces land in the server's profiler dir (vLLM) or --out-dir (SGLang).
+SGLang's per-stage profiler needs num_steps and stops itself after that many prefill and decode steps.
 """
 
 import argparse
@@ -16,6 +17,7 @@ from pydantic import BaseModel
 
 MODEL = "Qwen/Qwen3-14B-AWQ"
 MAX_TOKENS = 256
+STAGE_STEPS = 8
 REQUEST_TIMEOUT_S = 900.0
 Engine = Literal["vllm", "sglang"]
 
@@ -49,6 +51,7 @@ def start_body(engine: Engine, out_dir: Path, label: str) -> dict[str, object] |
         return {
             "output_dir": str(out_dir / label),
             "profile_by_stage": True,
+            "num_steps": STAGE_STEPS,
             "activities": ["CPU", "GPU"],
             "with_stack": True,
         }
@@ -59,7 +62,8 @@ def profiled_request(engine: Engine, base: str, turn: Turn, out_dir: Path, label
     post(f"{base}/start_profile", start_body(engine, out_dir, label), 60.0)
     body = {"model": MODEL, "messages": [m.model_dump() for m in turn.messages], "max_tokens": MAX_TOKENS}
     post(f"{base}/v1/chat/completions", body, REQUEST_TIMEOUT_S)
-    post(f"{base}/stop_profile", None, 600.0)
+    if engine == "vllm":
+        post(f"{base}/stop_profile", None, 600.0)
 
 
 def main() -> None:
