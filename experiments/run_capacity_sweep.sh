@@ -6,7 +6,8 @@
 #   EVICTION_POLICY=lru PREEMPTION_POLICY=fcfs MAX_BATCHED_TOKENS=8192 \
 #   experiments/run_capacity_sweep.sh vllm
 #
-# Run from the engine's env. Optional overrides: CAP_LENS, CAP_SEQS, CAP_CONCS, CAP_PROMPTS (space separated).
+# Run from the engine's env. Optional overrides: CAP_LENS, CAP_SEQS, CAP_CONCS, CAP_PROMPTS (space separated),
+# CAP_TAG (suffix for the result dir, use with NO_SPECULATOR=1).
 # tlru on sglang also needs TLRU_THRESHOLD and TLRU_NEXT_PROMPT.
 set -euo pipefail
 
@@ -34,7 +35,7 @@ PROMPTS="${CAP_PROMPTS:-1024 2048 4096 8192 12000 16000 24000 32000}"
 PRIORITY_MODE=none
 if [[ "${PREEMPTION_POLICY}" == "priority" ]]; then PRIORITY_MODE=index; fi
 
-TOP_ID="capacity-${ENGINE}-${EVICTION_POLICY}"
+TOP_ID="capacity-${ENGINE}-${EVICTION_POLICY}${CAP_TAG:+-${CAP_TAG}}"
 TOP_DIR="${RESULTS_ROOT}/${TOP_ID}"
 mkdir -p "${TOP_DIR}"
 

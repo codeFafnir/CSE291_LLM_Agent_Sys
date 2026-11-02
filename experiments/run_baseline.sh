@@ -4,6 +4,7 @@
 #   SERVE_RUN_ID=... CONCURRENCY=1 MAX_MODEL_LEN=12288 MAX_NUM_SEQS=8 MAX_BATCHED_TOKENS=8192 \
 #   EVICTION_POLICY=lru PREEMPTION_POLICY=fcfs experiments/run_baseline.sh vllm easy30
 #
+# Optional RUN_TAG suffixes the run dir (profiling runs).
 # SERVE_RUN_ID is the RUN_ID the server was started with, so its serve.log and knobs are copied in.
 # Needs bench deps (prometheus_client, pydantic, nvidia-ml-py) in the active env and harbor on PATH.
 set -euo pipefail
@@ -34,7 +35,7 @@ case "${JOB}" in
   *) usage ;;
 esac
 
-RUN_ID="baseline-${ENGINE}-${JOB}-c${CONCURRENCY}-b${MAX_NUM_SEQS}-t${MAX_BATCHED_TOKENS}-l${MAX_MODEL_LEN}-${EVICTION_POLICY}"
+RUN_ID="baseline-${ENGINE}-${JOB}-c${CONCURRENCY}-b${MAX_NUM_SEQS}-t${MAX_BATCHED_TOKENS}-l${MAX_MODEL_LEN}-${EVICTION_POLICY}${RUN_TAG:+-${RUN_TAG}}"
 RUN_DIR="${RESULTS_ROOT}/${RUN_ID}"
 SERVE_DIR="${RESULTS_ROOT}/${SERVE_RUN_ID}"
 mkdir -p "${RUN_DIR}"
@@ -61,7 +62,9 @@ python "${REPO_ROOT}/bench/collect_server_metrics.py" \
   --engine "${ENGINE}" --url "http://127.0.0.1:${PORT}/metrics" \
   --out "${RUN_DIR}/server_metrics.jsonl" --interval-s 5 --timeout-s 5 &
 COLLECTOR_PID=$!
-trap 'kill "${COLLECTOR_PID}" 2>/dev/null || true' EXIT
+nvidia-smi dmon -s pucvmet -d 1 > "${RUN_DIR}/gpu_dmon.log" &
+DMON_PID=$!
+trap 'kill "${COLLECTOR_PID}" "${DMON_PID}" 2>/dev/null || true' EXIT
 
 BASE_HOST=host.docker.internal
 ID_ARGS=()
@@ -76,8 +79,8 @@ OPENAI_API_KEY=not-needed harbor run -p "${TASKS_DIR}" \
   --base-url "http://${BASE_HOST}:${PORT}/v1" \
   --jobs-dir "${RUN_DIR}" --job-name harbor
 
-kill "${COLLECTOR_PID}"
-wait "${COLLECTOR_PID}" 2>/dev/null || true
+kill "${COLLECTOR_PID}" "${DMON_PID}"
+wait "${COLLECTOR_PID}" "${DMON_PID}" 2>/dev/null || true
 trap - EXIT
 
 tail -c "+$((SERVE_LOG_OFFSET + 1))" "${SERVE_DIR}/serve.log" > "${RUN_DIR}/serve.log"

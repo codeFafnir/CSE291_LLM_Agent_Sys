@@ -23,6 +23,14 @@ if [[ "${PREEMPTION_POLICY}" == "priority" ]]; then
   extra_args+=(--enable-priority-scheduling)
 fi
 
+# NO_SPECULATOR=1 drops the EAGLE3 head to measure its memory cost.
+spec_args=(--speculative-algorithm EAGLE3
+  --speculative-draft-model-path thoughtworks/Qwen3-14B-Eagle3
+  --speculative-num-steps 3
+  --speculative-eagle-topk 1
+  --speculative-num-draft-tokens 4)
+if [[ -n "${NO_SPECULATOR:-}" ]]; then spec_args=(); fi
+
 python -m sglang.launch_server \
   --host 0.0.0.0 --port 30000 \
   --model-path Qwen/Qwen3-14B-AWQ \
@@ -34,10 +42,6 @@ python -m sglang.launch_server \
   --radix-eviction-policy "${EVICTION_POLICY}" \
   --retraction-policy "${PREEMPTION_POLICY}" \
   --enable-metrics \
-  --speculative-algorithm EAGLE3 \
-  --speculative-draft-model-path thoughtworks/Qwen3-14B-Eagle3 \
-  --speculative-num-steps 3 \
-  --speculative-eagle-topk 1 \
-  --speculative-num-draft-tokens 4 \
+  "${spec_args[@]}" \
   "${extra_args[@]}" \
   2>&1 | tee -a "${SERVE_LOG}"

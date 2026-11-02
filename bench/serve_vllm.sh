@@ -12,6 +12,17 @@ if [[ "${EVICTION_POLICY}" != "lru" && "${EVICTION_POLICY}" != "agent" ]]; then
 fi
 export VLLM_KV_EVICTION_POLICY="${EVICTION_POLICY}"
 
+# Profiling runs only: PROFILE_DIR enables /start_profile and /stop_profile. SLA runs leave it unset.
+profile_args=()
+if [[ -n "${PROFILE_DIR:-}" ]]; then
+  profile_args+=(--profiler-config
+    "{\"profiler\":\"torch\",\"torch_profiler_dir\":\"${PROFILE_DIR}\",\"torch_profiler_record_shapes\":true,\"torch_profiler_with_stack\":true,\"torch_profiler_use_gzip\":true}")
+fi
+
+# NO_SPECULATOR=1 drops the EAGLE3 head to measure its memory cost.
+spec_args=(--speculative-config '{"method":"eagle3","model":"RedHatAI/Qwen3-14B-speculator.eagle3","num_speculative_tokens":3}')
+if [[ -n "${NO_SPECULATOR:-}" ]]; then spec_args=(); fi
+
 vllm serve Qwen/Qwen3-14B-AWQ \
   --host 0.0.0.0 --port 8000 \
   --dtype float16 --quantization awq \
@@ -22,5 +33,6 @@ vllm serve Qwen/Qwen3-14B-AWQ \
   --gpu-memory-utilization 0.90 \
   --enable-prefix-caching \
   --scheduling-policy "${PREEMPTION_POLICY}" \
-  --speculative-config '{"method":"eagle3","model":"RedHatAI/Qwen3-14B-speculator.eagle3","num_speculative_tokens":3}' \
+  "${spec_args[@]}" \
+  "${profile_args[@]}" \
   2>&1 | tee -a "${SERVE_LOG}"
