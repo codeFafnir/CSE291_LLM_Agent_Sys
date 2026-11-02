@@ -32,6 +32,7 @@ spec_args=(--speculative-algorithm EAGLE3
   --speculative-num-draft-tokens 4)
 if [[ -n "${NO_SPECULATOR:-}" ]]; then spec_args=(); fi
 
+# Prefill graphs for 8192-token chunks do not fit next to the KV pool on 24 GB, so prefill runs eagerly.
 # The EAGLE3 draft config declares a 2048 context; the target model supports the longer one.
 export SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1
 
@@ -45,6 +46,7 @@ python -m sglang.launch_server \
   --mem-fraction-static 0.85 \
   --radix-eviction-policy "${EVICTION_POLICY}" \
   --retraction-policy "${PREEMPTION_POLICY}" \
+  --disable-prefill-cuda-graph \
   --enable-metrics \
   "${spec_args[@]}" \
   "${extra_args[@]}" \
