@@ -19,6 +19,7 @@ RESULTS_ROOT=/data/cse291-results
 TASKS_DIR=/data/SWE-bench_Pro-os/v2/tasks
 IDS_FILE=/data/SWE-bench_Pro-os/v2/easy30_ids.txt
 MODEL=openai/Qwen/Qwen3-14B-AWQ
+MAX_OUTPUT_TOKENS=2048
 
 for name in SERVE_RUN_ID CONCURRENCY MAX_MODEL_LEN MAX_NUM_SEQS MAX_BATCHED_TOKENS EVICTION_POLICY PREEMPTION_POLICY; do
   if [[ -z "${!name:-}" ]]; then echo "missing required env var: ${name}" >&2; exit 2; fi
@@ -67,6 +68,9 @@ DMON_PID=$!
 trap 'kill "${COLLECTOR_PID}" "${DMON_PID}" 2>/dev/null || true' EXIT
 
 BASE_HOST=host.docker.internal
+# Harbor must know the real context window (else it never summarizes) and cap each reply; thinking is off so replies fit.
+MODEL_INFO="{\"max_input_tokens\":${MAX_MODEL_LEN},\"max_output_tokens\":${MAX_OUTPUT_TOKENS},\"input_cost_per_token\":0,\"output_cost_per_token\":0}"
+LLM_KWARGS="{\"max_tokens\":${MAX_OUTPUT_TOKENS},\"extra_body\":{\"chat_template_kwargs\":{\"enable_thinking\":false}}}"
 ID_ARGS=()
 for id in "${IDS[@]}"; do ID_ARGS+=(-i "${id}"); done
 
@@ -77,6 +81,8 @@ OPENAI_API_KEY=not-needed harbor run -p "${TASKS_DIR}" \
   -m "${MODEL}" \
   --api-format openai_chat_completions \
   --base-url "http://${BASE_HOST}:${PORT}/v1" \
+  --ak "model_info=${MODEL_INFO}" \
+  --ak "llm_kwargs=${LLM_KWARGS}" \
   --jobs-dir "${RUN_DIR}" --job-name harbor
 
 kill "${COLLECTOR_PID}" "${DMON_PID}"
