@@ -26,6 +26,7 @@ fi
 # NO_SPECULATOR=1 drops the EAGLE3 head to measure its memory cost.
 spec_args=(--speculative-algorithm EAGLE3
   --speculative-draft-model-path thoughtworks/Qwen3-14B-Eagle3
+  --speculative-draft-model-quantization unquant
   --speculative-num-steps 3
   --speculative-eagle-topk 1
   --speculative-num-draft-tokens 4)
