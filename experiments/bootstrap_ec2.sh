@@ -55,7 +55,7 @@ build_env() {
   [[ -x "${env_dir}/bin/python" ]] || uv venv --python 3.12 "${env_dir}"
   case "${name}" in
     vllm) VIRTUAL_ENV="${env_dir}" VLLM_USE_PRECOMPILED=1 uv pip install -e "${REPO_ROOT}/third_party/vllm" --torch-backend=auto ;;
-    sglang) VIRTUAL_ENV="${env_dir}" uv pip install --prerelease=allow -e "${REPO_ROOT}/third_party/sglang/python" ;;
+    sglang) VIRTUAL_ENV="${env_dir}" SGLANG_BUILD_RUST_EXTS=none uv pip install --prerelease=allow -e "${REPO_ROOT}/third_party/sglang/python" ;;
   esac
   VIRTUAL_ENV="${env_dir}" uv pip install "${BENCH_PKGS[@]}"
 }
