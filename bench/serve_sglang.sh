@@ -31,6 +31,9 @@ spec_args=(--speculative-algorithm EAGLE3
   --speculative-num-draft-tokens 4)
 if [[ -n "${NO_SPECULATOR:-}" ]]; then spec_args=(); fi
 
+# The EAGLE3 draft config declares a 2048 context; the target model supports the longer one.
+export SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1
+
 python -m sglang.launch_server \
   --host 0.0.0.0 --port 30000 \
   --model-path Qwen/Qwen3-14B-AWQ \
