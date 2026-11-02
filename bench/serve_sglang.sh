@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Baseline SGLang server: Qwen3-14B-AWQ plus the EAGLE3 head, fp16 KV, radix cache on, no offload.
-# Run from env-sglang. Needs RUN_ID, MAX_MODEL_LEN, MAX_NUM_SEQS, MAX_BATCHED_TOKENS,
+# Run from env-sglang, after experiments/prepare_sglang_draft.sh. Needs RUN_ID, MAX_MODEL_LEN, MAX_NUM_SEQS, MAX_BATCHED_TOKENS,
 # EVICTION_POLICY (lru lfu slru priority tlru agent) and PREEMPTION_POLICY (length or priority).
 # tlru also needs TLRU_THRESHOLD and TLRU_NEXT_PROMPT, both in tokens.
 # agent (cse291-agent-evict branch) also needs AGENT_IDLE_S and AGENT_SHARED_HITS.
@@ -25,7 +25,7 @@ fi
 
 # NO_SPECULATOR=1 drops the EAGLE3 head to measure its memory cost.
 spec_args=(--speculative-algorithm EAGLE3
-  --speculative-draft-model-path thoughtworks/Qwen3-14B-Eagle3
+  --speculative-draft-model-path /data/models/Qwen3-14B-Eagle3
   --speculative-draft-model-quantization unquant
   --speculative-num-steps 3
   --speculative-eagle-topk 1

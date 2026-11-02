@@ -78,6 +78,8 @@ uv tool install --force huggingface_hub
 uv tool install --force py-spy
 for model in "${MODELS[@]}"; do hf download "${model}"; done
 
+bash "${REPO_ROOT}/experiments/prepare_sglang_draft.sh"
+
 [[ -d "${DATA}/SWE-bench_Pro-os" ]] || git clone https://github.com/scaleapi/SWE-bench_Pro-os.git "${DATA}/SWE-bench_Pro-os"
 "${DATA}/envs/vllm/bin/python" "${REPO_ROOT}/experiments/select_easy30.py" \
   --tasks-dir "${DATA}/SWE-bench_Pro-os/v2/tasks" --max-model-len 12288 --count 30 \
