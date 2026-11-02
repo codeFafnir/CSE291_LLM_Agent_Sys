@@ -17,7 +17,7 @@ class ToolCall(BaseModel):
 
 
 class Result(BaseModel):
-    content: str
+    content: str | None = None
 
 
 class Observation(BaseModel):
@@ -54,7 +54,7 @@ def build_messages(trajectory: Trajectory, max_chars: int) -> list[Message]:
             continue
         pair = [
             Message(role="assistant", content=agent_text(step)),
-            Message(role="user", content="\n".join(r.content for r in step.observation.results)),
+            Message(role="user", content="\n".join(r.content for r in step.observation.results if r.content)),
         ]
         size += sum(len(m.content) for m in pair)
         if size > max_chars:
