@@ -177,4 +177,5 @@ for engine in ${ENGINES}; do
   step "online-window-c4-${engine}" online_window "${engine}" 4
   step "kernel-timeline-${engine}" kernel_timeline "${engine}"
 done
+step "tar-results" tar czf /data/results.tgz -C /data cse291-results
 log "run_all done"
