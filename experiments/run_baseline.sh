@@ -9,7 +9,7 @@
 # Needs bench deps (prometheus_client, pydantic, nvidia-ml-py) in the active env and harbor on PATH.
 set -euo pipefail
 
-usage() { echo "usage: $0 <vllm|sglang> <smoke|easy30>" >&2; exit 2; }
+usage() { echo "usage: $0 <vllm|sglang> <smoke|easy30|nemotron-smoke>" >&2; exit 2; }
 [[ $# -eq 2 ]] || usage
 ENGINE="$1"
 JOB="$2"
@@ -18,6 +18,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 RESULTS_ROOT=/data/cse291-results
 TASKS_DIR=/data/SWE-bench_Pro-os/v2/tasks
 IDS_FILE=/data/SWE-bench_Pro-os/v2/easy30_ids.txt
+JOB_ARGS=()
 MODEL=openai/Qwen/Qwen3-14B-AWQ
 MAX_OUTPUT_TOKENS=2048
 
@@ -33,6 +34,13 @@ esac
 case "${JOB}" in
   smoke) mapfile -t IDS < <(head -n 2 "${IDS_FILE}") ;;
   easy30) mapfile -t IDS < "${IDS_FILE}" ;;
+  nemotron-smoke)
+    # The task-declared docker_image is NVIDIA-internal, so build each task from its own Dockerfile.
+    # Summarization is off so a context overflow fails the trial instead of being hidden.
+    TASKS_DIR=/data/datasets/nemotron-terminal/smoke5
+    IDS_FILE=/data/datasets/nemotron-terminal/smoke5_ids.txt
+    mapfile -t IDS < "${IDS_FILE}"
+    JOB_ARGS=(--force-build --ak enable_summarize=false --ak proactive_summarization_threshold=0) ;;
   *) usage ;;
 esac
 
@@ -83,6 +91,7 @@ OPENAI_API_KEY=not-needed harbor run -p "${TASKS_DIR}" \
   --base-url "http://${BASE_HOST}:${PORT}/v1" \
   --ak "model_info=${MODEL_INFO}" \
   --ak "llm_kwargs=${LLM_KWARGS}" \
+  "${JOB_ARGS[@]}" \
   --jobs-dir "${RUN_DIR}" --job-name harbor
 
 kill "${COLLECTOR_PID}" "${DMON_PID}"
