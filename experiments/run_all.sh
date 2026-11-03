@@ -112,7 +112,7 @@ offline_profile() {
   (cd "${REPO_ROOT}/bench" && PROFILE_DIR="${RESULTS}/profile-${engine}/offline" python "profile_${engine}.py")
 }
 
-# Server with the profiler enabled. vLLM writes traces to PROFILE_DIR, SGLang to the output_dir of each window.
+# Profiling server. vLLM writes traces to ${RESULTS}/${RUN_ID}/torch_profile, SGLang to the output_dir of each window (PROFILE_DIR).
 start_profile_server() {
   local engine="$1" tag="$2"
   use_env "${engine}"
@@ -128,7 +128,7 @@ replay_profile() {
   [[ -f "${REPLAY_TURN}" ]] || { echo "missing ${REPLAY_TURN}" >&2; return 1; }
   start_profile_server "${engine}" replay || return 1
   python "${REPO_ROOT}/bench/replay_profile.py" --engine "${engine}" --messages-json "${REPLAY_TURN}" \
-    --out-dir "${RESULTS}/profile-${engine}/replay"
+    --out-dir "${RESULTS}/profile-${engine}/replay" --server-trace-dir "${RESULTS}/${RUN_ID}/torch_profile"
   stop_server
 }
 

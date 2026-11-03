@@ -12,12 +12,14 @@ if [[ "${EVICTION_POLICY}" != "lru" && "${EVICTION_POLICY}" != "agent" ]]; then
 fi
 export VLLM_KV_EVICTION_POLICY="${EVICTION_POLICY}"
 
-# Profiling runs only: PROFILE_DIR enables /start_profile and /stop_profile. SLA runs leave it unset.
-profile_args=()
-if [[ -n "${PROFILE_DIR:-}" ]]; then
-  profile_args+=(--profiler-config
-    "{\"profiler\":\"torch\",\"torch_profiler_dir\":\"${PROFILE_DIR}\",\"torch_profiler_record_shapes\":true,\"torch_profiler_with_stack\":true,\"torch_profiler_use_gzip\":true}")
-fi
+# The torch profiler stays idle until /start_profile. DEV_MODE exposes /reset_prefix_cache.
+export VLLM_SERVER_DEV_MODE=1
+profile_args=(--profiler-config
+  "{\"profiler\":\"torch\",\"torch_profiler_dir\":\"${RUN_DIR}/torch_profile\",\"torch_profiler_record_shapes\":true,\"torch_profiler_with_stack\":true,\"torch_profiler_use_gzip\":true}")
+
+# Per-request spans (queue, prefill, decode, ttft, e2e) go to the OTLP collector.
+bash "$(dirname "${BASH_SOURCE[0]}")/otel_collector.sh"
+trace_args=(--otlp-traces-endpoint http://127.0.0.1:4317)
 
 # NO_SPECULATOR=1 drops the EAGLE3 head to measure its memory cost.
 spec_args=(--speculative-config '{"method":"eagle3","model":"RedHatAI/Qwen3-14B-speculator.eagle3","num_speculative_tokens":3}')
@@ -35,4 +37,5 @@ vllm serve Qwen/Qwen3-14B-AWQ \
   --scheduling-policy "${PREEMPTION_POLICY}" \
   "${spec_args[@]}" \
   "${profile_args[@]}" \
+  "${trace_args[@]}" \
   2>&1 | tee -a "${SERVE_LOG}"

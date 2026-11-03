@@ -4,7 +4,7 @@
 """
 
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -16,12 +16,18 @@ class _Verifier(BaseModel):
     rewards: dict[str, float] | None = None
 
 
+class _ExceptionInfo(BaseModel):
+    exception_type: str | None = None
+    exception_message: str | None = None
+    exception_traceback: str | None = None
+
+
 class _TrialResult(BaseModel):
     task_name: str
     started_at: datetime | None = None
     finished_at: datetime | None = None
     verifier_result: _Verifier | None = None
-    exception_info: object = None
+    exception_info: _ExceptionInfo | None = None
 
 
 class _StepMetrics(BaseModel):
@@ -45,6 +51,15 @@ class TaskReport(BaseModel):
     seconds: float | None
     over_context: bool
     exception: str | None
+    exception_type: str | None
+    started_ts: float | None
+    finished_ts: float | None
+
+
+def epoch(moment: datetime | None) -> float | None:
+    if moment is None:
+        return None
+    return (moment if moment.tzinfo else moment.replace(tzinfo=timezone.utc)).timestamp()
 
 
 def peak_tokens(trajectory_path: Path) -> int | None:
@@ -74,6 +89,9 @@ def report_trial(trial_dir: Path, max_context: int) -> TaskReport:
         seconds=seconds,
         over_context=context_error or (peak is not None and peak > max_context),
         exception=exception,
+        exception_type=result.exception_info.exception_type if result.exception_info else None,
+        started_ts=epoch(result.started_at),
+        finished_ts=epoch(result.finished_at),
     )
 
 

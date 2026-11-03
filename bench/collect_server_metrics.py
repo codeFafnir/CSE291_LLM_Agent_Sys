@@ -37,6 +37,10 @@ VLLM_SERIES: tuple[str, ...] = (
     "vllm:num_requests_running",
     "vllm:num_requests_waiting",
     "vllm:num_preemptions",
+    "vllm:request_queue_time_seconds",
+    "vllm:request_prefill_time_seconds",
+    "vllm:request_decode_time_seconds",
+    "vllm:inter_token_latency_seconds",
 )
 
 SGLANG_SERIES: tuple[str, ...] = (
@@ -53,6 +57,7 @@ SGLANG_SERIES: tuple[str, ...] = (
     "sglang:num_running_reqs",
     "sglang:num_queue_reqs",
     "sglang:num_retracted_requests_total",
+    "sglang:queue_time_seconds",
 )
 
 SERIES_BY_ENGINE: dict[Engine, tuple[str, ...]] = {"vllm": VLLM_SERIES, "sglang": SGLANG_SERIES}

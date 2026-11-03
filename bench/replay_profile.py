@@ -3,12 +3,14 @@
   replay_profile.py --engine vllm --messages-json turn.json --out-dir /data/cse291-results/profile-vllm/replay
 
 turn.json is either the chat `messages` list or an object with a `messages` key.
-vLLM must be started with PROFILE_DIR and VLLM_SERVER_DEV_MODE=1 set (the latter exposes /reset_prefix_cache). Traces land in the server's profiler dir (vLLM) or --out-dir (SGLang).
+Two unprofiled warmup requests run first. serve_vllm.sh already sets the profiler dir and VLLM_SERVER_DEV_MODE=1 (/reset_prefix_cache).
+vLLM traces are moved from --server-trace-dir into --out-dir/<cold|warm>; SGLang writes straight to --out-dir/<cold|warm>.
 SGLang's per-stage profiler needs num_steps and stops itself after that many prefill and decode steps.
 """
 
 import argparse
 import json
+import shutil
 import urllib.request
 from pathlib import Path
 from typing import Literal
@@ -18,6 +20,7 @@ from pydantic import BaseModel
 MODEL = "Qwen/Qwen3-14B-AWQ"
 MAX_TOKENS = 256
 STAGE_STEPS = 8
+WARMUP_REQUESTS = 2
 REQUEST_TIMEOUT_S = 900.0
 Engine = Literal["vllm", "sglang"]
 
@@ -58,12 +61,28 @@ def start_body(engine: Engine, out_dir: Path, label: str) -> dict[str, object] |
     return None
 
 
-def profiled_request(engine: Engine, base: str, turn: Turn, out_dir: Path, label: str) -> None:
-    post(f"{base}/start_profile", start_body(engine, out_dir, label), 60.0)
+def chat(base: str, turn: Turn) -> None:
     body = {"model": MODEL, "messages": [m.model_dump() for m in turn.messages], "max_tokens": MAX_TOKENS}
     post(f"{base}/v1/chat/completions", body, REQUEST_TIMEOUT_S)
+
+
+def collect_vllm_traces(server_trace_dir: Path, before: set[str], out_dir: Path, label: str) -> None:
+    # vLLM names traces by time inside one dir, so each pass's new files move into its label dir.
+    (out_dir / label).mkdir(parents=True, exist_ok=True)
+    for path in server_trace_dir.iterdir():
+        if path.name not in before:
+            shutil.move(str(path), out_dir / label / path.name)
+
+
+def profiled_request(
+    engine: Engine, base: str, turn: Turn, out_dir: Path, label: str, server_trace_dir: Path
+) -> None:
+    before = {p.name for p in server_trace_dir.iterdir()} if engine == "vllm" else set()
+    post(f"{base}/start_profile", start_body(engine, out_dir, label), 60.0)
+    chat(base, turn)
     if engine == "vllm":
         post(f"{base}/stop_profile", None, 600.0)
+        collect_vllm_traces(server_trace_dir, before, out_dir, label)
 
 
 def main() -> None:
@@ -71,6 +90,7 @@ def main() -> None:
     parser.add_argument("--engine", choices=["vllm", "sglang"], required=True)
     parser.add_argument("--messages-json", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument("--server-trace-dir", type=Path, required=True, help="vLLM torch_profile_dir; unused for SGLang")
     args = parser.parse_args()
 
     engine: Engine = args.engine
@@ -78,9 +98,14 @@ def main() -> None:
     turn = load_turn(args.messages_json)
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
+    args.server_trace_dir.mkdir(parents=True, exist_ok=True)
+
+    # Warmup first (graphs, allocator, kernels), then flush so the cold pass starts with an empty prefix cache.
+    for _ in range(WARMUP_REQUESTS):
+        chat(base, turn)
     post(base + FLUSH_PATH[engine], None, 60.0)
-    profiled_request(engine, base, turn, args.out_dir, "cold")
-    profiled_request(engine, base, turn, args.out_dir, "warm")
+    profiled_request(engine, base, turn, args.out_dir, "cold", args.server_trace_dir)
+    profiled_request(engine, base, turn, args.out_dir, "warm", args.server_trace_dir)
 
 
 if __name__ == "__main__":

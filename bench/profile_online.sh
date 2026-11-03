@@ -3,7 +3,7 @@
 #
 #   bench/profile_online.sh <vllm|sglang> <out_dir> <seconds>
 #
-# vLLM must have been started with PROFILE_DIR set (traces land there, not in out_dir).
+# vLLM traces land in <serve RUN_DIR>/torch_profile, not in out_dir.
 set -euo pipefail
 
 usage() { echo "usage: $0 <vllm|sglang> <out_dir> <seconds>" >&2; exit 2; }

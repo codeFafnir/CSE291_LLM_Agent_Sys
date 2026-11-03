@@ -10,6 +10,7 @@ DATA=/data
 DATA_BYTES=$((300 * 1024 * 1024 * 1024))
 FORK_BRANCH=cse291-agent-evict
 BENCH_PKGS=(prometheus_client pydantic nvidia-ml-py datasets transformers)
+OTEL_PKGS=(opentelemetry-sdk opentelemetry-api opentelemetry-exporter-otlp opentelemetry-semantic-conventions-ai)
 MODELS=(Qwen/Qwen3-14B-AWQ RedHatAI/Qwen3-14B-speculator.eagle3 thoughtworks/Qwen3-14B-Eagle3)
 
 export PATH="${HOME}/.local/bin:${PATH}"
@@ -60,6 +61,17 @@ build_env() {
   VIRTUAL_ENV="${env_dir}" uv pip install "${BENCH_PKGS[@]}"
 }
 
+# OTLP span export for vLLM request traces. Refuses to run if it would change a pinned core package.
+install_otel() {
+  local env_dir="${DATA}/envs/vllm" plan
+  plan="$(VIRTUAL_ENV="${env_dir}" uv pip install --dry-run "${OTEL_PKGS[@]}" 2>&1)"
+  if grep -E '^\s*- (vllm|torch|transformers|protobuf)==' <<< "${plan}"; then
+    echo "installing OTel would change a pinned package (lines above); aborting" >&2
+    exit 1
+  fi
+  VIRTUAL_ENV="${env_dir}" uv pip install "${OTEL_PKGS[@]}"
+}
+
 mount_data
 mkdir -p "${DATA}/tmp" "${DATA}/hf" "${DATA}/cse291-results"
 write_env
@@ -71,6 +83,7 @@ command -v uv > /dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
 
 fetch_forks
 build_env vllm
+install_otel
 build_env sglang
 
 uv tool install --force 'harbor>=0.22'

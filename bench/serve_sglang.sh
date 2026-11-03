@@ -48,6 +48,7 @@ python -m sglang.launch_server \
   --retraction-policy "${PREEMPTION_POLICY}" \
   --disable-prefill-cuda-graph \
   --enable-metrics \
+  --export-metrics-to-file --export-metrics-to-file-dir "${RUN_DIR}/sglang-request-metrics" \
   "${spec_args[@]}" \
   "${extra_args[@]}" \
   2>&1 | tee -a "${SERVE_LOG}"
