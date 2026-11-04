@@ -19,7 +19,7 @@ fi
 
 mkdir -p "${DATA_ROOT}/envs" "${OUT_DIR}"
 [[ -x "${VENV_DIR}/bin/python" ]] || python3 -m venv "${VENV_DIR}"
-"${VENV_DIR}/bin/python" -m pip install datasets pyarrow pandas
+"${VENV_DIR}/bin/python" -m pip install -e "${PIPELINE_ROOT}[prepare]"
 
 "${VENV_DIR}/bin/python" "${PIPELINE_ROOT}/speedbench/prepare_easy_medium.py" --out "${PARQUET}"
 
