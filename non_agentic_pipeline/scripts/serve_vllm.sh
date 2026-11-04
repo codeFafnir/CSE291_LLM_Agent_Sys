@@ -5,7 +5,6 @@
 # NO_SPECULATOR=1 drops the EAGLE3 head.
 set -euo pipefail
 
-PINNED_VLLM_VERSION=0.32.1.dev1+g4b7cdeae4
 SCHEDULING_POLICY=fcfs
 EVICTION_POLICY=lru
 
@@ -13,12 +12,8 @@ for name in RESULTS_ROOT RUN_ID MAX_MODEL_LEN MAX_NUM_SEQS MAX_BATCHED_TOKENS HF
   if [[ -z "${!name:-}" ]]; then echo "missing required env var: ${name}" >&2; exit 2; fi
 done
 
-# Preflight: the pinned fork must be the installed one.
+# Record whatever vLLM is in this env. DataHub is CUDA 12.9, where the fork has no prebuilt wheel.
 INSTALLED_VLLM_VERSION="$(python -c 'import vllm; print(vllm.__version__)')"
-if [[ "${INSTALLED_VLLM_VERSION}" != "${PINNED_VLLM_VERSION}" ]]; then
-  echo "vllm ${INSTALLED_VLLM_VERSION} installed, expected ${PINNED_VLLM_VERSION}" >&2
-  exit 3
-fi
 
 RUN_DIR="${RESULTS_ROOT}/${RUN_ID}"
 SERVE_LOG="${RUN_DIR}/serve.log"
