@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Download and resolve the SPEED-Bench qualitative split with NVIDIA's prepare_data.py.
+# Build the SPEED-Bench easy+medium parquet. Does not download cais/hle.
 # Needs DATA_ROOT. Output: ${DATA_ROOT}/speed-bench/speed/qualitative/test.parquet.
 # Uses its own venv so the vLLM env is not touched. Rerunning is a no-op once .done exists.
+# Set HF_HOME and TMPDIR off the home directory first; Code Contests is a large download.
 set -euo pipefail
 
 if [[ -z "${DATA_ROOT:-}" ]]; then echo "missing required env var: DATA_ROOT" >&2; exit 2; fi
 
-MODEL_OPTIMIZER_SHA=ba053c3f4cac1f22e0b4cd23ef99f3c954e1d01f
-REPO_DIR="${DATA_ROOT}/Model-Optimizer"
+PIPELINE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="${DATA_ROOT}/envs/specdec"
 OUT_DIR="${DATA_ROOT}/speed-bench"
 PARQUET="${OUT_DIR}/speed/qualitative/test.parquet"
@@ -18,19 +18,11 @@ if [[ -f "${OUT_DIR}/.done" ]]; then
 fi
 
 mkdir -p "${DATA_ROOT}/envs" "${OUT_DIR}"
-if [[ ! -d "${REPO_DIR}/.git" ]]; then
-  git clone https://github.com/NVIDIA/Model-Optimizer.git "${REPO_DIR}"
-fi
-git -C "${REPO_DIR}" fetch origin "${MODEL_OPTIMIZER_SHA}"
-git -C "${REPO_DIR}" checkout --detach "${MODEL_OPTIMIZER_SHA}"
-
 [[ -x "${VENV_DIR}/bin/python" ]] || python3 -m venv "${VENV_DIR}"
-"${VENV_DIR}/bin/python" -m pip install -r "${REPO_DIR}/examples/specdec_bench/requirements.txt"
+"${VENV_DIR}/bin/python" -m pip install datasets pyarrow pandas
 
-# prepare_data.py imports the specdec_bench package from its own directory.
-cd "${REPO_DIR}/examples/specdec_bench"
-"${VENV_DIR}/bin/python" prepare_data.py --dataset speed --config qualitative --output_dir "${OUT_DIR}"
+"${VENV_DIR}/bin/python" "${PIPELINE_ROOT}/speedbench/prepare_easy_medium.py" --out "${PARQUET}"
 
-[[ -f "${PARQUET}" ]] || { echo "prepare_data.py did not write ${PARQUET}" >&2; exit 3; }
+[[ -f "${PARQUET}" ]] || { echo "prepare_easy_medium.py did not write ${PARQUET}" >&2; exit 3; }
 touch "${OUT_DIR}/.done"
 echo "wrote ${PARQUET}"
