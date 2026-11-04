@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build the SPEED-Bench easy+medium parquet. Does not download cais/hle.
-# Needs DATA_ROOT. Output: ${DATA_ROOT}/speed-bench/speed/qualitative/test.parquet.
+# Needs DATA_ROOT for the prepare venv. Output: non_agentic_pipeline/speedbench/qualitative/test.parquet.
 # Uses its own venv so the vLLM env is not touched. Rerunning is a no-op once .done exists.
 # Set HF_HOME and TMPDIR off the home directory first; Code Contests is a large download.
 set -euo pipefail
@@ -9,8 +9,8 @@ if [[ -z "${DATA_ROOT:-}" ]]; then echo "missing required env var: DATA_ROOT" >&
 
 PIPELINE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="${DATA_ROOT}/envs/specdec"
-OUT_DIR="${DATA_ROOT}/speed-bench"
-PARQUET="${OUT_DIR}/speed/qualitative/test.parquet"
+OUT_DIR="${PIPELINE_ROOT}/speedbench"
+PARQUET="${OUT_DIR}/qualitative/test.parquet"
 
 if [[ -f "${OUT_DIR}/.done" ]]; then
   echo "already prepared: ${PARQUET}"

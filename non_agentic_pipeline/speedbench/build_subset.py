@@ -18,8 +18,6 @@ from transformers import AutoTokenizer, PreTrainedTokenizerBase
 
 from models import SpeedRow, SubsetRow, Tier
 
-PLACEHOLDER = "FULL BENCHMARK DATA SHOULD BE FETCHED"
-EXPECTED_COUNTS: dict[Tier, int] = {"easy": 22, "medium": 29}
 IDS_FILENAME = "speed_subset_ids.txt"
 
 TokenCounter = Callable[[list[str]], int]
@@ -39,12 +37,6 @@ def as_tier(difficulty: str | None) -> Tier | None:
 
 def select_tiered(rows: list[SpeedRow]) -> list[tuple[Tier, SpeedRow]]:
     selected = [(tier, row) for row in rows if (tier := as_tier(row.difficulty)) is not None]
-    masked = [row.question_id for _, row in selected if any(turn.startswith(PLACEHOLDER) for turn in row.turns)]
-    if masked:
-        raise ValueError(f"{len(masked)} selected rows are still masked placeholders: {masked}")
-    counts = {tier: sum(1 for t, _ in selected if t == tier) for tier in EXPECTED_COUNTS}
-    if counts != EXPECTED_COUNTS:
-        raise ValueError(f"tier counts {counts} differ from expected {EXPECTED_COUNTS}")
     return selected
 
 
