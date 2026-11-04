@@ -1,0 +1,15 @@
+Skipping image OS validation for hb__b74be7a4ea3ae62960848f6315eed783: docker inspect returned 1
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Context length exceeded and summarization is OFF.
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/model_training_task_18693__6pzjmEe/agent/trajectory.json
+Trial model_training_task_18693__6pzjmEe failed: 
+Collecting main service artifacts

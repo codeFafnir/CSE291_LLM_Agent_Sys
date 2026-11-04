@@ -1,0 +1,167 @@
+{
+    "id": "3fd71201-2263-45ef-9d8f-323f3cdc8a8d",
+    "task_name": "software_engineering_task_0029",
+    "trial_name": "software_engineering_task_0029__VFVV7M9",
+    "trial_uri": "file:///data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_0029__VFVV7M9",
+    "task_id": {
+        "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_0029"
+    },
+    "source": "set30",
+    "task_checksum": "c9719e1b4ae9230c06f1b887db3b2f7c87dcfa0cded92b1acff575a38b84ac8b",
+    "config": {
+        "task": {
+            "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_0029",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "set30"
+        },
+        "trial_name": "software_engineering_task_0029__VFVV7M9",
+        "trials_dir": "/data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "terminus-2",
+            "import_path": null,
+            "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+            "base_url": "http://host.docker.internal:8000/v1",
+            "model_api_key_name": null,
+            "model_api_format": "openai_chat_completions",
+            "skip_model_parsing": false,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "model_info": {
+                    "max_input_tokens": 20000,
+                    "max_output_tokens": 2048,
+                    "input_cost_per_token": 0,
+                    "output_cost_per_token": 0
+                },
+                "llm_kwargs": {
+                    "max_tokens": 2048,
+                    "extra_body": {
+                        "chat_template_kwargs": {
+                            "enable_thinking": false
+                        }
+                    }
+                },
+                "enable_summarize": false,
+                "proactive_summarization_threshold": 0
+            },
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": true,
+            "delete": true,
+            "stream": false,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "6f27728a-2a24-4a52-bdea-5297df4f2cf9",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "terminus-2",
+        "version": "2.0.0",
+        "model_info": {
+            "name": "Qwen/Qwen3-14B-AWQ",
+            "provider": "openai"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 118384,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 5792,
+        "cost_usd": null,
+        "model_usage": {
+            "Qwen/Qwen3-14B-AWQ": {
+                "n_input_tokens": 118384,
+                "n_cache_tokens": 0,
+                "n_output_tokens": 5792,
+                "cost_usd": null
+            }
+        },
+        "rollout_details": [],
+        "metadata": {
+            "n_episodes": 15,
+            "api_request_times_msec": [
+                55035.359144210815,
+                70520.82586288452,
+                34578.98569107056,
+                24486.234188079834,
+                13301.116466522217,
+                13973.392248153687,
+                11804.603338241577,
+                21563.357830047607,
+                10559.777975082397,
+                15902.291059494019,
+                15676.47385597229,
+                19368.196964263916,
+                19552.4480342865,
+                7049.2308139801025,
+                3585.6540203094482
+            ],
+            "summarization_count": 0
+        }
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "verifier_environment_mode": "shared",
+    "exception_info": null,
+    "started_at": "2026-11-04T07:44:00.500177Z",
+    "finished_at": "2026-11-04T07:50:49.669891Z",
+    "environment_setup": {
+        "started_at": "2026-11-04T07:44:00.503136Z",
+        "finished_at": "2026-11-04T07:44:02.850608Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-11-04T07:44:02.850632Z",
+        "finished_at": "2026-11-04T07:44:04.591793Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-11-04T07:44:04.592017Z",
+        "finished_at": "2026-11-04T07:50:36.339216Z"
+    },
+    "verifier": {
+        "started_at": "2026-11-04T07:50:36.591445Z",
+        "finished_at": "2026-11-04T07:50:38.697676Z"
+    },
+    "step_results": null
+}

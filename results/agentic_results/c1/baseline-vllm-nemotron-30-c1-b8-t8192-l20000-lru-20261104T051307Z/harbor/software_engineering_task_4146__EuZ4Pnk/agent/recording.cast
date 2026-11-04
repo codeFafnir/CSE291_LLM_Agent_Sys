@@ -1,0 +1,13 @@
+{"version": 2, "width": 160, "height": 40, "timestamp": 1793775934, "env": {"SHELL": "/bin/bash", "TERM": "tmux-256color"}}
+[0.008846, "o", "\u001b[?2004hroot@f8d1d9f083d4:/app# "]
+[0.934672, "i", "clear\r"]
+[0.934923, "o", "clear\r\n\u001b[?2004l\r"]
+[0.936016, "o", "\u001b[H\u001b[J\u001b[3J"]
+[0.936245, "o", "\u001b[?2004hroot@f8d1d9f083d4:/app# "]
+[5.784608, "i", "touch config_migration.py\n"]
+[5.784971, "o", "touch config_migration.py\r\n\u001b[?2004l\r"]
+[5.786427, "o", "\u001b[?2004hroot@f8d1d9f083d4:/app# "]
+[5.885247, "i", "nano config_migration.py\n"]
+[5.885513, "o", "nano config_migration.py\r\n\u001b[?2004l\r"]
+[5.885902, "o", "bash: nano: command not found\r\n"]
+[5.886174, "o", "\u001b[?2004hroot@f8d1d9f083d4:/app# "]

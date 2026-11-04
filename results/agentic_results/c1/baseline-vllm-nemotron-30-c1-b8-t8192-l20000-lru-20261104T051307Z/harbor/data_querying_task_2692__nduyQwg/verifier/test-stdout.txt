@@ -1,0 +1,55 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 2 items
+
+../tests/test_outputs.py .F                                              [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_output_correct ______________________________
+
+    def test_output_correct():
+        """Verify the SPARQL query content is correct."""
+        with open('/app/classic_books_query.sparql', 'r') as f:
+            content = f.read()
+    
+        # Check file is not empty
+        assert len(content.strip()) > 0, "File is empty"
+    
+        # Check for required prefixes (case-insensitive)
+        content_lower = content.lower()
+        assert 'prefix ex:' in content_lower or 'prefix ex :' in content_lower, "Missing ex: prefix"
+        assert 'prefix dc:' in content_lower or 'prefix dc :' in content_lower, "Missing dc: prefix"
+        assert 'prefix rdf:' in content_lower or 'prefix rdf :' in content_lower, "Missing rdf: prefix"
+    
+        # Check for SELECT clause with required variables
+        assert 'select' in content_lower, "Missing SELECT clause"
+        assert '?title' in content, "Missing ?title variable in SELECT"
+        assert '?authorname' in content_lower, "Missing ?authorName variable in SELECT"
+    
+        # Check for WHERE clause
+        assert 'where' in content_lower, "Missing WHERE clause"
+    
+        # Check for FILTER condition for Classic genre (allowing various spellings)
+        filter_pattern = r'filter.*classic.*=.*"classic"|"Classic"|filter.*str.*=.*"classic"|"Classic"'
+>       assert re.search(filter_pattern, content_lower, re.IGNORECASE | re.DOTALL), "Missing FILTER for Classic genre"
+E       AssertionError: Missing FILTER for Classic genre
+E       assert None
+E        +  where None = <function search at 0x7fd15d87a160>('filter.*classic.*=.*"classic"|"Classic"|filter.*str.*=.*"classic"|"Classic"', '@prefix ex: <http://example.org/> .\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\n@prefix rdf: <http://www.w3....  ?book dc:creator ?author .\\n  ?author dc:title ?authorname .\\n  ?book dc:subject classic .\\n}\\norder by ?title\n', (re.IGNORECASE | re.DOTALL))
+E        +    where <function search at 0x7fd15d87a160> = re.search
+E        +    and   re.IGNORECASE = re.IGNORECASE
+E        +    and   re.DOTALL = re.DOTALL
+
+/tests/test_outputs.py:32: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_exists
+FAILED ../tests/test_outputs.py::test_output_correct - AssertionError: Missin...
+========================= 1 failed, 1 passed in 0.03s ==========================
+Some tests failed.

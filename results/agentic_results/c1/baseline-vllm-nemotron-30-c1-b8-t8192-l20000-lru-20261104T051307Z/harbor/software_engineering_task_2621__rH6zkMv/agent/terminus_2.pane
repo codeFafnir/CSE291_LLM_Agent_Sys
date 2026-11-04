@@ -1,0 +1,298 @@
+[?2004hroot@f84552d090c0:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@f84552d090c0:/app# clear
+[?2004l[H[J[3J[?2004hroot@f84552d090c0:/app# ls -la
+[?2004ltotal 20
+drwxr-xr-x. 1 root root 4096 Nov  3 09:49 [0m[01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 06:51 [01;34m..[0m
+-rw-r--r--. 1 root root  373 Jan 12  2026 build.deps
+[?2004hroot@f84552d090c0:/app# cat build.deps
+[?2004lapp_main:executable:network,utils,config
+network:shared_lib:ssl,logging
+ssl:static_lib:crypto
+crypto:static_lib:
+logging:header_only:
+utils:static_lib:logging,common
+common:header_only:
+config:executable:app_main
+invalid:static_lib:missing_lib
+missing_dep:shared_lib:nonexistent
+circular1:static_lib:circular2
+circular2:shared_lib:circular1
+type_violation:executable:config[?2004hroot@f84552d090c0:/app# mkdir -p /app/analysis
+[?2004l[?2004hroot@f84552d090c0:/app# echo "{
+[?2004l[?2004h>   "components": {
+[?2004l[?2004h>     "app_main": {
+[?2004l[?2004h>       "type": "executable",
+[?2004l[?2004h>       "dependencies": ["network", "utils", "config"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "network": {
+[?2004l[?2004h>       "type": "shared_lib",
+[?2004l[?2004h>       "dependencies": ["ssl", "logging"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "ssl": {
+[?2004l[?2004h>       "type": "static_lib",
+[?2004l[?2004h>       "dependencies": ["crypto"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "crypto": {
+[?2004l[?2004h>       "type": "static_lib",
+[?2004l[?2004h>       "dependencies": []
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "logging": {
+[?2004l[?2004h>       "type": "header_only",
+[?2004l[?2004h>       "dependencies": []
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "utils": {
+[?2004l[?2004h>       "type": "static_lib",
+[?2004l[?2004h>       "dependencies": ["logging", "common"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "common": {
+[?2004l[?2004h>       "type": "header_only",
+[?2004l[?2004h>       "dependencies": []
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "config": {
+[?2004l[?2004h>       "type": "executable",
+[?2004l[?2004h>       "dependencies": ["app_main"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "invalid": {
+[?2004l[?2004h>       "type": "static_lib",
+[?2004l[?2004h>       "dependencies": ["missing_lib"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "missing_dep": {
+[?2004l[?2004h>       "type": "shared_lib",
+[?2004l[?2004h>       "dependencies": ["nonexistent"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "circular1": {
+[?2004l[?2004h>       "type": "static_lib",
+[?2004l[?2004h>       "dependencies": ["circular2"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "circular2": {
+[?2004l[?2004h>       "type": "shared_lib",
+[?2004l[?2004h>       "dependencies": ["circular1"]
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "type_violation": {
+[?2004l[?2004h>       "type": "executable",
+[?2004l[?2004h>       "dependencies": ["config"]
+[?2004l[?2004h>     }
+[?2004l[?2004h>   },
+[?2004l[?2004h>   "issues": {
+[?2004l[?2004h>     "circular_dependencies": [["circular1", "circular2", "circular1"]],
+[?2004l[?2004h>     "missing_dependencies": ["missing_lib", "nonexistent"],
+[?2004l[?2004h>     "type_violations": [{
+[?2004l[?2004h>       "component": "type_violation",
+[?2004l[?2004h>       "dependency": "config",
+[?2004l[?2004h>       "rule": "executable cannot depend on executable"
+[?2004l[?2004h>     }]
+[?2004l[?2004h>   },
+[?2004l[?2004h>   "summary": {
+[?2004l[?2004h>     "total_components": 13,
+[?2004l[?2004h>     "valid_components": 11,
+[?2004l[?2004h>     "total_dependencies": 12,
+[?2004l[?2004h>     "valid_dependencies": 9
+[?2004l[?2004h>   }
+[?2004l[?2004h> }" > /app/analysis/validation.json
+[?2004l[?2004hroot@f84552d090c0:/app# echo "digraph BuildDependencies {
+[?2004l[?2004h>   rankdir=LR;
+[?2004l[?2004h>   node [shape=record];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Component nodes with type indicator
+[?2004l[?2004h>   app_main [label="{app_main|executable}", color=blue];
+[?2004l[?2004h>   network [label="{network|shared_lib}", color=purple];
+[?2004l[?2004h>   ssl [label="{ssl|static_lib}", color=green];
+[?2004l[?2004h>   crypto [label="{crypto|static_lib}", color=green];
+[?2004l[?2004h>   logging [label="{logging|header_only}", color=gray];
+[?2004l[?2004h>   utils [label="{utils|static_lib}", color=green];
+[?2004l[?2004h>   common [label="{common|header_only}", color=gray];
+[?2004l[?2004h>   config [label="{config|executable}", color=blue];
+[?2004l[?2004h>   invalid [label="{invalid|static_lib}", color=green];
+[?2004l[?2004h>   missing_dep [label="{missing_dep|shared_lib}", color=purple];
+[?2004l[?2004h>   circular1 [label="{circular1|static_lib}", color=green];
+[?2004l[?2004h>   circular2 [label="{circular2|shared_lib}", color=purple];
+[?2004l[?2004h>   type_violation [label="{type_violation|executable}", color=blue];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Valid dependencies as solid arrows
+[?2004l[?2004h>   app_main -> network;
+[?2004l[?2004h>   app_main -> utils;
+[?2004l[?2004h>   app_main -> config;
+[?2004l[?2004h>   network -> ssl;
+[?2004l[?2004h>   network -> logging;
+[?2004l[?2004h>   ssl -> crypto;
+[?2004l[?2004h>   utils -> logging;
+[?2004l[?2004h>   utils -> common;
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Type violation as dashed red arrows
+[?2004l[?2004h>   type_violation -> config [style=dashed, color=red];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Circular dependencies as bold orange arrows
+[?2004l[?2004h>   circular1 -> circular2 [style=bold, color=orange];
+[?2004l[?2004h>   circular2 -> circular1 [style=bold, color=orange];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Missing dependencies as dotted red arrows with label "MISSING"
+[?2004l[?2004h>   invalid -> missing_lib [style=dotted, color=red, label="MISSING"];
+[?2004l[?2004h>   missing_dep -> nonexistent [style=dotted, color=red, label="MISSING"];
+[?2004l[?2004h> }" > /app/analysis/graph.dot
+[?2004lbash: $'executable}, color=blue];\n  network [label={network': command not found
+bash: $'shared_lib}, color=purple];\n  ssl [label={ssl': command not found
+bash: $'static_lib}, color=green];\n  crypto [label={crypto': command not found
+bash: $'static_lib}, color=green];\n  logging [label={logging': command not found
+bash: $'header_only}, color=gray];\n  utils [label={utils': command not found
+bash: $'static_lib}, color=green];\n  common [label={common': command not found
+bash: $'header_only}, color=gray];\n  config [label={config': command not found
+bash: $'executable}, color=blue];\n  invalid [label={invalid': command not found
+bash: $'static_lib}, color=green];\n  missing_dep [label={missing_dep': command not found
+bash: $'shared_lib}, color=purple];\n  circular1 [label={circular1': command not found
+bash: $'static_lib}, color=green];\n  circular2 [label={circular2': command not found
+bash: $'shared_lib}, color=purple];\n  type_violation [label={type_violation': command not found
+bash: executable}, color=blue];
+
+  // Valid dependencies as solid arrows
+  app_main -> network;
+  app_main -> utils;
+  app_main -> config;
+  network -> ssl;
+  network -> logging;
+  ssl -> crypto;
+  utils -> logging;
+  utils -> common;
+
+  // Type violation as dashed red arrows
+  type_violation -> config [style=dashed, color=red];
+
+  // Circular dependencies as bold orange arrows
+  circular1 -> circular2 [style=bold, color=orange];
+  circular2 -> circular1 [style=bold, color=orange];
+
+  // Missing dependencies as dotted red arrows with label MISSING
+  invalid -> missing_lib [style=dotted, color=red, label=MISSING];
+  missing_dep -> nonexistent [style=dotted, color=red, label=MISSING];
+}: No such file or directory
+[?2004hroot@f84552d090c0:/app# echo "common
+[?2004l[?2004h> logging
+[?2004l[?2004h> utils
+[?2004l[?2004h> ssl
+[?2004l[?2004h> crypto
+[?2004l[?2004h> network
+[?2004l[?2004h> config
+[?2004l[?2004h> app_main
+[?2004l[?2004h> type_violation
+[?2004l[?2004h> circular1
+[?2004l[?2004h> circular2
+[?2004l[?2004h> invalid
+[?2004l[?2004h> missing_dep" > /app/analysis/build_order.txt
+[?2004l[?2004hroot@f84552d090c0:/app# echo "digraph BuildDependencies {
+[?2004l[?2004h>   rankdir=LR;
+[?2004l[?2004h>   node [shape=record];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Component nodes with type indicator
+[?2004l[?2004h>   app_main [label="{app_main|executable}", color=blue];
+[?2004l[?2004h>   network [label="{network|shared_lib}", color=purple];
+[?2004l[?2004h>   ssl [label="{ssl|static_lib}", color=green];
+[?2004l[?2004h>   crypto [label="{crypto|static_lib}", color=green];
+[?2004l[?2004h>   logging [label="{logging|header_only}", color=gray];
+[?2004l[?2004h>   utils [label="{utils|static_lib}", color=green];
+[?2004l[?2004h>   common [label="{common|header_only}", color=gray];
+[?2004l[?2004h>   config [label="{config|executable}", color=blue];
+[?2004l[?2004h>   invalid [label="{invalid|static_lib}", color=green];
+[?2004l[?2004h>   missing_dep [label="{missing_dep|shared_lib}", color=purple];
+[?2004l[?2004h>   circular1 [label="{circular1|static_lib}", color=green];
+[?2004l[?2004h>   circular2 [label="{circular2|shared_lib}", color=purple];
+[?2004l[?2004h>   type_violation [label="{type_violation|executable}", color=blue];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Valid dependencies as solid arrows
+[?2004l[?2004h>   app_main -> network;
+[?2004l[?2004h>   app_main -> utils;
+[?2004l[?2004h>   app_main -> config;
+[?2004l[?2004h>   network -> ssl;
+[?2004l[?2004h>   network -> logging;
+[?2004l[?2004h>   ssl -> crypto;
+[?2004l[?2004h>   utils -> logging;
+[?2004l[?2004h>   utils -> common;
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Type violation as dashed red arrows
+[?2004l[?2004h>   type_violation -> config [style=dashed, color=red];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Circular dependencies as bold orange arrows
+[?2004l[?2004h>   circular1 -> circular2 [style=bold, color=orange];
+[?2004l[?2004h>   circular2 -> circular1 [style=bold, color=orange];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Missing dependencies as dotted red arrows with label "MISSING"
+[?2004l[?2004h>   invalid -> missing_lib [style=dotted, color=red, label="MISSING"];
+[?2004l[?2004h>   missing_dep -> nonexistent [style=dotted, color=red, label="MISSING"];
+[?2004l[?2004h> }" > /app/analysis/graph.dot
+[?2004lbash: $'executable}, color=blue];\n  network [label={network': command not found
+bash: $'shared_lib}, color=purple];\n  ssl [label={ssl': command not found
+bash: $'static_lib}, color=green];\n  crypto [label={crypto': command not found
+bash: $'static_lib}, color=green];\n  logging [label={logging': command not found
+bash: $'header_only}, color=gray];\n  utils [label={utils': command not found
+bash: $'static_lib}, color=green];\n  common [label={common': command not found
+bash: $'header_only}, color=gray];\n  config [label={config': command not found
+bash: $'executable}, color=blue];\n  invalid [label={invalid': command not found
+bash: $'static_lib}, color=green];\n  missing_dep [label={missing_dep': command not found
+bash: $'shared_lib}, color=purple];\n  circular1 [label={circular1': command not found
+bash: $'static_lib}, color=green];\n  circular2 [label={circular2': command not found
+bash: $'shared_lib}, color=purple];\n  type_violation [label={type_violation': command not found
+bash: executable}, color=blue];
+
+  // Valid dependencies as solid arrows
+  app_main -> network;
+  app_main -> utils;
+  app_main -> config;
+  network -> ssl;
+  network -> logging;
+  ssl -> crypto;
+  utils -> logging;
+  utils -> common;
+
+  // Type violation as dashed red arrows
+  type_violation -> config [style=dashed, color=red];
+
+  // Circular dependencies as bold orange arrows
+  circular1 -> circular2 [style=bold, color=orange];
+  circular2 -> circular1 [style=bold, color=orange];
+
+  // Missing dependencies as dotted red arrows with label MISSING
+  invalid -> missing_lib [style=dotted, color=red, label=MISSING];
+  missing_dep -> nonexistent [style=dotted, color=red, label=MISSING];
+}: No such file or directory
+[?2004hroot@f84552d090c0:/app# echo "digraph BuildDependencies {
+[?2004l[?2004h>   rankdir=LR;
+[?2004l[?2004h>   node [shape=record];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Component nodes with type indicator
+[?2004l[?2004h>   app_main [label=\"{app_main|executable}\", color=blue];
+[?2004l[?2004h>   network [label=\"{network|shared_lib}\", color=purple];
+[?2004l[?2004h>   ssl [label=\"{ssl|static_lib}\", color=green];
+[?2004l[?2004h>   crypto [label=\"{crypto|static_lib}\", color=green];
+[?2004l[?2004h>   logging [label=\"{logging|header_only}\", color=gray];
+[?2004l[?2004h>   utils [label=\"{utils|static_lib}\", color=green];
+[?2004l[?2004h>   common [label=\"{common|header_only}\", color=gray];
+[?2004l[?2004h>   config [label=\"{config|executable}\", color=blue];
+[?2004l[?2004h>   invalid [label=\"{invalid|static_lib}\", color=green];
+[?2004l[?2004h>   missing_dep [label=\"{missing_dep|shared_lib}\", color=purple];
+[?2004l[?2004h>   circular1 [label=\"{circular1|static_lib}\", color=green];
+[?2004l[?2004h>   circular2 [label=\"{circular2|shared_lib}\", color=purple];
+[?2004l[?2004h>   type_violation [label=\"{type_violation|executable}\", color=blue];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Valid dependencies as solid arrows
+[?2004l[?2004h>   app_main -> network;
+[?2004l[?2004h>   app_main -> utils;
+[?2004l[?2004h>   app_main -> config;
+[?2004l[?2004h>   network -> ssl;
+[?2004l[?2004h>   network -> logging;
+[?2004l[?2004h>   ssl -> crypto;
+[?2004l[?2004h>   utils -> logging;
+[?2004l[?2004h>   utils -> common;
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Type violation as dashed red arrows
+[?2004l[?2004h>   type_violation -> config [style=dashed, color=red];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Circular dependencies as bold orange arrows
+[?2004l[?2004h>   circular1 -> circular2 [style=bold, color=orange];
+[?2004l[?2004h>   circular2 -> circular1 [style=bold, color=orange];
+[?2004l[?2004h> 
+[?2004l[?2004h>   // Missing dependencies as dotted red arrows with label \"MISSING\"
+[?2004l[?2004h>   invalid -> missing_lib [style=dotted, color=red, label=\"MISSING\"];
+[?2004l[?2004h>   missing_dep -> nonexistent [style=dotted, color=red, label=\"MISSING\"];
+[?2004l[?2004h> }" > /app/analysis/graph.dot
+[?2004l[?2004hroot@f84552d090c0:/app# 

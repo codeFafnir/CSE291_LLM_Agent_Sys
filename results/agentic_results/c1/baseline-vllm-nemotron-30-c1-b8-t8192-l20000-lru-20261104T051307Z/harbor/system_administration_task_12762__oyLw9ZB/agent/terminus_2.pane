@@ -1,0 +1,195 @@
+[?2004hroot@95e150ce55c5:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@95e150ce55c5:/app# clear
+[?2004l[H[J[3J[?2004hroot@95e150ce55c5:/app# mkdir -p /app/logs/webserver /app/logs/database /app/reports /app/state
+[?2004l[?2004hroot@95e150ce55c5:/app# echo '[Unit]
+[?2004l[?2004h> Description=Log Monitoring Service for Security Analysis
+[?2004l[?2004h> 
+[?2004l[?2004h> [Service]
+[?2004l[?2004h> Type=simple
+[?2004l[?2004h> User=nobody
+[?2004l[?2004h> WorkingDirectory=/app
+[?2004l[?2004h> ExecStart=/usr/bin/python3 /app/log_watcher.py
+[?2004l[?2004h> Restart=on-failure
+[?2004l[?2004h> RestartSec=10
+[?2004l[?2004h> StandardOutput=syslog
+[?2004l[?2004h> StandardError=syslog
+[?2004l[?2004h> 
+[?2004l[?2004h> [Install]
+[?2004l[?2004h> WantedBy=multi-user.target' > /app/log-monitor.service
+[?2004l[?2004hroot@95e150ce55c5:/app# echo 'import os
+[?2004l[?2004h> import time
+[?2004l[?2004h> import json
+[?2004l[?2004h> from watchdog.observers import Observer
+[?2004l[?2004h> from watchdog.events import FileSystemEventHandler
+[?2004l[?2004h> import re
+[?2004lls.items()[?2004h> import logging
+[?2004l[?2004h> import syslog
+[?2004l[?2004h> 
+[?2004lt[?2004h> class LogMonitorHandler(FileSystemEventHandler):
+[?2004l[?2004h>     def __init__(self):
+[?2004l[?2004h>         self.state_file = "/app/state/processed_files.json"
+[?2004l[?2004h>         self.processed_files = {}
+[?2004l[?2004h>         self.stats = {
+[?2004l[?2004h>             "total_lines_processed": 0,
+[?2004l[?2004h>             "total_errors": 0,
+[?2004l[?2004h>             "total_warnings": 0,
+[?2004l[?2004h>             "total_auth_failures": 0,
+[?2004l[?2004h>             "unique_ips_found": set()
+[?2004l[?2004h>         }
+[?2004l[?2004h>         self.file_details = {}
+[?2004l[?2004h>         self.last_report_time = time.time()
+[?2004l[?2004h>         self.load_state()
+[?2004l[?2004h> 
+[?2004l [?2004h>     def load_state(self):
+[?2004l[?2004h>         if os.path.exists(self.state_file):
+[?2004l[?2004h>             with open(self.state_file, "r") as f:
+[?2004l[?2004h>                 self.processed_files = json.load(f)
+[?2004l[?2004h> 
+[?2004lt[?2004h>     def save_state(self):
+[?2004l[?2004h>         with open(self.state_file, "w") as f:
+[?2004l[?2004h>             json.dump(self.processed_files, f)
+[?2004l[?2004h> 
+[?2004l [?2004h>     def on_modified(self, event):
+[?2004l[?2004h>         if event.is_directory:
+[?2004l[?2004h>             return
+[?2004l[?2004h>         
+[?2004l[?2004h>         file_path = event.src_path
+[?2004l[?2004h>         
+[?2004l[?2004h>         if not file_path.endswith(".log"):
+[?2004l[?2004h>             return
+[?2004l[?2004h>         
+[?2004l[?2004h>         if os.path.getsize(file_path) > 100 * 1024 * 1024:
+[?2004l[?2004h>             return
+[?2004l[?2004h>         
+[?2004l[?2004h>         if file_path not in self.processed_files:
+[?2004l[?2004h>             self.processed_files[file_path] = 0
+[?2004l[?2004h>         
+[?2004l[?2004h>         with open(file_path, "r") as f:
+[?2004l[?2004h>             f.seek(self.processed_files[file_path])
+[?2004l[?2004h>             lines = f.readlines()
+[?2004l[?2004h>             self.processed_files[file_path] = f.tell()
+[?2004l[?2004h>             
+[?2004l[?2004h>             for line in lines:
+[?2004l[?2004h>                 self.stats["total_lines_processed"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if re.search(r"(error|ERROR)", line, re.IGNORECASE):
+[?2004l[?2004h>                     self.stats["total_errors"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if re.search(r"(warning|WARNING)", line, re.IGNORECASE):
+[?2004l[?2004h>                     self.stats["total_warnings"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if re.search(r"authentication failed", line, re.IGNORECASE):
+[?2004l[?2004h>                     self.stats["total_auth_failures"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 ip_match = re.search(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", line)
+[?2004l[?2004h>                 if ip_match:
+[?2004l[?2004h>                     self.stats["unique_ips_found"].add(ip_match.group())
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 # Track per file stats
+[?2004l[?2004h>                 if file_path not in self.file_details:
+[?2004l[?2004h>                     self.file_details[file_path] = {
+[?2004l[?2004h>                         "lines_processed": 0,
+[?2004l[?2004h>                         "errors": 0,
+[?2004l[?2004h>                         "warnings": 0,
+[?2004l[?2004h>                         "auth_failures": 0,
+[?2004l[?2004h>                         "ips_found": set()
+[?2004l[?2004h>                     }
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 self.file_details[file_path]["lines_processed"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if re.search(r"(error|ERROR)", line, re.IGNORECASE):
+[?2004l[?2004h>                     self.file_details[file_path]["errors"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if re.search(r"(warning|WARNING)", line, re.IGNORECASE):
+[?2004l[?2004h>                     self.file_details[file_path]["warnings"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if re.search(r"authentication failed", line, re.IGNORECASE):
+[?2004l[?2004h>                     self.file_details[file_path]["auth_failures"] += 1
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if ip_match:
+[?2004l[?2004h>                     self.file_details[file_path]["ips_found"].add(ip_match.group())
+[?2004l[?2004h> 
+[?2004l[?2004h>         self.save_state()
+[?2004l[?2004h> 
+[?2004l[?2004h>     def generate_report(self):
+[?2004l[?2004h>         now = time.time()
+[?2004l[?2004h>         duration = now - self.last_report_time
+[?2004l[?2004h>         self.last_report_time = now
+[?2004l[?2004h>         
+[?2004l[?2004h>         report = {
+[?2004l[?2004h>             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)),
+[?2004l[?2004h>             "scan_duration_seconds": duration,
+[?2004l[?2004h>             "files_monitored": list(self.file_details.keys()),
+[?2004l[?2004h>             "statistics": {
+[?2004l[?2004h>                 "total_lines_processed": self.stats["total_lines_processed"],
+[?2004l[?2004h>                 "total_errors": self.stats["total_errors"],
+[?2004l[?2004h>                 "total_warnings": self.stats["total_warnings"],
+[?2004l[?2004h>                 "total_auth_failures": self.stats["total_auth_failures"],
+[?2004l[?2004h>                 "unique_ips_found": len(self.stats["unique_ips_found"])
+[?2004l[?2004h>             },
+[?2004l[?2004h>             "file_details": {}
+[?2004l[?2004h>         }
+[?2004l[?2004h>         
+[?2004l[?2004h>         for file_path, file_data in self.file_details.items():
+[?2004l[?2004h>             report["file_details"][file_path] = {
+[?2004l[?2004h>                 "lines_processed": file_data["lines_processed"],
+[?2004l[?2004h>                 "errors": file_data["errors"],
+[?2004l[?2004h>                 "warnings": file_data["warnings"],
+[?2004l[?2004h>                 "auth_failures": file_data["auth_failures"],
+[?2004l[?2004h>                 "ips_found": list(file_data["ips_found"])
+[?2004l[?2004h>             }
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Alerts
+[?2004l[?2004h>         alerts = []
+[?2004l[?2004h>         for file_path, file_data in self.file_details.items():
+[?2004l[?2004h>             if file_data["lines_processed"] > 0:
+[?2004l[?2004h>                 error_rate = file_data["errors"] / file_data["lines_processed"]
+[?2004l[?2004h>                 if error_rate > 0.1:
+[?2004l[?2004h>                     alerts.append({
+[?2004l[?2004h>                         "type": "high_error_rate",
+[?2004l[?2004h>                         "message": f"High error rate ({error_rate:.2f}) in {file_path}",
+[?2004l[?2004h>                         "threshold_exceeded": True
+[?2004l[?2004h>                     })
+[?2004l[?2004h>                 
+[?2004l[?2004h>                 if file_data["auth_failures"] > 5:
+[?2004l[?2004h>                     alerts.append({
+[?2004l[?2004h>                         "type": "auth_failure_spike",
+[?2004l[?2004h>                         "message": f"More than 5 auth failures in {file_path}",
+[?2004l[?2004h>                         "threshold_exceeded": True
+[?2004l[?2004h>                     })
+[?2004l[?2004h>         
+[?2004l[?2004h>         report["alerts"] = alerts
+[?2004l[?2004h>         
+[?2004l[?2004h>         with open("/app/reports/log_summary.json", "w") as f:
+[?2004l[?2004h>             json.dump(report, f)
+[?2004l[?2004h> 
+[?2004l[?2004h>     def run(self):
+[?2004l[?2004h>         observer = Observer()
+[?2004l[?2004h>         observer.schedule(self, "/app/logs/webserver", recursive=True)
+[?2004l[?2004h>         observer.schedule(self, "/app/logs/database", recursive=True)
+[?2004l[?2004h>         observer.start()
+[?2004l[?2004h>         
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             while True:
+[?2004l[?2004h>                 if time.time() - self.last_report_time >= 300:
+[?2004l[?2004h>                     self.generate_report()
+[?2004l[?2004h>                 time.sleep(1)
+[?2004l[?2004h>         except KeyboardInterrupt:
+[?2004l[?2004h>             observer.stop()
+[?2004l[?2004h>         observer.join()
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == "__main__":
+[?2004l[?2004h>     handler = LogMonitorHandler()
+[?2004l[?2004h>     handler.run()" > /app/log_watcher.py
+[?2004l[?2004h> systemctl daemon-reload
+[?2004l[?2004h> systemctl enable log-monitor
+[?2004l[?2004h> systemctl start log-monitor
+[?2004l[?2004h> sleep 300
+[?2004l[?2004h> cat /app/reports/log_summary.json
+[?2004l[?2004h> cat /app/reports/log_summary.json
+[?2004l[?2004h> journalctl -u log-monitor.service -b
+[?2004l[?2004h> ls -l /app/reports/log_summary.json
+[?2004l[?2004h> echo "Task complete based on service status and report file creation." && exit
+[?2004l[?2004h> 

@@ -1,0 +1,9 @@
+Skipping image OS validation for hb__e10950ab4b67470c15c49fabcd9af0e7: docker inspect returned 1
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_3182__LADngwL/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_3182__LADngwL/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_3182__LADngwL/agent/trajectory.json
+Output length exceeded: Model openai/Qwen/Qwen3-14B-AWQ hit max_tokens limit. Response was truncated. Consider increasing max_tokens if possible.
+Context length exceeded and summarization is OFF.
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_3182__LADngwL/agent/trajectory.json
+Trial software_engineering_task_3182__LADngwL failed: 
+Collecting main service artifacts

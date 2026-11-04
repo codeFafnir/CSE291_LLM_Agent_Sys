@@ -1,0 +1,32 @@
+Skipping image OS validation for ghcr.io/scaleapi/swe-bench_pro-v2:instance_future-architect__vuls-01441351c3407abfc21c48a38e28828e1b504e0c: docker inspect returned 1
+Agent 'terminus-2' exposes no native web search or fetch tools for Harbor to disable; continuing. Sandbox network policy still applies.
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7685
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-1-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-1-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-1-answers.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7199
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-2-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-2-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-2-answers.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7159
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-3-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-3-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-3-answers.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7205
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-4-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-4-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-4-answers.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 6432
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-5-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-5-questions.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Trial instance_future-architect__vuls__zT9KLUN cancelled
+Collecting main service artifacts

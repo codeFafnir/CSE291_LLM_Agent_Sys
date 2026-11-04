@@ -1,0 +1,93 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "0e829312-4041-4874-acfb-d920ef4c8cc7",
+    "timestamp": "2026-11-04T07:37:37.547381+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 0,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793777856967,
+            "stop": 1793777857547,
+            "duration": 580
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 34,
+                "start": 1793777857458,
+                "stop": 1793777857492,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_exists():\n        \"\"\"Verify output files were created.\"\"\"\n>       assert os.path.exists('/app/output/results.json'), \"results.json not found\"\nE       AssertionError: results.json not found\nE       assert False\nE        +  where False = <function exists at 0x7fa2e146b560>('/app/output/results.json')\nE        +    where <function exists at 0x7fa2e146b560> = <module 'posixpath' (frozen)>.exists\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:67: AssertionError",
+                "message": "AssertionError: results.json not found\nassert False\n +  where False = <function exists at 0x7fa2e146b560>('/app/output/results.json')\n +    where <function exists at 0x7fa2e146b560> = <module 'posixpath' (frozen)>.exists\n +      where <module 'posixpath' (frozen)> = os.path"
+            },
+            {
+                "name": "test_outputs.py::test_json_structure",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793777857493,
+                "stop": 1793777857496,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_json_structure():\n        \"\"\"Verify JSON structure matches specification.\"\"\"\n>       with open('/app/output/results.json', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/output/results.json'\n\n/tests/test_outputs.py:72: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/output/results.json'"
+            },
+            {
+                "name": "test_outputs.py::test_numerical_correctness",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 5,
+                "start": 1793777857496,
+                "stop": 1793777857501,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_numerical_correctness():\n        \"\"\"Verify numerical calculations are correct.\"\"\"\n        params = read_input()\n        ref = reference_simulation(params)\n    \n>       with open('/app/output/results.json', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/output/results.json'\n\n/tests/test_outputs.py:109: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/output/results.json'"
+            },
+            {
+                "name": "test_outputs.py::test_csv_format",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 46,
+                "start": 1793777857501,
+                "stop": 1793777857547,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_csv_format():\n        \"\"\"Verify CSV file format and content.\"\"\"\n        params = read_input()\n        ref = reference_simulation(params)\n    \n        # Read CSV\n>       df = pd.read_csv('/app/output/trajectory.csv')\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:151: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:1866: in read_csv\n    return _read(filepath_or_buffer, kwds)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:423: in _read\n    parser = TextFileReader(filepath_or_buffer, **kwds)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:2721: in __init__\n    self._engine = self._make_engine(f, self.engine)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:2988: in _make_engine\n    self.handles = get_handle(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath_or_buf = '/app/output/trajectory.csv', mode = 'rb', encoding = 'utf-8'\ncompression = None, memory_map = False, is_text = False, errors = 'strict'\nstorage_options = None\n\n    def get_handle(\n        path_or_buf: FilePath | BaseBuffer,\n        mode: str,\n        *,\n        encoding: str | None = None,\n        compression: CompressionOptions | None = None,\n        memory_map: bool = False,\n        is_text: bool = True,\n        errors: str | None = None,\n        storage_options: StorageOptions | None = None,\n    ) -> IOHandles[str] | IOHandles[bytes]:\n        \"\"\"\n        Get file handle for given path/buffer and mode.\n    \n        Parameters\n        ----------\n        path_or_buf : str or file handle\n            File path or object.\n        mode : str\n            Mode to open path_or_buf with.\n        encoding : str or None\n            Encoding to use.\n        compression : str or dict, default 'infer'\n            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'\n            is path-like, then detect compression from the following extensions: '.gz',\n            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'\n            (otherwise no compression).\n            Set to ``None`` for no compression.\n            Can also be a dict with key ``'method'`` set\n            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}\n            and other key-value pairs are forwarded to\n            ``zipfile.ZipFile``, ``gzip.GzipFile``,\n            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or\n            ``tarfile.TarFile``, respectively.\n            As an example, the following could be passed for faster compression and to\n            create a reproducible gzip archive:\n            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.\n    \n               May be a dict with key 'method' as compression mode\n               and other keys as compression options if compression\n               mode is 'zip'.\n    \n               Passing compression options as keys in dict is\n               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.\n    \n        memory_map : bool, default False\n            See parsers._parser_params for more information. Only used by read_csv.\n        is_text : bool, default True\n            Whether the type of the content passed to the file/buffer is string or\n            bytes. This is not the same as `\"b\" not in mode`. If a string content is\n            passed to a binary file/buffer, a wrapper is inserted.\n        errors : str, default 'strict'\n            Specifies how encoding and decoding errors are to be handled.\n            See the errors argument for :func:`open` for a full list\n            of options.\n        storage_options: StorageOptions = None\n            Passed to _get_filepath_or_buffer\n    \n        Returns the dataclass IOHandles\n        \"\"\"\n        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior\n        encoding = encoding or \"utf-8\"\n    \n        errors = errors or \"strict\"\n    \n        # read_csv does not know whether the buffer is opened in binary/text mode\n        if _is_binary_mode(path_or_buf, mode) and \"b\" not in mode:\n            mode += \"b\"\n    \n        # validate encoding and errors\n        codecs.lookup(encoding)\n        if isinstance(errors, str):\n            codecs.lookup_error(errors)\n    \n        # open URLs\n        ioargs = _get_filepath_or_buffer(\n            path_or_buf,\n            encoding=encoding,\n            compression=compression,\n            mode=mode,\n            storage_options=storage_options,\n        )\n    \n        handle = ioargs.filepath_or_buffer\n        handles: list[BaseBuffer] = []\n        completed = False\n    \n        try:\n            # memory mapping needs to be the first step\n            # only used for read_csv\n            handle, memory_map, handles = _maybe_memory_map(handle, memory_map)\n    \n            is_path = isinstance(handle, str)\n            compression_args = dict(ioargs.compression)\n            compression = compression_args.pop(\"method\")\n    \n            # Only for write methods\n            if \"r\" not in mode and is_path:\n                check_parent_directory(str(handle))\n    \n            if compression:\n                if compression != \"zstd\":\n                    # compression libraries do not like an explicit text-mode\n                    ioargs.mode = ioargs.mode.replace(\"t\", \"\")\n                elif compression == \"zstd\" and \"b\" not in ioargs.mode:\n                    # python-zstandard defaults to text mode, but we always expect\n                    # compression libraries to use binary mode.\n                    ioargs.mode += \"b\"\n    \n                # GZ Compression\n                if compression == \"gzip\":\n                    if isinstance(handle, str):\n                        handle = gzip.GzipFile(\n                            filename=handle,\n                            mode=ioargs.mode,\n                            **compression_args,\n                        )\n                    else:\n                        handle = gzip.GzipFile(\n                            # No overload variant of \"GzipFile\" matches argument types\n                            # \"Union[str, BaseBuffer]\", \"str\", \"Dict[str, Any]\"\n                            fileobj=handle,  # type: ignore[call-overload]\n                            mode=ioargs.mode,\n                            **compression_args,\n                        )\n    \n                # BZ Compression\n                elif compression == \"bz2\":\n                    import bz2\n    \n                    # Overload of \"BZ2File\" to handle pickle protocol 5\n                    # \"Union[str, BaseBuffer]\", \"str\", \"Dict[str, Any]\"\n                    handle = bz2.BZ2File(  # type: ignore[call-overload]\n                        handle,\n                        mode=ioargs.mode,\n                        **compression_args,\n                    )\n    \n                # ZIP Compression\n                elif compression == \"zip\":\n                    # error: Argument 1 to \"_BytesZipFile\" has incompatible type\n                    # \"Union[str, BaseBuffer]\"; expected \"Union[Union[str, PathLike[str]],\n                    # ReadBuffer[bytes], WriteBuffer[bytes]]\"\n                    handle = _BytesZipFile(\n                        handle,  # type: ignore[arg-type]\n                        ioargs.mode,\n                        **compression_args,\n                    )\n                    if handle.buffer.mode == \"r\":\n                        handles.append(handle)\n                        zip_names = handle.buffer.namelist()\n                        if len(zip_names) == 1:\n                            # Read the entire zip entry into memory rather than\n                            # returning a streaming ZipExtFile via .open(). On\n                            # Python <3.12, ZipExtFile has poor buffering that\n                            # causes O(n\u00b2) performance with pickle.load() and\n                            # other consumers that issue many small reads\n                            # (GH#59279). Can be reverted to .open() once the\n                            # minimum Python version is 3.12.\n                            handle = BytesIO(handle.buffer.read(zip_names.pop()))\n                        elif not zip_names:\n                            raise ValueError(f\"Zero files found in ZIP file {path_or_buf}\")\n                        else:\n                            raise ValueError(\n                                \"Multiple files found in ZIP file. \"\n                                f\"Only one file per ZIP: {zip_names}\"\n                            )\n    \n                # TAR Encoding\n                elif compression == \"tar\":\n                    compression_args.setdefault(\"mode\", ioargs.mode)\n                    if isinstance(handle, str):\n                        handle = _BytesTarFile(name=handle, **compression_args)\n                    else:\n                        # error: Argument \"fileobj\" to \"_BytesTarFile\" has incompatible\n                        # type \"BaseBuffer\"; expected \"Union[ReadBuffer[bytes],\n                        # WriteBuffer[bytes], None]\"\n                        handle = _BytesTarFile(\n                            fileobj=handle,  # type: ignore[arg-type]\n                            **compression_args,\n                        )\n                    assert isinstance(handle, _BytesTarFile)\n                    if \"r\" in handle.buffer.mode:\n                        handles.append(handle)\n                        files = handle.buffer.getnames()\n                        if len(files) == 1:\n                            file = handle.buffer.extractfile(files[0])\n                            assert file is not None\n                            handle = file\n                        elif not files:\n                            raise ValueError(\n                                f\"Zero files found in TAR archive {path_or_buf}\"\n                            )\n                        else:\n                            raise ValueError(\n                                \"Multiple files found in TAR archive. \"\n                                f\"Only one file per TAR archive: {files}\"\n                            )\n    \n                # XZ Compression\n                elif compression == \"xz\":\n                    # error: Argument 1 to \"LZMAFile\" has incompatible type\n                    # \"Union[str, BaseBuffer]\"; expected \"Optional[Union[Union[str,\n                    # bytes, PathLike[str], PathLike[bytes]], IO[bytes]], None]\"\n                    import lzma\n    \n                    handle = lzma.LZMAFile(\n                        handle,  # type: ignore[arg-type]\n                        ioargs.mode,\n                        **compression_args,\n                    )\n    \n                # Zstd Compression\n                elif compression == \"zstd\":\n                    zstd = import_optional_dependency(\"zstandard\")\n                    if \"r\" in ioargs.mode:\n                        open_args = {\"dctx\": zstd.ZstdDecompressor(**compression_args)}\n                    else:\n                        open_args = {\"cctx\": zstd.ZstdCompressor(**compression_args)}\n                    handle = zstd.open(\n                        handle,\n                        mode=ioargs.mode,\n                        **open_args,\n                    )\n    \n                # Unrecognized Compression\n                else:\n                    msg = f\"Unrecognized compression type: {compression}\"\n                    raise ValueError(msg)\n    \n                assert not isinstance(handle, str)\n                handles.append(handle)\n    \n            elif isinstance(handle, str):\n                # Check whether the filename is to be opened in binary mode.\n                # Binary mode does not support 'encoding' and 'newline'.\n                if ioargs.encoding and \"b\" not in ioargs.mode:\n                    # Encoding\n                    handle = open(\n                        handle,\n                        ioargs.mode,\n                        encoding=ioargs.encoding,\n                        errors=errors,\n                        newline=\"\",\n                    )\n                else:\n                    # Binary mode\n>                   handle = open(handle, ioargs.mode)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^\nE                   FileNotFoundError: [Errno 2] No such file or directory: '/app/output/trajectory.csv'\n\n/usr/local/lib/python3.12/dist-packages/pandas/io/common.py:948: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/output/trajectory.csv'"
+            }
+        ]
+    }
+}

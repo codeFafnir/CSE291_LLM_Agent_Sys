@@ -1,0 +1,111 @@
+[?2004hroot@47f8d5b5da42:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@47f8d5b5da42:/app# clear
+[?2004l[H[J[3J[?2004hroot@47f8d5b5da42:/app# cat process.py
+[?2004limport json
+
+def process_data(input_file, output_file):
+    with open(input_file, 'r') as f:
+        data = json.load(f)
+    
+    # Bug: typo in variable name - 'dat' is not defined
+    count = len(dat)  # Should be 'data'
+    
+    with open(output_file, 'w') as f:
+        f.write(str(count))
+
+if __name__ == "__main__":
+    process_data('/app/input.json', '/app/output.txt')[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_data('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_data
+    count = len(dat)  # Should be 'data'
+                ^^^
+NameError: name 'dat' is not defined. Did you mean: 'data'?
+[?2004hroot@47f8d5b5da42:/app# sed -i 's/dat/data/g' process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_dataa('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_dataa
+    count = len(data)  # Should be 'dataa'
+                ^^^^
+NameError: name 'data' is not defined. Did you mean: 'dataa'?
+[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004lcat: /app/output.txt: No such file or directory
+[?2004hroot@47f8d5b5da42:/app# sed -i 's/process_dataa/process_data/g' process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_data('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_data
+    count = len(data)  # Should be 'dataa'
+                ^^^^
+NameError: name 'data' is not defined. Did you mean: 'dataa'?
+[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004lcat: /app/output.txt: No such file or directory
+[?2004hroot@47f8d5b5da42:/app# cat process.py
+[?2004limport json
+
+def process_data(input_file, output_file):
+    with open(input_file, 'r') as f:
+        dataa = json.load(f)
+    
+    # Bug: typo in variable name - 'data' is not defined
+    count = len(data)  # Should be 'dataa'
+    
+    with open(output_file, 'w') as f:
+        f.write(str(count))
+
+if __name__ == "__main__":
+    process_data('/app/input.json', '/app/output.txt')[?2004hroot@47f8d5b5da42:/app# ls -l /app/input.json
+[?2004l-rw-r--r--. 1 root root 150 Dec 30  2025 /app/input.json
+[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_data('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_data
+    count = len(data)  # Should be 'dataa'
+                ^^^^
+NameError: name 'data' is not defined. Did you mean: 'dataa'?
+[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004lcat: /app/output.txt: No such file or directory
+[?2004hroot@47f8d5b5da42:/app# sed -i 's/data/dataa/g' process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_dataa('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_dataa
+    count = len(dataa)  # Should be 'dataaa'
+                ^^^^^
+NameError: name 'dataa' is not defined. Did you mean: 'dataaa'?
+[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004lcat: /app/output.txt: No such file or directory
+[?2004hroot@47f8d5b5da42:/app# sed -i 's/process_dataa/process_data/g' process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_data('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_data
+    count = len(dataa)  # Should be 'dataaa'
+                ^^^^^
+NameError: name 'dataa' is not defined. Did you mean: 'dataaa'?
+[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004lcat: /app/output.txt: No such file or directory
+[?2004hroot@47f8d5b5da42:/app# sed -i 's/dataa/data/g' process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004lTraceback (most recent call last):
+  File "/app/process.py", line 14, in <module>
+    process_data('/app/input.json', '/app/output.txt')
+  File "/app/process.py", line 8, in process_data
+    count = len(data)  # Should be 'dataa'
+                ^^^^
+NameError: name 'data' is not defined. Did you mean: 'dataa'?
+[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004lcat: /app/output.txt: No such file or directory
+[?2004hroot@47f8d5b5da42:/app# sed -i 's/dataa/data/g' process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# python3 /app/process.py
+[?2004l[?2004hroot@47f8d5b5da42:/app# cat /app/output.txt
+[?2004l5[?2004hroot@47f8d5b5da42:/app# 

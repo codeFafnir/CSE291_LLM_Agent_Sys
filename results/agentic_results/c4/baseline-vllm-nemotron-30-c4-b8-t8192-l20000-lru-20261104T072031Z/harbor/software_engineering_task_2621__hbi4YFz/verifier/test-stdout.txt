@@ -1,0 +1,158 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: graphviz
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Collecting graphviz
+  Downloading graphviz-0.21-py3-none-any.whl.metadata (12 kB)
+Downloading graphviz-0.21-py3-none-any.whl (47 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 47.3/47.3 kB 2.0 MB/s eta 0:00:00
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Installing collected packages: graphviz
+Successfully installed graphviz-0.21
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 6 items
+
+../tests/test_outputs.py .FF.FF                                          [100%]
+
+=================================== FAILURES ===================================
+________________________ test_validation_json_structure ________________________
+
+    def test_validation_json_structure():
+        """Verify validation.json has correct structure and valid JSON."""
+        with open('/app/analysis/validation.json', 'r') as f:
+>           data = json.load(f)
+                   ^^^^^^^^^^^^
+
+/tests/test_outputs.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f4698db8500>
+s = '{"components": {"app_main": {"type": "executable", "dependencies": ["network", "utils", "config"]}, "network": {"type...}}, "summary": {"total_components": 12, "valid_components": 11, "total_dependencies": 13, "valid_dependencies": 11}}\n'
+_w = <built-in method match of re.Pattern object at 0x7f4698db46c0>
+
+    def decode(self, s, _w=WHITESPACE.match):
+        """Return the Python representation of ``s`` (a ``str`` instance
+        containing a JSON document).
+    
+        """
+        obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+        end = _w(s, end).end()
+        if end != len(s):
+>           raise JSONDecodeError("Extra data", s, end)
+E           json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)
+
+/usr/lib/python3.12/json/decoder.py:340: JSONDecodeError
+____________________________ test_graph_dot_format _____________________________
+
+    def test_graph_dot_format():
+        """Verify graph.dot contains valid Graphviz syntax."""
+        with open('/app/analysis/graph.dot', 'r') as f:
+            content = f.read()
+    
+        # Check it starts with digraph
+        assert content.strip().startswith('digraph')
+    
+        # Check for required sections
+>       assert 'rankdir=LR' in content
+E       assert 'rankdir=LR' in 'digraph BuildDependencies {\n  $name [label="{$name|$type}", color=${color[$type]}];\n  $name [label="{$name|$type}",...$dep;\n  $name -> $dep;\n  $name -> $dep;\n  $name -> $dep;\n  $name -> $dep;\n  $name -> $dep;\n  $name -> $dep;\n}\n'
+
+/tests/test_outputs.py:66: AssertionError
+___________________________ test_validation_accuracy ___________________________
+
+    def test_validation_accuracy():
+        """Verify validation correctly identifies issues from known test cases."""
+        # Read the input file to understand the test case
+        with open('/app/build.deps', 'r') as f:
+            input_content = f.read()
+    
+        # Read the validation output
+        with open('/app/analysis/validation.json', 'r') as f:
+>           validation = json.load(f)
+                         ^^^^^^^^^^^^
+
+/tests/test_outputs.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f4698db8500>
+s = '{"components": {"app_main": {"type": "executable", "dependencies": ["network", "utils", "config"]}, "network": {"type...}}, "summary": {"total_components": 12, "valid_components": 11, "total_dependencies": 13, "valid_dependencies": 11}}\n'
+_w = <built-in method match of re.Pattern object at 0x7f4698db46c0>
+
+    def decode(self, s, _w=WHITESPACE.match):
+        """Return the Python representation of ``s`` (a ``str`` instance
+        containing a JSON document).
+    
+        """
+        obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+        end = _w(s, end).end()
+        if end != len(s):
+>           raise JSONDecodeError("Extra data", s, end)
+E           json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)
+
+/usr/lib/python3.12/json/decoder.py:340: JSONDecodeError
+__________________________ test_build_order_validity ___________________________
+
+    def test_build_order_validity():
+        """Verify build order respects basic dependency rules."""
+        with open('/app/analysis/build_order.txt', 'r') as f:
+            build_order = [line.strip() for line in f if line.strip()]
+    
+        with open('/app/analysis/validation.json', 'r') as f:
+>           validation = json.load(f)
+                         ^^^^^^^^^^^^
+
+/tests/test_outputs.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f4698db8500>
+s = '{"components": {"app_main": {"type": "executable", "dependencies": ["network", "utils", "config"]}, "network": {"type...}}, "summary": {"total_components": 12, "valid_components": 11, "total_dependencies": 13, "valid_dependencies": 11}}\n'
+_w = <built-in method match of re.Pattern object at 0x7f4698db46c0>
+
+    def decode(self, s, _w=WHITESPACE.match):
+        """Return the Python representation of ``s`` (a ``str`` instance
+        containing a JSON document).
+    
+        """
+        obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+        end = _w(s, end).end()
+        if end != len(s):
+>           raise JSONDecodeError("Extra data", s, end)
+E           json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)
+
+/usr/lib/python3.12/json/decoder.py:340: JSONDecodeError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_files_exist
+PASSED ../tests/test_outputs.py::test_build_order_format
+FAILED ../tests/test_outputs.py::test_validation_json_structure - json.decode...
+FAILED ../tests/test_outputs.py::test_graph_dot_format - assert 'rankdir=LR' ...
+FAILED ../tests/test_outputs.py::test_validation_accuracy - json.decoder.JSON...
+FAILED ../tests/test_outputs.py::test_build_order_validity - json.decoder.JSO...
+========================= 4 failed, 2 passed in 0.06s ==========================
+Some tests failed.

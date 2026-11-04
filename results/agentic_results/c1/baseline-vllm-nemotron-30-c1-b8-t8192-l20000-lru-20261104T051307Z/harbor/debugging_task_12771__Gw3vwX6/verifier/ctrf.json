@@ -1,0 +1,90 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "d8dcc6b0-f9c9-45de-b5db-98ec93c0778f",
+    "timestamp": "2026-11-04T05:35:33.792292+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 1,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793769672669,
+            "stop": 1793770533791,
+            "duration": 861122
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 21,
+                "start": 1793769672686,
+                "stop": 1793769672707,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_exists():\n        \"\"\"Verify all required output files were created.\"\"\"\n        required_files = [\n            '/app/performance_report.json',\n            '/app/fixed_queue.py',\n            '/app/reproduction_test.py'\n        ]\n    \n        for file_path in required_files:\n            assert os.path.exists(file_path), f\"Missing required file: {file_path}\"\n    \n        # Test JSON format\n        with open('/app/performance_report.json', 'r') as f:\n>           report = json.load(f)\n                     ^^^^^^^^^^^^\n\n/tests/test_outputs.py:22: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7fccac8e4680>\ns = \"{'bottleneck_identified': 'Busy-wait loop in enqueue and linear search for duplicates', 'fix_applied': 'Replaced busy...', 'before_throughput': 200, 'after_throughput': 800, 'data_corruption_fixed': true, 'thread_safety_verified': true}\\n\"\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+            },
+            {
+                "name": "test_outputs.py::test_fixed_queue_performance",
+                "status": "passed",
+                "duration": 829510,
+                "start": 1793769672707,
+                "stop": 1793770502217,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_data_integrity",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 1512,
+                "start": 1793770502217,
+                "stop": 1793770503729,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_data_integrity():\n        \"\"\"Verify no data corruption in the fixed queue.\"\"\"\n        sys.path.insert(0, '/app')\n    \n        try:\n            from fixed_queue import MessageQueue\n        except ImportError:\n            import importlib.util\n            spec = importlib.util.spec_from_file_location(\"fixed_queue\", \"/app/fixed_queue.py\")\n            fixed_queue = importlib.util.module_from_spec(spec)\n            spec.loader.exec_module(fixed_queue)\n            MessageQueue = fixed_queue.MessageQueue\n    \n        # Test for exactly-once processing\n        queue = MessageQueue()\n        total_messages = 10000\n    \n        # Track all messages\n        sent_messages = set()\n        received_messages = set()\n    \n        # Producer function that sends unique messages\n        def unique_producer(queue, start_idx, count):\n            for i in range(start_idx, start_idx + count):\n                msg = f\"unique_{i}\"\n                sent_messages.add(msg)\n                queue.enqueue(msg)\n    \n        # Consumer function\n        def tracking_consumer(queue, results, count):\n            for _ in range(count):\n                msg = queue.dequeue()\n                if msg:\n                    results.append(msg)\n                    received_messages.add(msg)\n    \n        # Run with multiple threads\n        num_threads = 10\n        messages_per_thread = total_messages // num_threads\n    \n        producers = []\n        consumers = []\n        all_results = []\n    \n        # Start producers\n        for i in range(num_threads):\n            p = threading.Thread(target=unique_producer,\n                               args=(queue, i * messages_per_thread, messages_per_thread))\n            producers.append(p)\n            p.start()\n    \n        # Start consumers\n        for i in range(num_threads):\n            results = []\n            all_results.append(results)\n            c = threading.Thread(target=tracking_consumer,\n                               args=(queue, results, messages_per_thread))\n            consumers.append(c)\n            c.start()\n    \n        # Wait for completion\n        for p in producers:\n            p.join()\n    \n        for c in consumers:\n            c.join()\n    \n        # Check for duplicates or missing messages\n        received_list = []\n        for results in all_results:\n            received_list.extend(results)\n    \n        # Check all sent messages were received\n        missing = sent_messages - received_messages\n>       assert len(missing) == 0, f\"Missing messages: {len(missing)}\"\nE       AssertionError: Missing messages: 10000\nE       assert 10000 == 0\nE        +  where 10000 = len({'unique_0', 'unique_1', 'unique_10', 'unique_100', 'unique_1000', 'unique_1001', ...})\n\n/tests/test_outputs.py:219: AssertionError",
+                "message": "AssertionError: Missing messages: 10000\nassert 10000 == 0\n +  where 10000 = len({'unique_0', 'unique_1', 'unique_10', 'unique_100', 'unique_1000', 'unique_1001', ...})"
+            },
+            {
+                "name": "test_outputs.py::test_reproduction_test",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 30062,
+                "start": 1793770503729,
+                "stop": 1793770533791,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_reproduction_test():\n        \"\"\"Verify the reproduction test works correctly.\"\"\"\n        assert os.path.exists('/app/reproduction_test.py')\n    \n        # Try to run the test\n        try:\n>           result = subprocess.run(\n                [sys.executable, '/app/reproduction_test.py'],\n                capture_output=True,\n                text=True,\n                timeout=30\n            )\n\n/tests/test_outputs.py:231: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/subprocess.py:550: in run\n    stdout, stderr = process.communicate(input, timeout=timeout)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/subprocess.py:1209: in communicate\n    stdout, stderr = self._communicate(input, endtime, timeout)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/subprocess.py:2116: in _communicate\n    self._check_timeout(endtime, orig_timeout, stdout, stderr)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <Popen: returncode: -9 args: ['/usr/bin/python3', '/app/reproduction_test.py']>\nendtime = 15164.022874915, orig_timeout = 30\nstdout_seq = [b'============================================================\\nMessage Queue Test Harness\\n============================================================\\nRunning bottleneck detection...\\n  Testing CPU usage...\\n']\nstderr_seq = [], skip_check_and_raise = False\n\n    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,\n                       skip_check_and_raise=False):\n        \"\"\"Convenience for checking if a timeout has expired.\"\"\"\n        if endtime is None:\n            return\n        if skip_check_and_raise or _time() > endtime:\n>           raise TimeoutExpired(\n                    self.args, orig_timeout,\n                    output=b''.join(stdout_seq) if stdout_seq else None,\n                    stderr=b''.join(stderr_seq) if stderr_seq else None)\nE           subprocess.TimeoutExpired: Command '['/usr/bin/python3', '/app/reproduction_test.py']' timed out after 30 seconds\n\n/usr/lib/python3.12/subprocess.py:1253: TimeoutExpired\n\nDuring handling of the above exception, another exception occurred:\n\n    def test_reproduction_test():\n        \"\"\"Verify the reproduction test works correctly.\"\"\"\n        assert os.path.exists('/app/reproduction_test.py')\n    \n        # Try to run the test\n        try:\n            result = subprocess.run(\n                [sys.executable, '/app/reproduction_test.py'],\n                capture_output=True,\n                text=True,\n                timeout=30\n            )\n            # Test should pass (exit code 0)\n            assert result.returncode == 0, f\"Reproduction test failed: {result.stderr}\"\n        except subprocess.TimeoutExpired:\n            # Test timed out (possible deadlock)\n>           assert False, \"Reproduction test timed out (possible deadlock)\"\nE           AssertionError: Reproduction test timed out (possible deadlock)\nE           assert False\n\n/tests/test_outputs.py:241: AssertionError",
+                "message": "AssertionError: Reproduction test timed out (possible deadlock)\nassert False"
+            }
+        ]
+    }
+}

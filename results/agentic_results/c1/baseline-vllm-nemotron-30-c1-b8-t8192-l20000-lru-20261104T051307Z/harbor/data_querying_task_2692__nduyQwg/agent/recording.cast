@@ -1,0 +1,9 @@
+{"version": 2, "width": 160, "height": 40, "timestamp": 1793769356, "env": {"SHELL": "/bin/bash", "TERM": "tmux-256color"}}
+[0.013598, "o", "\u001b[?2004hroot@6c713828c6ee:/app# "]
+[0.932443, "i", "clear\r"]
+[0.932676, "o", "clear\r\n\u001b[?2004l\r"]
+[0.933824, "o", "\u001b[H\u001b[J\u001b[3J"]
+[0.933991, "o", "\u001b[?2004hroot@6c713828c6ee:/app# "]
+[8.748479, "i", "echo \"@prefix ex: <http://example.org/> .\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\\n\\n# Select books with the 'Classic' genre\\nSELECT ?title ?authorName\\nWHERE {\\n  ?book rdf:type ex:Book .\\n  ?book dc:title ?title .\\n  ?book dc:creator ?author .\\n  ?author dc:title ?authorName .\\n  ?book dc:subject \"Classic\" .\\n}\\nORDER BY ?title\" > /app/classic_books_query.sparql\n"]
+[8.750452, "o", "echo \"@prefix ex: <http://example.org/> .\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\\n\\n# Select books with the 'Classic' genre\\nSELECT ?title ?authorName\\nWHERE {\\n  ?book rdf:type ex:Book .\\n  ?book dc:title ?title .\\n  ?book dc:creator ?author .\\n  ?author dc:title ?authorName .\\n  ?book dc:subject \"Classic\" .\\n}\\nORDER BY ?title\" > /app/classic_books_query.sparql\r\n\u001b[?2004l\r"]
+[8.750822, "o", "\u001b[?2004hroot@6c713828c6ee:/app# "]

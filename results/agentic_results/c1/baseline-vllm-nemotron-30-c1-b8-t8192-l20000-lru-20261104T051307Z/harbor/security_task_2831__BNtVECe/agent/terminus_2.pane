@@ -1,0 +1,65 @@
+[?2004hroot@df5ba0bdf723:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@df5ba0bdf723:/app# clear
+[?2004l[H[J[3J[?2004hroot@df5ba0bdf723:/app# cat /app/web_access.log > /app/web_access.log.tmp
+[?2004l[?2004hroot@df5ba0bdf723:/app# python3 -c "import base64, hashlib, json, sys; malicious_count = 0; infected_lines = []; total_lines = 0; with open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile: for line_num, line in enumerate(infile): total_lines += 1; cleaned_line = line; for i in range(0, len(line), 20): substr = line[i:i+20]; try: decoded = base64.b64decode(substr).decode('utf-8', errors='ignore'); if 'eval(' in decoded.lower(): cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]; malicious_count += 1; infected_lines.append(line_num + 1); break; except: pass; outfile.write(cleaned_line); with open('/app/security_report.json', 'w') as report_file: json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)"
+[?2004l  File "<string>", line 1
+    import base64, hashlib, json, sys; malicious_count = 0; infected_lines = []; total_lines = 0; with open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile: for line_num, line in enumerate(infile): total_lines += 1; cleaned_line = line; for i in range(0, len(line), 20): substr = line[i:i+20]; try: decoded = base64.b64decode(substr).decode('utf-8', errors='ignore'); if 'eval(' in decoded.lower(): cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]; malicious_count += 1; infected_lines.append(line_num + 1); break; except: pass; outfile.write(cleaned_line); with open('/app/security_report.json', 'w') as report_file: json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+                                                                                                  ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@df5ba0bdf723:/app# python3 -c "import base64, hashlib, json, sys; malicious_count = 0; infected_lines = []; total_lines = 0; with open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile: for line_num, line in enumerate(infile): total_lines += 1; cleaned_line = line; for i in range(0, len(line), 20): substr = line[i:i+20]; try: decoded = base64.b64decode(substr).decode('utf-8', errors='ignore'); if 'eval(' in decoded.lower(): cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]; malicious_count += 1; infected_lines.append(line_num + 1); break; except: pass; outfile.write(cleaned_line); with open('/app/security_report.json', 'w') as report_file: json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)"
+[?2004l  File "<string>", line 1
+    import base64, hashlib, json, sys; malicious_count = 0; infected_lines = []; total_lines = 0; with open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile: for line_num, line in enumerate(infile): total_lines += 1; cleaned_line = line; for i in range(0, len(line), 20): substr = line[i:i+20]; try: decoded = base64.b64decode(substr).decode('utf-8', errors='ignore'); if 'eval(' in decoded.lower(): cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]; malicious_count += 1; infected_lines.append(line_num + 1); break; except: pass; outfile.write(cleaned_line); with open('/app/security_report.json', 'w') as report_file: json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+                                                                                                  ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@df5ba0bdf723:/app# echo "import base64, hashlib, json, sys\nmalicious_count = 0\ninfected_lines = []\ntotal_lines = 0\nwith open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile:\n    for line_num, line in enumerate(infile):\n        total_lines += 1\n        cleaned_line = line\n        for i in range(0, len(line), 20):\n            substr = line[i:i+20]\n            try:\n                decoded = base64.b64decode(substr).decode('utf-8', errors='ignore')\n                if 'eval(' in decoded.lower():\n                    cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]\n                    malicious_count += 1\n                    infected_lines.append(line_num + 1)\n                    break\n            except:\n                pass\n        outfile.write(cleaned_line)\nwith open('/app/security_report.json', 'w') as report_file:\n    json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)" > /app/clean_log.py
+[?2004l[?2004hroot@df5ba0bdf723:/app# python3 /app/clean_log.py
+[?2004l  File "/app/clean_log.py", line 1
+    ected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+                                      ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@df5ba0bdf723:/app# echo "import base64, hashlib, json, sys\nmalicious_count = 0\ninfected_lines = []\ntotal_lines = 0\nwith open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile:\n    for line_num, line in enumerate(infile):\n        total_lines += 1\n        cleaned_line = line\n        for i in range(0, len(line), 20):\n            substr = line[i:i+20]\n            try:\n                decoded = base64.b64decode(substr).decode('utf-8', errors='ignore')\n                if 'eval(' in decoded.lower():\n                    cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]\n                    malicious_count += 1\n                    infected_lines.append(line_num + 1)\n                    break\n            except:\n                pass\n        outfile.write(cleaned_line)\nwith open('/app/security_report.json', 'w') as report_file:\n    json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)" > /app/clean_log.py
+[?2004l[?2004hroot@df5ba0bdf723:/app# python3 /app/clean_log.py
+[?2004l  File "/app/clean_log.py", line 1
+    ected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+                                      ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@df5ba0bdf723:/app# echo "import base64, hashlib, json, sys\nmalicious_count = 0\ninfected_lines = []\ntotal_lines = 0\nwith open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile:\n    for line_num, line in enumerate(infile):\n        total_lines += 1\n        cleaned_line = line\n        for i in range(0, len(line), 20):\n            substr = line[i:i+20]\n            try:\n                decoded = base64.b64decode(substr).decode('utf-8', errors='ignore')\n                if 'eval(' in decoded.lower():\n                    cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]\n                    malicious_count += 1\n                    infected_lines.append(line_num + 1)\n                    break\n            except:\n                pass\n        outfile.write(cleaned_line)\nwith open('/app/security_report.json', 'w') as report_file:\n    json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)" > /app/clean_log.py
+[?2004l[?2004hroot@df5ba0bdf723:/app# python3 /app/clean_log.py
+[?2004l  File "/app/clean_log.py", line 1
+    ected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+                                      ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@df5ba0bdf723:/app# echo "import base64, hashlib, json, sys\nmalicious_count = 0\ninfected_lines = []\ntotal_lines = 0\nwith open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile:\n    for line_num, line in enumerate(infile):\n        total_lines += 1\n        cleaned_line = line\n        for i in range(0, len(line), 20):\n            substr = line[i:i+20]\n            try:\n                decoded = base64.b64decode(substr).decode('utf-8', errors='ignore')\n                if 'eval(' in decoded.lower():\n                    cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]\n                    malicious_count += 1\n                    infected_lines.append(line_num + 1)\n                    break\n            except:\n                pass\n        outfile.write(cleaned_line)\nwith open('/app/security_report.json', 'w') as report_file:\n    json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)" > /app/clean_log.py
+[?2004l[?2004hroot@df5ba0bdf723:/app# python3 /app/clean_log.py
+[?2004l  File "/app/clean_log.py", line 1
+    ected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+                                      ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@df5ba0bdf723:/app# cat << EOF > /app/clean_log.py
+[?2004l[?2004h> import base64, hashlib, json, sys
+[?2004l[?2004h> malicious_count = 0
+[?2004l[?2004h> infected_lines = []
+[?2004l[?2004h> total_lines = 0
+[?2004l[?2004h> with open('/app/web_access.log', 'r') as infile, open('/app/cleaned_web_access.log', 'w') as outfile:
+[?2004l[?2004h>     for line_num, line in enumerate(infile):
+[?2004l[?2004h>         total_lines += 1
+[?2004l[?2004h>         cleaned_line = line
+[?2004l[?2004h>         for i in range(0, len(line), 20):
+[?2004l[?2004h>             substr = line[i:i+20]
+[?2004l[?2004h>             try:
+[?2004l[?2004h>                 decoded = base64.b64decode(substr).decode('utf-8', errors='ignore')
+[?2004l[?2004h>                 if 'eval(' in decoded.lower():
+[?2004l[?2004h>                     cleaned_line = cleaned_line[:i] + '[REDACTED_B64_INJECTION]' + cleaned_line[i+20:]
+[?2004l[?2004h>                     malicious_count += 1
+[?2004l[?2004h>                     infected_lines.append(line_num + 1)
+[?2004l[?2004h>                     break
+[?2004l[?2004h>             except:
+[?2004l[?2004h>                 pass
+[?2004l[?2004h>         outfile.write(cleaned_line)
+[?2004l[?2004h> with open('/app/security_report.json', 'w') as report_file:
+[?2004l[?2004h>     json.dump({'total_lines': total_lines, 'injections_found': malicious_count, 'infected_lines': infected_lines, 'cleaned_file_hash': hashlib.sha256(open('/app/cleaned_web_access.log', 'rb').read()).hexdigest()}, report_file)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@df5ba0bdf723:/app# python3 /app/clean_log.py
+[?2004l[?2004hroot@df5ba0bdf723:/app# 

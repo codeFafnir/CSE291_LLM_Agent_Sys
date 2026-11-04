@@ -1,0 +1,117 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "a495f04f-9c70-4963-9e8b-3e77dd5da9b8",
+    "timestamp": "2026-11-04T06:43:50.405994+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793774630240,
+            "stop": 1793774630405,
+            "duration": 165
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_scripts_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793774630270,
+                "stop": 1793774630271,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_script_runs",
+                "status": "passed",
+                "duration": 33,
+                "start": 1793774630271,
+                "stop": 1793774630304,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_test_runner_executable",
+                "status": "passed",
+                "duration": 34,
+                "start": 1793774630305,
+                "stop": 1793774630339,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_file_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793774630340,
+                "stop": 1793774630340,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_correct_conversion",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793774630340,
+                "stop": 1793774630341,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_error_format",
+                "status": "passed",
+                "duration": 32,
+                "start": 1793774630341,
+                "stop": 1793774630373,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_round_trip",
+                "status": "passed",
+                "duration": 32,
+                "start": 1793774630373,
+                "stop": 1793774630405,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

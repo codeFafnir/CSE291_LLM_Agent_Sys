@@ -1,0 +1,105 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "e902ef3f-c67f-4022-9bdf-3f5099ab935c",
+    "timestamp": "2026-11-04T05:15:41.860658+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 1,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793769341696,
+            "stop": 1793769341860,
+            "duration": 164
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 15,
+                "start": 1793769341743,
+                "stop": 1793769341758,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_files_exist():\n        \"\"\"Verify both output files were created.\"\"\"\n>       assert os.path.exists('/app/query_results.csv'), \"CSV output file missing\"\nE       AssertionError: CSV output file missing\nE       assert False\nE        +  where False = <function exists at 0x7f1deb537560>('/app/query_results.csv')\nE        +    where <function exists at 0x7f1deb537560> = <module 'posixpath' (frozen)>.exists\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:8: AssertionError",
+                "message": "AssertionError: CSV output file missing\nassert False\n +  where False = <function exists at 0x7f1deb537560>('/app/query_results.csv')\n +    where <function exists at 0x7f1deb537560> = <module 'posixpath' (frozen)>.exists\n +      where <module 'posixpath' (frozen)> = os.path"
+            },
+            {
+                "name": "test_outputs.py::test_csv_format_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 2,
+                "start": 1793769341758,
+                "stop": 1793769341760,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_csv_format_correct():\n        \"\"\"Verify CSV has correct format and headers.\"\"\"\n>       with open('/app/query_results.csv', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'\n\n/tests/test_outputs.py:13: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'"
+            },
+            {
+                "name": "test_outputs.py::test_query_results_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 96,
+                "start": 1793769341760,
+                "stop": 1793769341856,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_query_results_correct():\n        \"\"\"Verify the SPARQL query returns correct results.\"\"\"\n        # Load the RDF data\n        g = rdflib.Graph()\n        g.parse('/app/library.ttl', format='turtle')\n    \n        # Define expected namespace (from the data)\n        ex = rdflib.Namespace(\"http://example.org/library#\")\n    \n        # Execute a verification query to check expected results\n        query = \"\"\"\n        PREFIX ex: <http://example.org/library#>\n        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n    \n        SELECT ?title ?author ?year WHERE {\n          ?book a ex:Book ;\n                ex:title ?title ;\n                ex:author ?author ;\n                ex:publicationYear ?year ;\n                ex:genre ?genre .\n    \n          ?author ex:nationality ?nationality .\n    \n          FILTER(?year > 2015)\n          FILTER(?genre = \"Fiction\")\n          FILTER(?nationality = \"American\")\n        }\n        ORDER BY ?year ?title\n        \"\"\"\n    \n        results = list(g.query(query))\n    \n        # Load agent's results\n        agent_results = []\n>       with open('/app/query_results.csv', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'\n\n/tests/test_outputs.py:57: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'"
+            },
+            {
+                "name": "test_outputs.py::test_explanation_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793769341857,
+                "stop": 1793769341857,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_csv_sorted_correctly",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793769341857,
+                "stop": 1793769341860,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_csv_sorted_correctly():\n        \"\"\"Verify results are sorted by year then title.\"\"\"\n>       with open('/app/query_results.csv', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'\n\n/tests/test_outputs.py:89: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'"
+            }
+        ]
+    }
+}

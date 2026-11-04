@@ -1,0 +1,229 @@
+[?2004hroot@3ecaccb3d917:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@3ecaccb3d917:/app# clear
+[?2004l[H[J[3J[?2004hroot@3ecaccb3d917:/app# cat > /app/fixed_config.py <<EOF
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> def remove_duplicates(d):
+[?2004l[?2004h>     new_d = {}
+[?2004l[?2004h>     for k, v in d.items():
+[?2004l[?2004h>         if k not in new_d:
+[?2004l[?2004h>             new_d[k] = v
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             # If the key already exists, keep the first occurrence
+[?2004l[?2004h>             pass
+[?2004l[?2004h>     return new_d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = remove_duplicates(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> def replace_dots_with_underscores(d):
+[?2004l[?2004h>     new_d = {}
+[?2004l[?2004h>     for k, v in d.items():
+[?2004l[?2004h>         new_key = k.replace('.', '_')
+[?2004l[?2004h>         new_d[new_key] = v
+[?2004l[?2004h>     return new_d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = replace_dots_with_underscores(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> def uncomment_active_lines(d):
+[?2004l[?2004h>     new_d = {}
+[?2004l[?2004h>     for k, v in d.items():
+[?2004l[?2004h>         if isinstance(v, dict):
+[?2004l[?2004h>             new_d[k] = uncomment_active_lines(v)
+[?2004l[?2004h>         elif isinstance(v, str):
+[?2004l[?2004h>             if v.startswith('# active:'):
+[?2004l[?2004h>                 new_d[k] = v[1:].strip()
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 new_d[k] = v
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             new_d[k] = v
+[?2004l[?2004h>     return new_d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = uncomment_active_lines(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> def format_yaml(d):
+[?2004l[?2004h>     yaml = YAML()
+[?2004l[?2004h>     yaml.indent(mapping=2, sequence=4, offset=2)
+[?2004l[?2004h>     with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>         yaml.dump(d, file)
+[?2004l[?2004h> 
+[?2004l[?2004h> format_yaml(data)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@3ecaccb3d917:/app# python3 /app/fixed_config.py
+[?2004lTraceback (most recent call last):
+  File "/app/fixed_config.py", line 2, in <module>
+    from ruamel.yaml import YAML
+ModuleNotFoundError: No module named 'ruamel'
+[?2004hroot@3ecaccb3d917:/app# pip3 install ruamel.yaml
+[?2004l[1;31merror[0m: [1mexternally-managed-environment[0m
+
+[31m×[0m This environment is externally managed
+[31m╰─>[0m To install Python packages system-wide, try apt install
+[31m   [0m python3-xyz, where xyz is the package you are trying to
+[31m   [0m install.
+[31m   [0m 
+[31m   [0m If you wish to install a non-Debian-packaged Python package,
+[31m   [0m create a virtual environment using python3 -m venv path/to/venv.
+[31m   [0m Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
+[31m   [0m sure you have python3-full installed.
+[31m   [0m 
+[31m   [0m If you wish to install a non-Debian packaged Python application,
+[31m   [0m it may be easiest to use pipx install xyz, which will manage a
+[31m   [0m virtual environment for you. Make sure you have pipx installed.
+[31m   [0m 
+[31m   [0m See /usr/share/doc/python3.12/README.venv for more information.
+
+[1;35mnote[0m: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+[1;36mhint[0m: See PEP 668 for the detailed specification.
+[?2004hroot@3ecaccb3d917:/app# python3 /app/fixed_config.py
+[?2004lTraceback (most recent call last):
+  File "/app/fixed_config.py", line 2, in <module>
+    from ruamel.yaml import YAML
+ModuleNotFoundError: No module named 'ruamel'
+[?2004hroot@3ecaccb3d917:/app# python3 -m venv venv
+[?2004lsource venv/bin/activate
+pip install ruamel.yaml
+python3 /app/fixed_config.py
+[?2004hroot@3ecaccb3d917:/app# source venv/bin/activate
+[?2004l[?2004h(venv) root@3ecaccb3d917:/app# pip install ruamel.yaml
+[?2004lCollecting ruamel.yaml
+  Downloading ruamel_yaml-0.19.1-py3-none-any.whl.metadata (16 kB)
+Downloading ruamel_yaml-0.19.1-py3-none-any.whl (118 kB)
+[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/118.1 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m118.1/118.1 kB[0m [31m5.1 MB/s[0m eta [36m0:00:00[0m
+[?25hInstalling collected packages: ruamel.yaml
+Successfully installed ruamel.yaml-0.19.1
+[?2004h(venv) root@3ecaccb3d917:/app# python3 /app/fixed_config.py
+[?2004lTraceback (most recent call last):
+  File "/app/fixed_config.py", line 1, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'
+[?2004h(venv) root@3ecaccb3d917:/app# pip install pyyaml
+[?2004lCollecting pyyaml
+  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/807.9 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━[0m [32m553.0/807.9 kB[0m [31m16.6 MB/s[0m eta [36m0:00:01[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m807.9/807.9 kB[0m [31m12.2 MB/s[0m eta [36m0:00:00[0m
+[?25hInstalling collected packages: pyyaml
+Successfully installed pyyaml-6.0.3
+[?2004h(venv) root@3ecaccb3d917:/app# python3 /app/fixed_config.py
+[?2004l[?2004h(venv) root@3ecaccb3d917:/app# cat /app/fixed_config.yaml
+[?2004lproject:
+  name: My Project
+  version: 1.0.0
+build:
+  source_dir: src
+  output_dir: dist
+  compiler.flags: -O2 -Wall
+  tests: false
+dependencies:
+  required:
+    - python>=3.8
+    - requests>=2.25
+  optional:
+    - pytest>=6.0
+deployment_target: production
+deployment_region: us-east-1
+[?2004h(venv) root@3ecaccb3d917:/app# cat > /app/fixed_config.py <<EOF
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> def remove_duplicates(d):
+[?2004l[?2004h>     new_d = {}
+[?2004l[?2004h>     for k, v in d.items():
+[?2004l[?2004h>         if k not in new_d:
+[?2004l[?2004h>             new_d[k] = v
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             # If the key already exists, keep the first occurrence
+[?2004l[?2004h>             pass
+[?2004l[?2004h>     return new_d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = remove_duplicates(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> def replace_dots_with_underscores(d):
+[?2004l[?2004h>     new_d = {}
+[?2004l[?2004h>     for k, v in d.items():
+[?2004l[?2004h>         new_key = k.replace('.', '_')
+[?2004l[?2004h>         new_d[new_key] = v
+[?2004l[?2004h>     return new_d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = replace_dots_with_underscores(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> def uncomment_active_lines(d):
+[?2004l[?2004h>     new_d = {}
+[?2004l[?2004h>     for k, v in d.items():
+[?2004l[?2004h>         if isinstance(v, dict):
+[?2004l[?2004h>             new_d[k] = uncomment_active_lines(v)
+[?2004l[?2004h>         elif isinstance(v, str):
+[?2004l[?2004h>             if v.startswith('# active:'):
+[?2004l[?2004h>                 new_d[k] = v[1:].strip()
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 new_d[k] = v
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             new_d[k] = v
+[?2004l[?2004h>     return new_d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = uncomment_active_lines(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> def format_yaml(d):
+[?2004l[?2004h>     yaml = YAML()
+[?2004l[?2004h>     yaml.indent(mapping=2, sequence=4, offset=2)
+[?2004l[?2004h>     with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>         yaml.dump(d, file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure 'tests: true' is used
+[?2004l[?2004h> if 'tests' in data['build']:
+[?2004l[?2004h>     data['build']['tests'] = True
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure 'deployment' is a key with 'deployment_target' and 'deployment_region'
+[?2004l[?2004h> def add_deployment_key(d):
+[?2004l[?2004h>     if 'deployment_target' in d:
+[?2004l[?2004h>         deployment = {
+[?2004l[?2004h>             'deployment_target': d['deployment_target'],
+[?2004l[?2004h>             'deployment_region': d['deployment_region']
+[?2004l[?2004h>         }
+[?2004l[?2004h>         d['deployment'] = deployment
+[?2004l[?2004h>         del d['deployment_target']
+[?2004l[?2004h>         del d['deployment_region']
+[?2004l[?2004h>     return d
+[?2004l[?2004h> 
+[?2004l[?2004h> data = add_deployment_key(data)
+[?2004l[?2004h> 
+[?2004l[?2004h> format_yaml(data)
+[?2004l[?2004h> EOF
+[?2004l[?2004h(venv) root@3ecaccb3d917:/app# python3 /app/fixed_config.py
+[?2004l[?2004h(venv) root@3ecaccb3d917:/app# cat /app/fixed_config.yaml
+[?2004lproject:
+  name: My Project
+  version: 1.0.0
+build:
+  source_dir: src
+  output_dir: dist
+  compiler.flags: -O2 -Wall
+  tests: true
+dependencies:
+  required:
+    - python>=3.8
+    - requests>=2.25
+  optional:
+    - pytest>=6.0
+deployment:
+  deployment_target: production
+  deployment_region: us-east-1
+[?2004h(venv) root@3ecaccb3d917:/app# 

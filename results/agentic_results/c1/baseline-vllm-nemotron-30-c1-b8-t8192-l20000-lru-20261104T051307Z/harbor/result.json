@@ -1,0 +1,75 @@
+{
+    "id": "7c3b7ba9-e40c-45eb-9772-bd0b885b86ee",
+    "started_at": "2026-11-04T05:13:12.799666",
+    "updated_at": "2026-11-04T07:17:39.902809",
+    "finished_at": "2026-11-04T07:17:39.902809",
+    "n_total_trials": 30,
+    "stats": {
+        "n_completed_trials": 30,
+        "n_errored_trials": 12,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "terminus-2__Qwen/Qwen3-14B-AWQ__set30": {
+                "n_trials": 18,
+                "n_errors": 12,
+                "metrics": [
+                    {
+                        "mean": 0.13333333333333333
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "0.0": [
+                            "data_querying_task_0996__Q2aruvT",
+                            "data_querying_task_2692__nduyQwg",
+                            "debugging_task_12771__Gw3vwX6",
+                            "debugging_task_2216__PBtRE3X",
+                            "debugging_task_2446__HaKaZ4H",
+                            "file_operations_task_0585__qX9pLh4",
+                            "file_operations_task_4095__kTJpvmW",
+                            "scientific_computing_task_0993__9MvuSiz",
+                            "security_task_2831__BNtVECe",
+                            "security_task_3201__Qw7nDEi",
+                            "software_engineering_task_0029__7xzrMk2",
+                            "software_engineering_task_2621__rH6zkMv",
+                            "software_engineering_task_4571__muePnaF",
+                            "system_administration_task_12762__oyLw9ZB"
+                        ],
+                        "1.0": [
+                            "data_science_task_3348__TBkeMaT",
+                            "debugging_task_2000__VDAzTC6",
+                            "software_engineering_task_1519__NBhD5wi",
+                            "system_administration_task_2208__x23m8w4"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "ContextLengthExceededError": [
+                        "debugging_task_18959__Wr3DG7n",
+                        "model_training_task_18693__kLb55GK",
+                        "scientific_computing_task_1530__LWPjXTx",
+                        "security_task_0784__rAMpKxT",
+                        "security_task_11984__WYxiHWZ",
+                        "software_engineering_task_1347__spSn2GV",
+                        "software_engineering_task_13509__qdnwaor",
+                        "software_engineering_task_15464__N2DQGVw",
+                        "software_engineering_task_3182__4fmyioB",
+                        "software_engineering_task_3229__TArQtDn",
+                        "software_engineering_task_4146__EuZ4Pnk"
+                    ],
+                    "RuntimeError": [
+                        "scientific_computing_task_2932__fCjKMff"
+                    ]
+                }
+            }
+        },
+        "n_input_tokens": 3978917,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 179811,
+        "cost_usd": null
+    }
+}

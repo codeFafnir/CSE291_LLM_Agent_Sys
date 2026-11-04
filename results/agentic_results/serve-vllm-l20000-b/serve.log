@@ -1,0 +1,1240 @@
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:347] 
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.32.1.dev1+g4b7cdeae4
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:347]   █▄█▀ █     █     █     █  model   Qwen/Qwen3-14B-AWQ
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:347] 
+(APIServer pid=10907) INFO 11-04 04:35:13 [api_utils.py:286] non-default args: {'model_tag': 'Qwen/Qwen3-14B-AWQ', 'host': '0.0.0.0', 'model': 'Qwen/Qwen3-14B-AWQ', 'dtype': 'float16', 'max_model_len': 20000, 'quantization': 'awq', 'gpu_memory_utilization': 0.9, 'kv_cache_dtype': 'float16', 'enable_prefix_caching': True, 'otlp_traces_endpoint': 'http://127.0.0.1:4317', 'max_num_batched_tokens': 8192, 'max_num_seqs': 8, 'speculative_config': {'method': 'eagle3', 'model': 'RedHatAI/Qwen3-14B-speculator.eagle3', 'num_speculative_tokens': 3}, 'profiler_config': ProfilerConfig(profiler='torch', torch_profiler_dir='/data/cse291-results/serve-vllm-l20000-b/torch_profile', torch_profiler_activities=None, proton_profiler_dir='', proton_context='shadow', proton_data='tree', proton_backend=None, proton_mode=None, proton_hook=None, proton_output_format=None, proton_graph_attribution=False, torch_profiler_with_stack=True, torch_profiler_with_flops=False, torch_profiler_use_gzip=True, torch_profiler_dump_cuda_time_total=True, torch_profiler_record_shapes=True, torch_profiler_with_memory=False, capture_torch_profiler=False, detailed_trace_annotation=False, ignore_frontend=False, delay_iterations=0, max_iterations=0, warmup_iterations=0, active_iterations=5, wait_iterations=0)}
+(APIServer pid=10907) INFO 11-04 04:35:13 [model.py:733] Resolved architecture: Qwen3ForCausalLM
+(APIServer pid=10907) INFO 11-04 04:35:13 [model.py:2152] Using max model len 20000
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+(APIServer pid=10907) INFO 11-04 04:35:15 [model.py:733] Resolved architecture: Eagle3LlamaForCausalLM
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=10907) WARNING 11-04 04:35:15 [model.py:2498] Casting torch.bfloat16 to torch.float16.
+(APIServer pid=10907) INFO 11-04 04:35:15 [model.py:2152] Using max model len 40960
+(APIServer pid=10907) INFO 11-04 04:35:15 [speculative.py:1669] Overriding draft model max model len from 40960 to 20000
+(APIServer pid=10907) INFO 11-04 04:35:15 [scheduler.py:307] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/2 [00:00<?, ?it/s]Parse safetensors files:  50%|█████     | 1/2 [00:00<00:00,  8.00it/s]Parse safetensors files: 100%|██████████| 2/2 [00:00<00:00, 12.18it/s]
+(APIServer pid=10907) INFO 11-04 04:35:16 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files: 100%|██████████| 10/10 [00:00<00:00, 2045.80it/s]
+(EngineCore pid=10977) INFO 11-04 04:35:25 [core.py:133] Initializing a V1 LLM engine (v0.32.1.dev1+g4b7cdeae4) with config: model='Qwen/Qwen3-14B-AWQ', speculative_config=SpeculativeConfig(method='eagle3', model='RedHatAI/Qwen3-14B-speculator.eagle3', num_spec_tokens=3), tokenizer='Qwen/Qwen3-14B-AWQ', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=False, dtype=torch.float16, max_seq_len=20000, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=auto_awq, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=float16, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint='http://127.0.0.1:4317', collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=Qwen/Qwen3-14B-AWQ, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::qwen4_exp_qsa_prepare_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 64, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=10977) INFO 11-04 04:35:26 [parallel_state.py:1906] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///data/tmp/vllm_dist_93f944e547b24177b80cf627ab1ce9c8 backend=nccl
+(EngineCore pid=10977) INFO 11-04 04:35:26 [parallel_state.py:2350] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=10977) INFO 11-04 04:35:26 [gpu_worker.py:518] Using V2 Model Runner
+(EngineCore pid=10977) INFO 11-04 04:35:27 [model_runner.py:392] Loading model from scratch...
+(EngineCore pid=10977) INFO 11-04 04:35:27 [__init__.py:923] Using MarlinLinearKernel for mixed-precision linear
+(EngineCore pid=10977) INFO 11-04 04:35:27 [auto_awq.py:451] Using MarlinLinearKernel for AutoAWQMarlinLinearMethod
+(EngineCore pid=10977) INFO 11-04 04:35:29 [cuda.py:506] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=10977) INFO 11-04 04:35:29 [flash_attn.py:1117] Using FlashAttention version 2
+(EngineCore pid=10977) INFO 11-04 04:35:30 [base_loader.py:82] Initializing model took 2.944005 seconds
+(EngineCore pid=10977) INFO 11-04 04:35:30 [weight_utils.py:1108] Filesystem type for checkpoints: EXT4. Checkpoint size: 9.29 GiB. Available RAM: 26.39 GiB.
+(EngineCore pid=10977) INFO 11-04 04:35:30 [weight_utils.py:1131] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+(EngineCore pid=10977) WARNING 11-04 04:35:30 [utils.py:333] Attempted to load weight embed_tokens.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:35 [utils.py:333] Attempted to load weight layers.0.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:35 [utils.py:333] Attempted to load weight layers.0.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.0.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.0.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.0.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.0.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.1.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.1.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.1.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.1.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.1.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.1.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:36 [utils.py:333] Attempted to load weight layers.10.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.10.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.10.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.10.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.10.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.10.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.11.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:37 [utils.py:333] Attempted to load weight layers.11.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.11.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.11.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.11.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.11.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.12.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.12.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.12.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.12.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.12.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.12.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.13.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:38 [utils.py:333] Attempted to load weight layers.13.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:39 [utils.py:333] Attempted to load weight layers.13.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:39 [utils.py:333] Attempted to load weight layers.13.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:39 [utils.py:333] Attempted to load weight layers.13.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:39 [utils.py:333] Attempted to load weight layers.13.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:39 [utils.py:333] Attempted to load weight layers.14.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:39 [utils.py:333] Attempted to load weight layers.14.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.14.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.14.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.14.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.14.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.15.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.15.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.15.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.15.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.15.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.15.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.16.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:40 [utils.py:333] Attempted to load weight layers.16.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.16.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.16.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.16.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.16.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.17.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.17.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.17.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:41 [utils.py:333] Attempted to load weight layers.17.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.17.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.17.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.18.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.18.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.18.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.18.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.18.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.18.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.19.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:42 [utils.py:333] Attempted to load weight layers.19.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.19.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.19.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.19.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.19.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.2.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.2.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.2.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.2.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.2.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:43 [utils.py:333] Attempted to load weight layers.2.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.3.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.3.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.3.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.3.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.3.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.3.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.4.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:44 [utils.py:333] Attempted to load weight layers.4.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.4.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.4.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.4.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.4.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.5.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.5.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.5.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.5.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.5.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:45 [utils.py:333] Attempted to load weight layers.5.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.6.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.6.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.6.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.6.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.6.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.6.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.7.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:46 [utils.py:333] Attempted to load weight layers.7.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.7.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.7.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.7.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.7.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.8.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.8.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.8.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.8.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.8.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.8.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:47 [utils.py:333] Attempted to load weight layers.9.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:48 [utils.py:333] Attempted to load weight layers.9.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:48 [utils.py:333] Attempted to load weight layers.9.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:48 [utils.py:333] Attempted to load weight layers.9.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:48 [utils.py:333] Attempted to load weight layers.9.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:48 [utils.py:333] Attempted to load weight layers.9.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+Loading safetensors checkpoint shards:  50% Completed | 1/2 [00:18<00:18, 18.04s/it]
+(EngineCore pid=10977) WARNING 11-04 04:35:48 [utils.py:333] Attempted to load weight lm_head.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:54 [utils.py:333] Attempted to load weight layers.20.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:54 [utils.py:333] Attempted to load weight layers.20.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.20.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.20.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.20.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.20.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.21.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.21.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.21.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.21.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.21.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.21.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:55 [utils.py:333] Attempted to load weight layers.22.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.22.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.22.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.22.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.22.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.22.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.23.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:56 [utils.py:333] Attempted to load weight layers.23.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.23.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.23.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.23.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.23.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.24.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.24.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.24.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.24.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.24.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.24.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:57 [utils.py:333] Attempted to load weight layers.25.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.25.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.25.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.25.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.25.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.25.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.26.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:58 [utils.py:333] Attempted to load weight layers.26.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.26.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.26.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.26.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.26.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.27.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.27.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.27.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.27.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.27.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.27.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.28.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:35:59 [utils.py:333] Attempted to load weight layers.28.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.28.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.28.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.28.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.28.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.29.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.29.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.29.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:00 [utils.py:333] Attempted to load weight layers.29.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.29.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.29.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.30.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.30.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.30.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.30.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.30.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.30.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.31.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:01 [utils.py:333] Attempted to load weight layers.31.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.31.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.31.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.31.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.31.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.32.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.32.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.32.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:02 [utils.py:333] Attempted to load weight layers.32.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.32.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.32.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.33.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.33.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.33.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.33.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.33.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.33.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.34.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:03 [utils.py:333] Attempted to load weight layers.34.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.34.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.34.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.34.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.34.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.35.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.35.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.35.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.35.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.35.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:04 [utils.py:333] Attempted to load weight layers.35.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.36.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.36.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.36.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.36.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.36.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.36.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.37.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:05 [utils.py:333] Attempted to load weight layers.37.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.37.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.37.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.37.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.37.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.38.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.38.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.38.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.38.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.38.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.38.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:06 [utils.py:333] Attempted to load weight layers.39.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:07 [utils.py:333] Attempted to load weight layers.39.mlp.down_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:07 [utils.py:333] Attempted to load weight layers.39.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:07 [utils.py:333] Attempted to load weight layers.39.self_attn.k_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:07 [utils.py:333] Attempted to load weight layers.39.self_attn.o_proj.scales with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:07 [utils.py:333] Attempted to load weight layers.39.self_attn.q_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:07 [utils.py:333] Attempted to load weight norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:37<00:00, 18.61s/it]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:37<00:00, 18.53s/it]
+
+(EngineCore pid=10977) INFO 11-04 04:36:07 [default_loader.py:501] Loading weights took 37.18 seconds
+(EngineCore pid=10977) INFO 11-04 04:36:11 [eagle3_utils.py:30] Using Eagle3 auxiliary layers from model: (2, 20, 37)
+(EngineCore pid=10977) INFO 11-04 04:36:11 [base_loader.py:82] Initializing model took 0.030786 seconds
+(EngineCore pid=10977) INFO 11-04 04:36:11 [weight_utils.py:1108] Filesystem type for checkpoints: EXT4. Checkpoint size: 2.58 GiB. Available RAM: 26.44 GiB.
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00, 65.97it/s]
+
+(EngineCore pid=10977) WARNING 11-04 04:36:11 [utils.py:333] Attempted to load weight embed_tokens.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:16 [utils.py:333] Attempted to load weight fc.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:16 [utils.py:333] Attempted to load weight layers.0.hidden_norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:16 [utils.py:333] Attempted to load weight layers.0.input_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:16 [utils.py:333] Attempted to load weight layers.0.mlp.down_proj.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:18 [utils.py:333] Attempted to load weight layers.0.post_attention_layernorm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:19 [utils.py:333] Attempted to load weight layers.0.self_attn.o_proj.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:19 [utils.py:333] Attempted to load weight lm_head.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) WARNING 11-04 04:36:21 [utils.py:333] Attempted to load weight norm.weight with dtype torch.bfloat16 into parameter with dtype torch.float16
+(EngineCore pid=10977) INFO 11-04 04:36:21 [default_loader.py:501] Loading weights took 9.70 seconds
+(EngineCore pid=10977) INFO 11-04 04:36:22 [model_runner.py:424] Model loading took 12.02 GiB memory and 55.407281 seconds
+(EngineCore pid=10977) INFO 11-04 04:36:22 [topk_topp_sampler.py:124] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=10977) INFO 11-04 04:36:22 [torch_utils.py:295] Reducing Torch threads from 4 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=10977) INFO 11-04 04:36:22 [utils.py:347] Using LBNHC KV cache layout.
+(EngineCore pid=10977) INFO 11-04 04:36:25 [caching.py:342] reconstructed serializable fn from standalone compile artifacts. num_artifacts=4 num_submods=41
+(EngineCore pid=10977) INFO 11-04 04:36:25 [decorators.py:319] [backbone] Directly load AOT compilation from path /home/ec2-user/.cache/vllm/torch_compile_cache/torch_aot_compile/782028e47f0db9f511e7d0cf0c9a9b8985ab379444ec2f8054e05b71ae13efef/rank_0_0/model
+(EngineCore pid=10977) INFO 11-04 04:36:25 [monitor.py:62] [backbone] torch.compile took 0.40 s in total
+(EngineCore pid=10977) INFO 11-04 04:36:27 [monitor.py:91] [backbone] Initial profiling/warmup run took 1.94 s
+(EngineCore pid=10977) INFO 11-04 04:36:31 [caching.py:342] reconstructed serializable fn from standalone compile artifacts. num_artifacts=2 num_submods=2
+(EngineCore pid=10977) INFO 11-04 04:36:31 [decorators.py:319] [eagle_head] Directly load AOT compilation from path /home/ec2-user/.cache/vllm/torch_compile_cache/torch_aot_compile/9c342e3eee1dc73f32242c8d4201d2dc5b699ff9b58267e4b74b15e5d1403518/rank_0_0/model
+(EngineCore pid=10977) INFO 11-04 04:36:31 [monitor.py:62] [eagle_head] torch.compile took 0.07 s in total
+(EngineCore pid=10977) INFO 11-04 04:36:31 [monitor.py:91] [eagle_head] Initial profiling/warmup run took 0.00 s
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/11 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   9%|▉         | 1/11 [00:00<00:01,  8.61it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 3/11 [00:00<00:00, 13.12it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 5/11 [00:00<00:00, 14.56it/s]Capturing CUDA graphs (PIECEWISE):  64%|██████▎   | 7/11 [00:00<00:00, 15.47it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 9/11 [00:00<00:00, 13.80it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 14.74it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 14.26it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 19.79it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 19.77it/s]
+(EngineCore pid=10977) INFO 11-04 04:36:33 [speculator.py:110] Capturing model for speculator...
+Capturing prefill CUDA graphs (PIECEWISE):   0%|          | 0/11 [00:00<?, ?it/s]Capturing prefill CUDA graphs (PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 93.12it/s]Capturing prefill CUDA graphs (PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 93.02it/s]
+Capturing prefill CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing prefill CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 162.84it/s]
+Capturing decode CUDA graphs (FULL):   0%|          | 0/4 [00:00<?, ?it/s]Capturing decode CUDA graphs (FULL):  75%|███████▌  | 3/4 [00:00<00:00, 28.67it/s]Capturing decode CUDA graphs (FULL): 100%|██████████| 4/4 [00:00<00:00, 34.65it/s]
+(EngineCore pid=10977) INFO 11-04 04:36:34 [model_runner.py:1127] Graph capturing finished in 2 secs, took 0.20 GiB
+(EngineCore pid=10977) INFO 11-04 04:36:34 [gpu_worker.py:759] Available KV cache memory: 5.98 GiB
+(EngineCore pid=10977) INFO 11-04 04:36:34 [gpu_worker.py:774] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.9000 is equivalent to --gpu-memory-utilization=0.8902 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.9098. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(EngineCore pid=10977) INFO 11-04 04:36:34 [kv_cache_utils.py:2333] GPU KV cache size: 38,256 tokens, Maximum concurrency for 20,000 tokens per request: 1.91x
+(EngineCore pid=10977) INFO 11-04 04:36:34 [kernel_warmup.py:176] JIT kernel warmup starting.
+(EngineCore pid=10977) INFO 11-04 04:36:34 [kernel_warmup.py:189] JIT kernel warmup finished in 0.00s.
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/11 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 2/11 [00:00<00:00, 15.85it/s]Capturing CUDA graphs (PIECEWISE):  36%|███▋      | 4/11 [00:00<00:00, 16.20it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 6/11 [00:00<00:00, 16.52it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 8/11 [00:00<00:00, 16.72it/s]Capturing CUDA graphs (PIECEWISE):  91%|█████████ | 10/11 [00:00<00:00, 16.82it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 16.70it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  60%|██████    | 3/5 [00:00<00:00, 20.29it/s]Capturing CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 20.58it/s]
+(EngineCore pid=10977) INFO 11-04 04:36:36 [speculator.py:110] Capturing model for speculator...
+Capturing prefill CUDA graphs (PIECEWISE):   0%|          | 0/11 [00:00<?, ?it/s]Capturing prefill CUDA graphs (PIECEWISE): 100%|██████████| 11/11 [00:00<00:00, 147.85it/s]
+Capturing prefill CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing prefill CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 161.65it/s]
+Capturing decode CUDA graphs (FULL):   0%|          | 0/4 [00:00<?, ?it/s]Capturing decode CUDA graphs (FULL): 100%|██████████| 4/4 [00:00<00:00, 88.89it/s]
+(EngineCore pid=10977) INFO 11-04 04:36:37 [model_runner.py:1127] Graph capturing finished in 2 secs, took 0.13 GiB
+(EngineCore pid=10977) INFO 11-04 04:36:37 [gpu_worker.py:971] CUDA graph pool memory: 0.13 GiB (actual), 0.22 GiB (estimated), difference: 0.09 GiB (70.8%).
+(EngineCore pid=10977) INFO 11-04 04:36:37 [gpu_worker.py:1034] Free memory on device (21.85/22.04 GiB) on startup. Desired GPU memory utilization is (0.9, 19.83 GiB). Actual usage is 12.21 GiB for consumed memory (weights + non-torch), 1.64 GiB for peak activation, and 0.13 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=6132710605` (5.71 GiB) to fit into requested memory, or `--kv-cache-memory=8295411712` (7.73 GiB) to fully utilize gpu memory. Current kv cache memory in use is 5.98 GiB.
+(EngineCore pid=10977) INFO 11-04 04:36:39 [jit_monitor.py:84] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=10977) INFO 11-04 04:36:39 [core.py:395] init engine (profile, create kv cache, warmup model) took 16.97 s (compilation: 0.47 s)
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files: 100%|██████████| 10/10 [00:00<00:00, 2352.65it/s]
+(EngineCore pid=10977) INFO 11-04 04:36:39 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=10907) INFO 11-04 04:36:39 [wrapper.py:764] Torch profiler enabled. AsyncLLM CPU traces will be collected under /data/cse291-results/serve-vllm-l20000-b/torch_profile
+(APIServer pid=10907) INFO 11-04 04:36:39 [wrapper.py:243] Torch profiling enabled. Traces will be saved to: /data/cse291-results/serve-vllm-l20000-b/torch_profile
+(APIServer pid=10907) INFO 11-04 04:36:39 [entry.py:136] Supported tasks: ['generate']
+(APIServer pid=10907) WARNING 11-04 04:36:39 [api_router.py:60] Profiler with mode 'torch' is enabled in the API server. This should ONLY be used for local development!
+(APIServer pid=10907) WARNING 11-04 04:36:39 [__init__.py:44] SECURITY WARNING: Development endpoints are enabled! This should NOT be used in production!
+(APIServer pid=10907) INFO 11-04 04:36:40 [factories.py:89] Scale-out endpoints are disabled. Restart vllm serve with --enable-scale-out to enable them.
+(APIServer pid=10907) INFO 11-04 04:36:40 [hf.py:648] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=10907) WARNING 11-04 04:36:40 [model.py:1893] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 0.6, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=10907) INFO 11-04 04:36:40 [entry.py:140] Starting vLLM server on http://0.0.0.0:8000
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:186] Available routes are:
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /docs, Methods: HEAD, GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /load, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /version, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /kv_event_sources, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /health, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /metrics, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /start_profile, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /stop_profile, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /tokenize, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /detokenize, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/models, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/systemone, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /ping, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /ping, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /invocations, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /reset_prefix_cache, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /reset_mm_cache, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /reset_encoder_cache, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /collective_rpc, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /server_info, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /sleep, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /release_kv_cache_memory, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /wake_up, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /is_sleeping, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /pause, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /resume, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /abort_requests, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /is_paused, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /init_weight_transfer_engine, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /shutdown_weight_transfer_engine, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /start_weight_update, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /start_draft_weight_update, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /update_weights, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /finish_weight_update, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /update_weight_version, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /weight_info, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /weight_checker, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /get_world_size, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/responses, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/completions, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/messages, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /generative_scoring, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/messages/render, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/completions/render, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/responses/render, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/chat/completions/derender, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /v1/completions/derender, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=10907) INFO 11-04 04:36:40 [launcher.py:195] Route: /inference/v1/abort_requests, Methods: POST
+INFO:     Started server process [10907]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:48690 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48694 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48708 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48716 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60094 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60108 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:39:20 [loggers.py:335] Engine 000: Avg prompt throughput: 1.7 tokens/s, Avg generation throughput: 12.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=10907) INFO 11-04 04:39:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.15, Accepted throughput: 0.42 tokens/s, Drafted throughput: 1.10 tokens/s, Accepted: 68 tokens, Drafted: 177 tokens, Per-position acceptance rate: 0.627, 0.356, 0.169, Avg Draft acceptance rate: 38.4%
+INFO:     127.0.0.1:60120 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60132 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60138 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60154 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60164 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60174 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51040 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51056 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51076 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:39:30 [loggers.py:335] Engine 000: Avg prompt throughput: 139.7 tokens/s, Avg generation throughput: 2.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.7%, Prefix cache hit rate: 0.0%
+(APIServer pid=10907) INFO 11-04 04:39:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.17, Accepted throughput: 1.30 tokens/s, Drafted throughput: 1.80 tokens/s, Accepted: 13 tokens, Drafted: 18 tokens, Per-position acceptance rate: 0.833, 0.667, 0.667, Avg Draft acceptance rate: 72.2%
+INFO:     127.0.0.1:51078 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51090 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51106 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51108 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51070 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51110 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51124 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39616 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39632 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39648 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39658 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:39:40 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 21.6 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=10907) INFO 11-04 04:39:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.73, Accepted throughput: 13.80 tokens/s, Drafted throughput: 24.00 tokens/s, Accepted: 138 tokens, Drafted: 240 tokens, Per-position acceptance rate: 0.787, 0.575, 0.362, Avg Draft acceptance rate: 57.5%
+INFO:     127.0.0.1:39660 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39662 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39672 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39682 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39700 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39710 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60560 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60574 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60582 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60586 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:39:50 [loggers.py:335] Engine 000: Avg prompt throughput: 31.8 tokens/s, Avg generation throughput: 27.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.2%, Prefix cache hit rate: 44.3%
+(APIServer pid=10907) INFO 11-04 04:39:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.48, Accepted throughput: 16.60 tokens/s, Drafted throughput: 33.60 tokens/s, Accepted: 166 tokens, Drafted: 336 tokens, Per-position acceptance rate: 0.652, 0.455, 0.375, Avg Draft acceptance rate: 49.4%
+INFO:     127.0.0.1:60598 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60608 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39690 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60614 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60622 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60628 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60634 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52522 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52532 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52548 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52558 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:40:00 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 9.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 44.3%
+(APIServer pid=10907) INFO 11-04 04:40:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.72, Accepted throughput: 6.20 tokens/s, Drafted throughput: 10.80 tokens/s, Accepted: 62 tokens, Drafted: 108 tokens, Per-position acceptance rate: 0.750, 0.583, 0.389, Avg Draft acceptance rate: 57.4%
+INFO:     127.0.0.1:52574 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52590 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52606 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52608 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52618 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52624 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36430 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36446 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36452 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36464 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:40:10 [loggers.py:335] Engine 000: Avg prompt throughput: 67.2 tokens/s, Avg generation throughput: 37.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.1%, Prefix cache hit rate: 55.8%
+(APIServer pid=10907) INFO 11-04 04:40:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.56, Accepted throughput: 22.60 tokens/s, Drafted throughput: 43.50 tokens/s, Accepted: 226 tokens, Drafted: 435 tokens, Per-position acceptance rate: 0.738, 0.490, 0.331, Avg Draft acceptance rate: 52.0%
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36472 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36488 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36490 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36502 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36510 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36516 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53142 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53158 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53168 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53178 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:40:20 [loggers.py:335] Engine 000: Avg prompt throughput: 101.8 tokens/s, Avg generation throughput: 63.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.2%, Prefix cache hit rate: 70.4%
+(APIServer pid=10907) INFO 11-04 04:40:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.60, Accepted throughput: 45.80 tokens/s, Drafted throughput: 52.80 tokens/s, Accepted: 458 tokens, Drafted: 528 tokens, Per-position acceptance rate: 0.955, 0.858, 0.790, Avg Draft acceptance rate: 86.7%
+INFO:     127.0.0.1:53182 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53192 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53204 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53214 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53222 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53230 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55052 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55068 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55080 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55090 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:40:30 [loggers.py:335] Engine 000: Avg prompt throughput: 101.0 tokens/s, Avg generation throughput: 59.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.2%, Prefix cache hit rate: 77.4%
+(APIServer pid=10907) INFO 11-04 04:40:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.48, Accepted throughput: 42.70 tokens/s, Drafted throughput: 51.59 tokens/s, Accepted: 427 tokens, Drafted: 516 tokens, Per-position acceptance rate: 0.924, 0.831, 0.727, Avg Draft acceptance rate: 82.8%
+INFO:     127.0.0.1:55100 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55112 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55120 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55130 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55140 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55144 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41762 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41768 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41778 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:40:40 [loggers.py:335] Engine 000: Avg prompt throughput: 50.2 tokens/s, Avg generation throughput: 61.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.0%, Prefix cache hit rate: 79.7%
+(APIServer pid=10907) INFO 11-04 04:40:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.48, Accepted throughput: 43.90 tokens/s, Drafted throughput: 53.10 tokens/s, Accepted: 439 tokens, Drafted: 531 tokens, Per-position acceptance rate: 0.910, 0.814, 0.757, Avg Draft acceptance rate: 82.7%
+INFO:     127.0.0.1:41786 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41798 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41802 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41814 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41826 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41840 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55726 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55734 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55736 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55742 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:40:50 [loggers.py:335] Engine 000: Avg prompt throughput: 99.8 tokens/s, Avg generation throughput: 56.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 14.9%, Prefix cache hit rate: 83.1%
+(APIServer pid=10907) INFO 11-04 04:40:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.46, Accepted throughput: 40.30 tokens/s, Drafted throughput: 49.19 tokens/s, Accepted: 403 tokens, Drafted: 492 tokens, Per-position acceptance rate: 0.896, 0.817, 0.744, Avg Draft acceptance rate: 81.9%
+INFO:     127.0.0.1:55750 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55764 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55772 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55778 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55782 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55788 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38088 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38090 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38102 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38106 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:41:00 [loggers.py:335] Engine 000: Avg prompt throughput: 51.2 tokens/s, Avg generation throughput: 60.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 16.7%, Prefix cache hit rate: 84.4%
+(APIServer pid=10907) INFO 11-04 04:41:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.58, Accepted throughput: 43.30 tokens/s, Drafted throughput: 50.40 tokens/s, Accepted: 433 tokens, Drafted: 504 tokens, Per-position acceptance rate: 0.929, 0.851, 0.798, Avg Draft acceptance rate: 85.9%
+INFO:     127.0.0.1:38112 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38116 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38130 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38132 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38134 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38150 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44298 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44310 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44326 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44340 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:41:10 [loggers.py:335] Engine 000: Avg prompt throughput: 51.0 tokens/s, Avg generation throughput: 55.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 18.4%, Prefix cache hit rate: 85.5%
+(APIServer pid=10907) INFO 11-04 04:41:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.39, Accepted throughput: 39.40 tokens/s, Drafted throughput: 49.50 tokens/s, Accepted: 394 tokens, Drafted: 495 tokens, Per-position acceptance rate: 0.879, 0.800, 0.709, Avg Draft acceptance rate: 79.6%
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44352 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44366 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44378 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44380 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44396 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44406 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40148 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40162 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40174 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40182 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:41:20 [loggers.py:335] Engine 000: Avg prompt throughput: 101.4 tokens/s, Avg generation throughput: 55.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 20.3%, Prefix cache hit rate: 87.3%
+(APIServer pid=10907) INFO 11-04 04:41:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.62, Accepted throughput: 40.40 tokens/s, Drafted throughput: 46.20 tokens/s, Accepted: 404 tokens, Drafted: 462 tokens, Per-position acceptance rate: 0.922, 0.870, 0.831, Avg Draft acceptance rate: 87.4%
+INFO:     127.0.0.1:40194 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40202 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40206 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40208 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40224 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40236 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40540 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40550 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40556 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40570 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:41:30 [loggers.py:335] Engine 000: Avg prompt throughput: 50.4 tokens/s, Avg generation throughput: 53.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 21.9%, Prefix cache hit rate: 88.0%
+(APIServer pid=10907) INFO 11-04 04:41:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.41, Accepted throughput: 38.10 tokens/s, Drafted throughput: 47.40 tokens/s, Accepted: 381 tokens, Drafted: 474 tokens, Per-position acceptance rate: 0.899, 0.785, 0.728, Avg Draft acceptance rate: 80.4%
+INFO:     127.0.0.1:40574 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40578 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40588 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40594 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40600 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40606 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60252 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60254 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60268 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60282 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:41:40 [loggers.py:335] Engine 000: Avg prompt throughput: 100.2 tokens/s, Avg generation throughput: 52.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 23.7%, Prefix cache hit rate: 89.3%
+(APIServer pid=10907) INFO 11-04 04:41:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.53, Accepted throughput: 37.40 tokens/s, Drafted throughput: 44.40 tokens/s, Accepted: 374 tokens, Drafted: 444 tokens, Per-position acceptance rate: 0.932, 0.845, 0.750, Avg Draft acceptance rate: 84.2%
+INFO:     127.0.0.1:60288 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60304 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60308 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60310 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60326 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40078 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40088 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40100 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40112 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:41:50 [loggers.py:335] Engine 000: Avg prompt throughput: 49.8 tokens/s, Avg generation throughput: 55.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 25.4%, Prefix cache hit rate: 89.8%
+(APIServer pid=10907) INFO 11-04 04:41:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.66, Accepted throughput: 40.40 tokens/s, Drafted throughput: 45.60 tokens/s, Accepted: 404 tokens, Drafted: 456 tokens, Per-position acceptance rate: 0.941, 0.895, 0.822, Avg Draft acceptance rate: 88.6%
+INFO:     127.0.0.1:40120 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40124 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40126 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40132 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40142 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40150 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46558 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46562 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46564 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46570 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:42:00 [loggers.py:335] Engine 000: Avg prompt throughput: 51.2 tokens/s, Avg generation throughput: 50.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 26.9%, Prefix cache hit rate: 90.3%
+(APIServer pid=10907) INFO 11-04 04:42:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.37, Accepted throughput: 35.60 tokens/s, Drafted throughput: 45.00 tokens/s, Accepted: 356 tokens, Drafted: 450 tokens, Per-position acceptance rate: 0.873, 0.793, 0.707, Avg Draft acceptance rate: 79.1%
+INFO:     127.0.0.1:46578 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46584 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46588 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46602 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46614 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46626 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59624 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59632 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59646 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59656 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:42:10 [loggers.py:335] Engine 000: Avg prompt throughput: 51.0 tokens/s, Avg generation throughput: 51.5 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 90.7%
+(APIServer pid=10907) INFO 11-04 04:42:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.60, Accepted throughput: 37.40 tokens/s, Drafted throughput: 43.20 tokens/s, Accepted: 374 tokens, Drafted: 432 tokens, Per-position acceptance rate: 0.931, 0.882, 0.785, Avg Draft acceptance rate: 86.6%
+INFO:     127.0.0.1:59660 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59664 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59680 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59688 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59692 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59700 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53542 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53556 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53562 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53574 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:42:20 [loggers.py:335] Engine 000: Avg prompt throughput: 101.4 tokens/s, Avg generation throughput: 51.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 30.2%, Prefix cache hit rate: 91.5%
+(APIServer pid=10907) INFO 11-04 04:42:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.61, Accepted throughput: 37.10 tokens/s, Drafted throughput: 42.60 tokens/s, Accepted: 371 tokens, Drafted: 426 tokens, Per-position acceptance rate: 0.937, 0.887, 0.789, Avg Draft acceptance rate: 87.1%
+INFO:     127.0.0.1:53584 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53594 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53600 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53612 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53620 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53626 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33822 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33830 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33836 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33852 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:42:30 [loggers.py:335] Engine 000: Avg prompt throughput: 50.4 tokens/s, Avg generation throughput: 49.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 31.7%, Prefix cache hit rate: 91.8%
+(APIServer pid=10907) INFO 11-04 04:42:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.49, Accepted throughput: 35.60 tokens/s, Drafted throughput: 42.90 tokens/s, Accepted: 356 tokens, Drafted: 429 tokens, Per-position acceptance rate: 0.930, 0.839, 0.720, Avg Draft acceptance rate: 83.0%
+INFO:     127.0.0.1:33864 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33870 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33884 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33888 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33892 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33904 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43982 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43998 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44008 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44010 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:42:40 [loggers.py:335] Engine 000: Avg prompt throughput: 50.2 tokens/s, Avg generation throughput: 48.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 33.2%, Prefix cache hit rate: 92.1%
+(APIServer pid=10907) INFO 11-04 04:42:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.43, Accepted throughput: 34.30 tokens/s, Drafted throughput: 42.30 tokens/s, Accepted: 343 tokens, Drafted: 423 tokens, Per-position acceptance rate: 0.908, 0.823, 0.702, Avg Draft acceptance rate: 81.1%
+INFO:     127.0.0.1:44020 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44024 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44028 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44032 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44042 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44054 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43108 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43110 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43122 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43138 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:42:50 [loggers.py:335] Engine 000: Avg prompt throughput: 50.0 tokens/s, Avg generation throughput: 48.6 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 92.4%
+(APIServer pid=10907) INFO 11-04 04:42:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.57, Accepted throughput: 35.20 tokens/s, Drafted throughput: 41.10 tokens/s, Accepted: 352 tokens, Drafted: 411 tokens, Per-position acceptance rate: 0.956, 0.891, 0.723, Avg Draft acceptance rate: 85.6%
+INFO:     127.0.0.1:43154 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43158 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43174 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43188 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43190 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34008 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34010 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34024 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34030 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:43:00 [loggers.py:335] Engine 000: Avg prompt throughput: 101.0 tokens/s, Avg generation throughput: 45.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 36.3%, Prefix cache hit rate: 92.9%
+(APIServer pid=10907) INFO 11-04 04:43:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.59, Accepted throughput: 33.10 tokens/s, Drafted throughput: 38.40 tokens/s, Accepted: 331 tokens, Drafted: 384 tokens, Per-position acceptance rate: 0.953, 0.883, 0.750, Avg Draft acceptance rate: 86.2%
+INFO:     127.0.0.1:34040 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34048 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34056 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34058 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34066 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34072 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60464 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60474 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60490 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60504 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:43:10 [loggers.py:335] Engine 000: Avg prompt throughput: 51.0 tokens/s, Avg generation throughput: 47.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 37.8%, Prefix cache hit rate: 93.1%
+(APIServer pid=10907) INFO 11-04 04:43:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.59, Accepted throughput: 34.50 tokens/s, Drafted throughput: 39.90 tokens/s, Accepted: 345 tokens, Drafted: 399 tokens, Per-position acceptance rate: 0.955, 0.895, 0.744, Avg Draft acceptance rate: 86.5%
+INFO:     127.0.0.1:60510 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60514 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60530 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60538 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60550 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60552 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55168 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55170 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55180 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55188 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:43:20 [loggers.py:335] Engine 000: Avg prompt throughput: 50.8 tokens/s, Avg generation throughput: 47.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 39.2%, Prefix cache hit rate: 93.4%
+(APIServer pid=10907) INFO 11-04 04:43:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.57, Accepted throughput: 33.90 tokens/s, Drafted throughput: 39.60 tokens/s, Accepted: 339 tokens, Drafted: 396 tokens, Per-position acceptance rate: 0.947, 0.856, 0.765, Avg Draft acceptance rate: 85.6%
+INFO:     127.0.0.1:55198 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55200 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55210 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55226 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55236 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55248 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41222 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41230 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41238 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41254 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:43:30 [loggers.py:335] Engine 000: Avg prompt throughput: 50.6 tokens/s, Avg generation throughput: 45.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 40.6%, Prefix cache hit rate: 93.6%
+(APIServer pid=10907) INFO 11-04 04:43:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.51, Accepted throughput: 32.60 tokens/s, Drafted throughput: 39.00 tokens/s, Accepted: 326 tokens, Drafted: 390 tokens, Per-position acceptance rate: 0.938, 0.831, 0.738, Avg Draft acceptance rate: 83.6%
+INFO:     127.0.0.1:41260 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41274 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41282 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41284 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41298 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41304 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38040 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38052 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38064 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38066 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:43:40 [loggers.py:335] Engine 000: Avg prompt throughput: 50.4 tokens/s, Avg generation throughput: 44.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 42.0%, Prefix cache hit rate: 93.8%
+(APIServer pid=10907) INFO 11-04 04:43:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.48, Accepted throughput: 31.80 tokens/s, Drafted throughput: 38.40 tokens/s, Accepted: 318 tokens, Drafted: 384 tokens, Per-position acceptance rate: 0.945, 0.852, 0.688, Avg Draft acceptance rate: 82.8%
+INFO:     127.0.0.1:38072 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38078 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38090 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38100 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38112 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49372 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49386 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49396 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49412 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:43:50 [loggers.py:335] Engine 000: Avg prompt throughput: 50.2 tokens/s, Avg generation throughput: 44.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 43.4%, Prefix cache hit rate: 93.9%
+(APIServer pid=10907) INFO 11-04 04:43:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.54, Accepted throughput: 32.30 tokens/s, Drafted throughput: 38.10 tokens/s, Accepted: 323 tokens, Drafted: 381 tokens, Per-position acceptance rate: 0.953, 0.866, 0.724, Avg Draft acceptance rate: 84.8%
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49414 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49418 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49432 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49436 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49450 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49464 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46826 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46830 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46838 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46846 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:44:00 [loggers.py:335] Engine 000: Avg prompt throughput: 99.8 tokens/s, Avg generation throughput: 41.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 44.9%, Prefix cache hit rate: 94.3%
+(APIServer pid=10907) INFO 11-04 04:44:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.56, Accepted throughput: 29.90 tokens/s, Drafted throughput: 35.10 tokens/s, Accepted: 299 tokens, Drafted: 351 tokens, Per-position acceptance rate: 0.957, 0.863, 0.735, Avg Draft acceptance rate: 85.2%
+INFO:     127.0.0.1:46848 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46862 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46866 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46882 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46886 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39952 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39958 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39972 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39976 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:44:10 [loggers.py:335] Engine 000: Avg prompt throughput: 51.2 tokens/s, Avg generation throughput: 44.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 46.3%, Prefix cache hit rate: 94.4%
+(APIServer pid=10907) INFO 11-04 04:44:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.60, Accepted throughput: 32.20 tokens/s, Drafted throughput: 37.20 tokens/s, Accepted: 322 tokens, Drafted: 372 tokens, Per-position acceptance rate: 0.968, 0.879, 0.750, Avg Draft acceptance rate: 86.6%
+INFO:     127.0.0.1:39978 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39984 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39992 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39996 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40012 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40020 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50828 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50832 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50846 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50854 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:44:20 [loggers.py:335] Engine 000: Avg prompt throughput: 51.0 tokens/s, Avg generation throughput: 43.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 47.6%, Prefix cache hit rate: 94.6%
+(APIServer pid=10907) INFO 11-04 04:44:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.57, Accepted throughput: 31.60 tokens/s, Drafted throughput: 36.90 tokens/s, Accepted: 316 tokens, Drafted: 369 tokens, Per-position acceptance rate: 0.967, 0.862, 0.740, Avg Draft acceptance rate: 85.6%
+INFO:     127.0.0.1:50868 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50876 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50888 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50894 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50900 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50916 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38992 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39004 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39016 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39028 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:44:30 [loggers.py:335] Engine 000: Avg prompt throughput: 50.8 tokens/s, Avg generation throughput: 43.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 49.0%, Prefix cache hit rate: 94.7%
+(APIServer pid=10907) INFO 11-04 04:44:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.58, Accepted throughput: 31.20 tokens/s, Drafted throughput: 36.30 tokens/s, Accepted: 312 tokens, Drafted: 363 tokens, Per-position acceptance rate: 0.959, 0.860, 0.760, Avg Draft acceptance rate: 86.0%
+INFO:     127.0.0.1:39034 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39038 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39046 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39060 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39062 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36106 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36112 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36122 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:44:40 [loggers.py:335] Engine 000: Avg prompt throughput: 50.6 tokens/s, Avg generation throughput: 43.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 50.3%, Prefix cache hit rate: 94.8%
+(APIServer pid=10907) INFO 11-04 04:44:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.58, Accepted throughput: 31.20 tokens/s, Drafted throughput: 36.30 tokens/s, Accepted: 312 tokens, Drafted: 363 tokens, Per-position acceptance rate: 0.950, 0.860, 0.769, Avg Draft acceptance rate: 86.0%
+INFO:     127.0.0.1:36128 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36130 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36138 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36150 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36164 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36168 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35086 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35098 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35106 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35114 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:44:50 [loggers.py:335] Engine 000: Avg prompt throughput: 50.4 tokens/s, Avg generation throughput: 41.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 51.6%, Prefix cache hit rate: 95.0%
+(APIServer pid=10907) INFO 11-04 04:44:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.53, Accepted throughput: 30.10 tokens/s, Drafted throughput: 35.70 tokens/s, Accepted: 301 tokens, Drafted: 357 tokens, Per-position acceptance rate: 0.950, 0.849, 0.731, Avg Draft acceptance rate: 84.3%
+INFO:     127.0.0.1:35128 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35142 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35158 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35160 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35168 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) ERROR 11-04 04:44:55 [exception.py:16] Exception caught. Request id: None
+INFO:     127.0.0.1:52604 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:35174 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55738 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55740 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55756 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55766 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:45:00 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 20.9 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 95.0%
+(APIServer pid=10907) INFO 11-04 04:45:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 3.46, Accepted throughput: 15.00 tokens/s, Drafted throughput: 18.30 tokens/s, Accepted: 150 tokens, Drafted: 183 tokens, Per-position acceptance rate: 0.918, 0.836, 0.705, Avg Draft acceptance rate: 82.0%
+INFO:     127.0.0.1:55778 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55782 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55798 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55804 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55810 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60684 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60690 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:45:10 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 95.0%
+(APIServer pid=10907) INFO 11-04 04:45:30 [loggers.py:335] Engine 000: Avg prompt throughput: 951.6 tokens/s, Avg generation throughput: 2.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 28.6%, Prefix cache hit rate: 92.8%
+(APIServer pid=10907) INFO 11-04 04:45:30 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 1.85, Accepted throughput: 0.37 tokens/s, Drafted throughput: 1.30 tokens/s, Accepted: 11 tokens, Drafted: 39 tokens, Per-position acceptance rate: 0.615, 0.231, 0.000, Avg Draft acceptance rate: 28.2%
+INFO:     127.0.0.1:51732 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:45:40 [loggers.py:335] Engine 000: Avg prompt throughput: 2.8 tokens/s, Avg generation throughput: 32.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 28.8%, Prefix cache hit rate: 93.0%
+(APIServer pid=10907) INFO 11-04 04:45:40 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.18, Accepted throughput: 17.80 tokens/s, Drafted throughput: 45.30 tokens/s, Accepted: 178 tokens, Drafted: 453 tokens, Per-position acceptance rate: 0.636, 0.391, 0.152, Avg Draft acceptance rate: 39.3%
+INFO:     127.0.0.1:56624 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:45:46 [api_router.py:39] Resetting prefix cache...
+(EngineCore pid=10977) INFO 11-04 04:45:46 [block_pool.py:879] Successfully reset prefix cache
+INFO:     127.0.0.1:56630 - "POST /reset_prefix_cache HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:45:46 [api_router.py:39] Starting profiler...
+(EngineCore pid=10977) INFO 11-04 04:45:46 [wrapper.py:243] Torch profiling enabled. Traces will be saved to: /data/cse291-results/serve-vllm-l20000-b/torch_profile
+USDT:2026-11-04 04:45:46 10977:10977 SyncActivityProfilerHandler.cpp:52] profiler_start
+ERROR: External init callback must run in same thread as registerClient (1071638080 != 477408128)
+USDT:2026-11-04 04:45:46 10907:15218 SyncActivityProfilerHandler.cpp:52] profiler_start
+(APIServer pid=10907) INFO 11-04 04:45:46 [api_router.py:44] Profiler started.
+INFO:     127.0.0.1:56636 - "POST /start_profile HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:45:50 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 15.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%
+(APIServer pid=10907) INFO 11-04 04:45:50 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 1.98, Accepted throughput: 7.80 tokens/s, Drafted throughput: 24.00 tokens/s, Accepted: 78 tokens, Drafted: 240 tokens, Per-position acceptance rate: 0.525, 0.312, 0.138, Avg Draft acceptance rate: 32.5%
+(APIServer pid=10907) INFO 11-04 04:46:00 [loggers.py:335] Engine 000: Avg prompt throughput: 1089.1 tokens/s, Avg generation throughput: 19.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 29.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=10907) INFO 11-04 04:46:00 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.09, Accepted throughput: 10.00 tokens/s, Drafted throughput: 27.60 tokens/s, Accepted: 100 tokens, Drafted: 276 tokens, Per-position acceptance rate: 0.641, 0.304, 0.141, Avg Draft acceptance rate: 36.2%
+INFO:     127.0.0.1:56652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:46:02 [api_router.py:50] Stopping profiler...
+USDT:2026-11-04 04:46:03 10907:15218 SyncActivityProfilerHandler.cpp:59] profiler_stop
+USDT:2026-11-04 04:46:03 10977:10977 SyncActivityProfilerHandler.cpp:59] profiler_stop
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+              concurrent/futures/thread.py(90): _worker        14.29%       16.732s        28.57%       33.454s       16.727s             2  
+<built-in method get of _queue.SimpleQueue object at...        14.29%       16.727s        14.29%       16.727s       16.727s             1  
+<built-in method get of _queue.SimpleQueue object at...        14.27%       16.706s        14.27%       16.706s        8.353s             2  
+                           asyncio/runners.py(118): run        14.22%       16.649s        14.29%       16.727s       16.727s             1  
+<built-in method poll of select.poll object at 0x7fc...        14.17%       16.596s        14.17%       16.596s     976.227ms            17  
+<built-in method acquire of _thread.lock object at 0...        14.12%       16.534s        14.12%       16.534s        1.033s            16  
+                                threading.py(359): wait         8.59%       10.053s         8.59%       10.053s        5.027s             2  
+<built-in method acquire of _thread.lock object at 0...         5.86%        6.865s         5.86%        6.865s        1.716s             4  
+                              selectors.py(415): select         0.11%     130.128ms         0.11%     130.128ms     130.128ms             1  
+<built-in method encode_batch of tokenizers.Tokenize...         0.01%      12.518ms         0.01%      12.518ms      12.518ms             1  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.01%       6.854ms         0.02%      18.557ms     144.977us           128  
+<built-in method step of tokenizers.decoders.DecodeS...         0.00%       4.866ms         0.00%       4.866ms      19.007us           256  
+                                 enum.py(1561): __and__         0.00%       2.801ms         0.01%       6.415ms       6.289us          1020  
+                    zmq/_future.py(670): _handle_events         0.00%       2.731ms         0.01%      12.925ms     101.769us           127  
+                   zmq/_future.py(470): _add_recv_event         0.00%       2.347ms         0.01%       9.280ms      72.503us           128  
+                              enum.py(1543): _get_value         0.00%       2.126ms         0.00%       3.147ms       0.793us          3970  
+                      zmq/_future.py(586): _handle_recv         0.00%       1.962ms         0.01%       7.805ms      60.977us           128  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.810ms         0.01%      11.660ms      93.276us           125  
+                         <built-in function isinstance>         0.00%       1.779ms         0.00%       2.108ms       0.233us          9043  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.775ms         0.03%      36.257ms     285.490us           127  
+                   prometheus_client/values.py(27): inc         0.00%       1.742ms         0.00%       2.064ms       0.810us          2548  
+                           asyncio/tasks.py(653): sleep         0.00%       1.655ms         0.00%       1.723ms      10.074us           171  
+                 prometheus_client/metrics.py(337): inc         0.00%       1.645ms         0.00%       4.552ms       2.269us          2006  
+                                 enum.py(720): __call__         0.00%       1.563ms         0.00%       2.339ms       1.141us          2050  
+<built-in method decode of msgspec.msgpack.Decoder o...         0.00%       1.455ms         0.00%       1.498ms      11.702us           128  
+prometheus_client/metrics.py(73): _raise_if_not_obse...         0.00%       1.202ms         0.00%       2.067ms       0.708us          2917  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.160ms         0.01%      13.745ms     108.225us           127  
+               zmq/sugar/socket.py(785): recv_multipart         0.00%       1.131ms         0.00%       1.262ms       9.858us           128  
+              prometheus_client/metrics.py(138): labels         0.00%       1.091ms         0.00%       1.450ms      10.660us           136  
+<built-in method set_result of _asyncio.Future objec...         0.00%       1.079ms         0.00%       1.079ms       2.464us           438  
+                          <frozen os>(710): __getitem__         0.00%     925.192us         0.00%       1.609ms       2.750us           585  
+                      uvicorn/server.py(248): main_loop         0.00%     918.384us         0.00%       3.932ms      23.689us           166  
+                      grpc/_channel.py(1119): _blocking         0.00%     897.087us         0.00%       1.112ms       1.112ms             1  
+                 prometheus_client/metrics.py(460): set         0.00%     895.706us         0.00%       2.172ms       3.394us           640  
+       prometheus_client/metrics.py(67): _is_observable         0.00%     865.750us         0.00%     865.750us       0.296us          2921  
+                                 enum.py(1128): __new__         0.00%     776.254us         0.00%     776.254us       0.379us          2050  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     771.451us         0.00%       2.529ms      20.235us           125  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     733.397us         0.00%       2.369ms      19.103us           124  
+                                  enum.py(1550): __or__         0.00%     705.582us         0.00%       1.506ms       5.771us           261  
+        zmq/_future.py(682): _schedule_remaining_events         0.00%     682.283us         0.00%       1.490ms       3.901us           382  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     647.776us         0.00%       1.189ms       9.288us           128  
+             prometheus_client/metrics.py(667): observe         0.00%     632.623us         0.00%       1.267ms       4.746us           267  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     618.566us         0.01%       5.944ms      47.554us           125  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/env...         0.00%     592.511us         0.00%       2.754ms      10.928us           252  
+                zmq/sugar/attrsettr.py(43): __getattr__         0.00%     569.246us         0.00%       1.574ms      12.300us           128  
+                    zmq/_future.py(704): _drop_io_state         0.00%     554.681us         0.00%       2.329ms      18.198us           128  
+                                  <template>(101): root         0.00%     526.993us         0.00%       1.176ms      56.020us            21  
+asyncio/futures.py(313): _set_result_unless_cancelle...         0.00%     484.575us         0.00%       1.181ms       6.908us           171  
+                    <frozen _collections_abc>(804): get         0.00%     484.419us         0.00%       2.026ms       3.794us           534  
+                   prometheus_client/values.py(31): set         0.00%     477.433us         0.00%     587.823us       0.918us           640  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 117.090s
+
+(APIServer pid=10907) INFO 11-04 04:46:06 [wrapper.py:98] Profiler stopped successfully.
+(APIServer pid=10907) INFO 11-04 04:46:10 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 6.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=10907) INFO 11-04 04:46:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 1.97, Accepted throughput: 3.10 tokens/s, Drafted throughput: 9.60 tokens/s, Accepted: 31 tokens, Drafted: 96 tokens, Per-position acceptance rate: 0.562, 0.281, 0.125, Avg Draft acceptance rate: 32.3%
+(APIServer pid=10907) INFO 11-04 04:46:20 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                    Command Buffer Full         4.57%        6.126s         4.57%        6.126s       3.929ms       20.518s       123.11%       20.518s      13.161ms          1559  
+                        ## Call CompiledFxGraph None ##         0.00%       0.000us         0.00%       0.000us       0.000us        7.113s        42.68%        7.113s      82.707ms            86  
+                                        _C::marlin_gemm         0.01%      12.221ms         3.19%        4.273s      13.352ms        6.582s        39.49%       26.049s      81.403ms           320  
+void marlin::Marlin<1125899906910725l, 1125899906843...         0.00%       0.000us         0.00%       0.000us       0.000us        6.559s        39.35%        6.559s       3.726ms          1760  
+                execute_context_1(8192)_generation_0(0)         0.00%       0.000us         0.00%       0.000us       0.000us        5.970s        35.82%        5.970s        5.970s             1  
+                   execute_context_0(0)_generation_1(4)         0.00%       0.000us         0.00%       0.000us       0.000us        5.564s        33.38%        5.564s      44.869ms           124  
+void flash::flash_fwd_splitkv_kernel<Flash_fwd_kerne...         0.00%       0.000us         0.00%       0.000us       0.000us        3.534s        21.20%        3.534s     684.006us          5166  
+void marlin::Marlin<1125899906910725l, 1125899906843...         0.00%       0.000us         0.00%       0.000us       0.000us        3.365s        20.19%        3.365s     169.611us         19840  
+                execute_context_1(2700)_generation_0(0)         0.00%       0.000us         0.00%       0.000us       0.000us        2.197s        13.18%        2.197s        2.197s             1  
+                                _vllm_fa2_C::varlen_fwd         0.00%       1.930ms         0.13%     177.827ms       2.169ms        1.387s         8.32%        2.245s      27.374ms            82  
+std::enable_if<!(false), void>::type internal::gemvx...         0.00%       0.000us         0.00%       0.000us       0.000us        1.199s         7.20%        1.199s     864.171us          1388  
+                                               aten::mm         0.01%       8.473ms         0.06%      75.103ms     286.652us        1.048s         6.29%        1.231s       4.700ms           262  
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s...         0.00%       0.000us         0.00%       0.000us       0.000us     941.178ms         5.65%     941.178ms       3.795ms           248  
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s...         0.00%       0.000us         0.00%       0.000us       0.000us     268.089ms         1.61%     268.089ms     540.503us           496  
+                      triton_poi_fused_mul_silu_slice_1         0.00%       0.000us         0.00%       0.000us       0.000us     197.921ms         1.19%     197.921ms      36.530us          5418  
+                      triton_poi_fused_mul_silu_slice_1         0.00%     653.120us         0.18%     247.594ms       3.019ms     185.560ms         1.11%     185.560ms       2.263ms            82  
+void cutlass::Kernel2<cutlass_80_tensorop_f16_s16816...         0.00%       0.000us         0.00%       0.000us       0.000us     168.567ms         1.01%     168.567ms      21.071ms             8  
+                  triton_red_fused_fused_add_rms_norm_2         0.00%       0.000us         0.00%       0.000us       0.000us     102.017ms         0.61%     102.017ms      20.241us          5040  
+                  triton_red_fused_fused_add_rms_norm_2         0.00%     648.370us         0.17%     223.503ms       2.941ms      79.390ms         0.48%      79.390ms       1.045ms            76  
+                  triton_red_fused_fused_add_rms_norm_0         0.00%       0.000us         0.00%       0.000us       0.000us      74.397ms         0.45%      74.397ms      13.732us          5418  
+                  triton_red_fused_fused_add_rms_norm_0         0.00%     702.908us         0.13%     173.019ms       2.110ms      53.628ms         0.32%      53.628ms     653.998us            82  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us      44.645ms         0.27%      44.645ms       9.085us          4914  
+void flash::flash_fwd_splitkv_kernel<Flash_fwd_kerne...         0.00%       0.000us         0.00%       0.000us       0.000us      35.011ms         0.21%      35.011ms     138.931us           252  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%     650.293us         0.13%     174.008ms       2.231ms      32.750ms         0.20%      32.750ms     419.874us            78  
+void vllm::reshape_and_cache_flash_kernel<unsigned s...         0.00%       0.000us         0.00%       0.000us       0.000us      28.736ms         0.17%      28.736ms       5.304us          5418  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us      23.658ms         0.14%      23.658ms       4.814us          4914  
+void marlin::Marlin<1125899906910725l, 1125899906843...         0.00%       0.000us         0.00%       0.000us       0.000us      23.608ms         0.14%      23.608ms     147.547us           160  
+                                      _topk_topp_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      23.562ms         0.14%      23.562ms     190.015us           124  
+ampere_fp16_s16816gemm_fp16_256x128_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us      18.998ms         0.11%      18.998ms       9.499ms             2  
+                                       cuLaunchKernelEx         0.02%      24.192ms         0.09%     125.277ms      43.289us      14.573ms         0.09%      14.574ms       5.036us          2894  
+                  _C_cache_ops::reshape_and_cache_flash         0.00%       1.092ms         0.14%     182.958ms       2.231ms      12.425ms         0.07%      18.637ms     227.280us            82  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%     574.278us         0.13%     173.723ms       2.227ms       9.806ms         0.06%       9.806ms     125.724us            78  
+              triton_red_fused_add_fused_add_rms_norm_2         0.00%       0.000us         0.00%       0.000us       0.000us       9.483ms         0.06%       9.483ms      25.088us           378  
+              triton_red_fused_add_fused_add_rms_norm_2         0.00%      51.191us         0.01%      12.239ms       2.040ms       7.746ms         0.05%       7.746ms       1.291ms             6  
+                               cudaStreamGetCaptureInfo         0.00%       5.390us         0.00%       5.390us       0.898us       6.172ms         0.04%       6.172ms       1.029ms             6  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us       4.060ms         0.02%       4.060ms      10.740us           378  
+                                     triton_red_fused_0         0.00%       0.000us         0.00%       0.000us       0.000us       3.293ms         0.02%       3.293ms       8.711us           378  
+                                              aten::cat         0.00%       2.445ms         0.01%      11.963ms      94.944us       3.279ms         0.02%       6.115ms      48.530us           126  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us       3.279ms         0.02%       3.279ms      26.020us           126  
+                                            aten::copy_         0.01%       9.352ms         0.14%     193.067ms     115.956us       3.186ms         0.02%       3.925ms       2.357us          1665  
+                                            aten::index         0.01%      10.614ms         0.05%      70.720ms     137.588us       2.349ms         0.01%       2.469ms       4.804us           514  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.128ms         0.01%       2.128ms       5.628us           378  
+                                          memcpy32_post         0.00%       0.000us         0.00%       0.000us       0.000us       2.013ms         0.01%       2.013ms       1.618us          1244  
+void flash::flash_fwd_splitkv_combine_kernel<Flash_f...         0.00%       0.000us         0.00%       0.000us       0.000us       1.982ms         0.01%       1.982ms       7.866us           252  
+                                     triton_red_fused_0         0.00%      20.051us         0.00%       4.563ms       2.281ms       1.863ms         0.01%       1.863ms     931.388us             2  
+triton_poi_fused_add_cat_index_select_mul_split_spli...         0.00%       0.000us         0.00%       0.000us       0.000us       1.812ms         0.01%       1.812ms       4.793us           378  
+                                       _resample_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.676ms         0.01%       1.676ms      13.519us           124  
+         triton_red_fused__to_copy_embedding_rms_norm_0         0.00%       0.000us         0.00%       0.000us       0.000us       1.652ms         0.01%       1.652ms      13.110us           126  
+                          _compute_slot_mappings_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.642ms         0.01%       1.642ms       4.345us           378  
+                     _compute_local_logits_stats_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.541ms         0.01%       1.541ms      12.431us           124  
+                                    _temperature_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.427ms         0.01%       1.427ms      11.326us           126  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.351ms         0.01%       1.351ms       5.320us           254  
+                                   _topp_sb_step_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.241ms         0.01%       1.241ms       2.002us           620  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.235ms         0.01%       1.235ms       4.863us           254  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us       1.230ms         0.01%       1.230ms       9.761us           126  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       1.223ms         0.01%       1.223ms       4.706us           260  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       1.174ms         0.01%       1.174ms       9.315us           126  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.168ms         0.01%       1.168ms       3.089us           378  
+triton_poi_fused_add_cat_index_select_mul_split_spli...         0.00%       0.000us         0.00%       0.000us       0.000us       1.074ms         0.01%       1.074ms       2.840us           378  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.038ms         0.01%       1.038ms       4.088us           254  
+triton_poi_fused_add_cat_index_select_mul_split_spli...         0.00%      16.800us         0.00%       4.860ms       2.430ms       1.017ms         0.01%       1.017ms     508.478us             2  
+         triton_red_fused__to_copy_embedding_rms_norm_0         0.00%      23.060us         0.00%       5.905ms       2.953ms     924.060us         0.01%     924.060us     462.030us             2  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%      22.451us         0.01%      10.783ms       5.391ms     840.923us         0.01%     840.923us     420.461us             2  
+                                      _rejection_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     781.918us         0.00%     781.918us       6.306us           124  
+                            _update_draft_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     723.860us         0.00%     723.860us       2.872us           252  
+void (anonymous namespace)::elementwise_kernel_with_...         0.00%       0.000us         0.00%       0.000us       0.000us     698.291us         0.00%     698.291us       1.847us           378  
+                                    _post_update_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     672.546us         0.00%     672.546us       5.338us           126  
+                           _gather_draft_sampled_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     637.852us         0.00%     637.852us       5.144us           124  
+                            _gather_block_tables_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     634.941us         0.00%     634.941us       5.039us           126  
+                               _insert_resampled_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     615.002us         0.00%     615.002us       4.960us           124  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     589.246us         0.00%     589.246us       1.559us           378  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us     578.396us         0.00%     578.396us       4.590us           126  
+                                 aten::_index_put_impl_         0.00%       2.003ms         0.01%       9.549ms      74.598us     558.431us         0.00%     584.095us       4.563us           128  
+               _combine_sampled_and_draft_tokens_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     554.398us         0.00%     554.398us       4.400us           126  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     540.383us         0.00%     540.383us       4.289us           126  
+                   _get_num_sampled_and_rejected_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     490.141us         0.00%     490.141us       3.890us           126  
+                                            aten::fill_         0.00%       2.952ms         0.02%      31.422ms      49.327us     477.378us         0.00%     497.921us       0.782us           637  
+                         Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     471.043us         0.00%     471.043us       0.726us           649  
+                         _prepare_prefill_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     410.615us         0.00%     410.615us       3.208us           128  
+                          _prepare_decode_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     403.005us         0.00%     403.005us       3.198us           126  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us     361.689us         0.00%     361.689us       1.430us           253  
+void at::native::vectorized_gather_kernel<16, long>(...         0.00%       0.000us         0.00%       0.000us       0.000us     360.855us         0.00%     360.855us       2.910us           124  
+                                        Memset (Device)         0.00%       0.000us         0.00%       0.000us       0.000us     315.675us         0.00%     315.675us       0.831us           380  
+                         Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us     309.632us         0.00%     309.632us       1.229us           252  
+                                         aten::_softmax         0.00%      32.141us         0.00%       2.715ms       1.357ms     308.830us         0.00%     617.660us     308.830us             2  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us     308.830us         0.00%     308.830us     154.415us             2  
+                                              aten::sub         0.00%       2.168ms         0.00%       3.595ms      28.993us     305.505us         0.00%     305.505us       2.464us           124  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     305.505us         0.00%     305.505us       2.464us           124  
+                                   _topp_sb_mask_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     288.991us         0.00%     288.991us       2.331us           124  
+                           _prepare_pos_seq_lens_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     283.618us         0.00%     283.618us       2.251us           126  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     248.223us         0.00%     248.223us       1.970us           126  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us     246.113us         0.00%     246.113us       1.953us           126  
+                             _expand_idx_mapping_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     236.667us         0.00%     236.667us       1.909us           124  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%      16.740us         0.00%       3.462ms       1.731ms     220.927us         0.00%     220.927us     110.464us             2  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     214.948us         0.00%     214.948us       1.706us           126  
+triton_poi_fused_add_cat_index_select_mul_split_spli...         0.00%      17.861us         0.00%       5.270ms       2.635ms     201.919us         0.00%     201.919us     100.960us             2  
+                                  _topp_sb_stats_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     192.511us         0.00%     192.511us       1.553us           124  
+void flashinfer::sampling::TopPSamplingFromProbKerne...         0.00%       0.000us         0.00%       0.000us       0.000us     175.104us         0.00%     175.104us      87.552us             2  
+                                    _apply_write_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     116.832us         0.00%     116.832us       5.311us            22  
+void flashinfer::sampling::RadixTopKMaskLogitsKernel...         0.00%       0.000us         0.00%       0.000us       0.000us     116.512us         0.00%     116.512us      58.256us             2  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 134.033s
+Self CUDA time total: 16.667s
+
+(EngineCore pid=10977) INFO 11-04 04:47:03 [wrapper.py:98] Profiler stopped successfully.
+(APIServer pid=10907) INFO 11-04 04:47:03 [api_router.py:52] Profiler stopped.
+INFO:     127.0.0.1:52422 - "POST /stop_profile HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:47:03 [api_router.py:39] Starting profiler...
+USDT:2026-11-04 04:47:03 10977:10977 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-04 04:47:03 10907:15218 SyncActivityProfilerHandler.cpp:52] profiler_start
+(APIServer pid=10907) INFO 11-04 04:47:03 [api_router.py:44] Profiler started.
+INFO:     127.0.0.1:57480 - "POST /start_profile HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:47:10 [loggers.py:335] Engine 000: Avg prompt throughput: 2.8 tokens/s, Avg generation throughput: 22.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 29.1%, Prefix cache hit rate: 49.9%
+(APIServer pid=10907) INFO 11-04 04:47:10 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 1.95, Accepted throughput: 1.78 tokens/s, Drafted throughput: 5.65 tokens/s, Accepted: 107 tokens, Drafted: 339 tokens, Per-position acceptance rate: 0.558, 0.292, 0.097, Avg Draft acceptance rate: 31.6%
+INFO:     127.0.0.1:57482 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=10907) INFO 11-04 04:47:11 [api_router.py:50] Stopping profiler...
+USDT:2026-11-04 04:47:12 10907:15218 SyncActivityProfilerHandler.cpp:59] profiler_stop
+USDT:2026-11-04 04:47:12 10977:10977 SyncActivityProfilerHandler.cpp:59] profiler_stop
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+              concurrent/futures/thread.py(90): _worker        14.29%        8.507s        28.57%       17.007s        8.504s             2  
+<built-in method get of _queue.SimpleQueue object at...        14.29%        8.503s        14.29%        8.503s        8.503s             1  
+<built-in method get of _queue.SimpleQueue object at...        14.25%        8.482s        14.25%        8.482s        4.241s             2  
+<built-in method poll of select.poll object at 0x7fc...        14.20%        8.451s        14.20%        8.451s     938.991ms             9  
+                           asyncio/runners.py(118): run        14.17%        8.433s        14.29%        8.503s        8.503s             1  
+<built-in method acquire of _thread.lock object at 0...         9.88%        5.883s         9.88%        5.883s        1.471s             4  
+                                threading.py(359): wait         9.38%        5.584s         9.38%        5.584s        2.792s             2  
+<built-in method acquire of _thread.lock object at 0...         9.31%        5.540s         9.31%        5.540s     692.497ms             8  
+                              selectors.py(415): select         0.09%      51.937ms         0.09%      51.937ms      51.937ms             1  
+<built-in method encode_batch of tokenizers.Tokenize...         0.02%      13.151ms         0.02%      13.151ms      13.151ms             1  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.01%       6.317ms         0.03%      17.125ms     129.738us           132  
+<built-in method step of tokenizers.decoders.DecodeS...         0.01%       4.498ms         0.01%       4.498ms      17.570us           256  
+                                 enum.py(1561): __and__         0.00%       2.690ms         0.01%       6.123ms       5.798us          1056  
+                    zmq/_future.py(670): _handle_events         0.00%       2.647ms         0.02%      12.434ms      94.198us           132  
+                   zmq/_future.py(470): _add_recv_event         0.00%       2.272ms         0.01%       8.590ms      65.077us           132  
+                              enum.py(1543): _get_value         0.00%       2.036ms         0.01%       3.001ms       0.730us          4110  
+                      zmq/_future.py(586): _handle_recv         0.00%       1.884ms         0.01%       7.396ms      56.033us           132  
+                         <built-in function isinstance>         0.00%       1.715ms         0.00%       2.062ms       0.225us          9163  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.664ms         0.02%      10.917ms      82.704us           132  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.602ms         0.06%      33.540ms     254.089us           132  
+                   prometheus_client/values.py(27): inc         0.00%       1.597ms         0.00%       1.880ms       0.702us          2679  
+                 prometheus_client/metrics.py(337): inc         0.00%       1.551ms         0.01%       4.170ms       1.977us          2109  
+                                 enum.py(720): __call__         0.00%       1.463ms         0.00%       2.191ms       1.033us          2121  
+<built-in method decode of msgspec.msgpack.Decoder o...         0.00%       1.425ms         0.00%       1.465ms      11.101us           132  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.115ms         0.02%      12.953ms      98.128us           132  
+prometheus_client/metrics.py(73): _raise_if_not_obse...         0.00%       1.086ms         0.00%       1.835ms       0.601us          3054  
+               zmq/sugar/socket.py(785): recv_multipart         0.00%       1.057ms         0.00%       1.178ms       8.922us           132  
+                           asyncio/tasks.py(653): sleep         0.00%       1.023ms         0.00%       1.096ms      12.599us            87  
+              prometheus_client/metrics.py(138): labels         0.00%     987.115us         0.00%       1.211ms       8.652us           140  
+                 prometheus_client/metrics.py(460): set         0.00%     866.491us         0.00%       2.014ms       3.051us           660  
+                          <frozen os>(710): __getitem__         0.00%     847.698us         0.00%       1.488ms       2.443us           609  
+<built-in method set_result of _asyncio.Future objec...         0.00%     817.841us         0.00%     817.841us       2.253us           363  
+       prometheus_client/metrics.py(67): _is_observable         0.00%     748.530us         0.00%     748.530us       0.245us          3054  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     744.353us         0.00%       2.290ms      17.477us           131  
+                                 enum.py(1128): __new__         0.00%     728.530us         0.00%     728.530us       0.343us          2121  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     728.389us         0.00%       2.412ms      18.270us           132  
+                                  enum.py(1550): __or__         0.00%     659.115us         0.00%       1.407ms       5.210us           270  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     626.016us         0.01%       5.540ms      41.970us           132  
+        zmq/_future.py(682): _schedule_remaining_events         0.00%     617.676us         0.00%       1.362ms       3.439us           396  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     595.009us         0.00%       1.097ms       8.308us           132  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/env...         0.00%     585.908us         0.00%       2.607ms       9.839us           265  
+                      uvicorn/server.py(248): main_loop         0.00%     583.785us         0.00%       2.383ms      28.373us            84  
+             prometheus_client/metrics.py(667): observe         0.00%     573.703us         0.00%       1.143ms       4.067us           281  
+                    zmq/_future.py(704): _drop_io_state         0.00%     535.570us         0.00%       2.186ms      16.563us           132  
+                                  <template>(101): root         0.00%     530.660us         0.00%       1.154ms      54.951us            21  
+                zmq/sugar/attrsettr.py(43): __getattr__         0.00%     502.767us         0.00%       1.402ms      10.620us           132  
+                    <frozen _collections_abc>(804): get         0.00%     446.981us         0.00%       1.870ms       3.351us           558  
+                   prometheus_client/values.py(31): set         0.00%     442.402us         0.00%     540.797us       0.819us           660  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     412.545us         0.00%     447.981us       3.394us           132  
+<built-in method __exit__ of _thread.lock object at ...         0.00%     412.077us         0.00%     412.077us       0.118us          3497  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 59.525s
+
+(APIServer pid=10907) INFO 11-04 04:47:20 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3.5 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 49.9%
+(APIServer pid=10907) INFO 11-04 04:47:20 [metrics.py:120] SpecDecoding metrics: Mean acceptance length: 2.00, Accepted throughput: 1.80 tokens/s, Drafted throughput: 5.40 tokens/s, Accepted: 18 tokens, Drafted: 54 tokens, Per-position acceptance rate: 0.444, 0.333, 0.222, Avg Draft acceptance rate: 33.3%
+(APIServer pid=10907) INFO 11-04 04:47:30 [loggers.py:335] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 49.9%
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                   execute_context_0(0)_generation_1(4)         0.00%       0.000us         0.00%       0.000us       0.000us        5.787s        67.86%        5.787s      43.843ms           132  
+void marlin::Marlin<1125899906910725l, 1125899906843...         0.00%       0.000us         0.00%       0.000us       0.000us        3.574s        41.91%        3.574s     169.216us         21120  
+void flash::flash_fwd_splitkv_kernel<Flash_fwd_kerne...         0.00%       0.000us         0.00%       0.000us       0.000us        2.174s        25.49%        2.174s     398.618us          5453  
+std::enable_if<!(false), void>::type internal::gemvx...         0.00%       0.000us         0.00%       0.000us       0.000us        1.259s        14.76%        1.259s     859.700us          1464  
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s...         0.00%       0.000us         0.00%       0.000us       0.000us        1.002s        11.75%        1.002s       3.794ms           264  
+                                               aten::mm         0.01%       8.110ms         0.02%      10.807ms      40.475us     907.698ms        10.64%     907.698ms       3.400ms           267  
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s...         0.00%       0.000us         0.00%       0.000us       0.000us     285.154ms         3.34%     285.154ms     540.064us           528  
+                  execute_context_1(28)_generation_0(0)         0.00%       0.000us         0.00%       0.000us       0.000us      45.414ms         0.53%      45.414ms      45.414ms             1  
+void flash::flash_fwd_splitkv_kernel<Flash_fwd_kerne...         0.00%       0.000us         0.00%       0.000us       0.000us      36.301ms         0.43%      36.301ms     136.471us           266  
+void marlin::Marlin<1125899906910725l, 1125899906843...         0.00%       0.000us         0.00%       0.000us       0.000us      27.948ms         0.33%      27.948ms     174.678us           160  
+                                      _topk_topp_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      23.907ms         0.28%      23.907ms     181.113us           132  
+                  triton_red_fused_fused_add_rms_norm_2         0.00%       0.000us         0.00%       0.000us       0.000us      23.050ms         0.27%      23.050ms       4.333us          5320  
+                  triton_red_fused_fused_add_rms_norm_0         0.00%       0.000us         0.00%       0.000us       0.000us      21.164ms         0.25%      21.164ms       3.701us          5719  
+void vllm::reshape_and_cache_flash_kernel<unsigned s...         0.00%       0.000us         0.00%       0.000us       0.000us      16.560ms         0.19%      16.560ms       2.896us          5719  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us      14.047ms         0.16%      14.047ms       2.708us          5187  
+                      triton_poi_fused_mul_silu_slice_1         0.00%       0.000us         0.00%       0.000us       0.000us      12.710ms         0.15%      12.710ms       2.222us          5719  
+                                _vllm_fa2_C::varlen_fwd         0.00%     827.670us         0.00%       1.946ms      47.461us      12.662ms         0.15%      12.662ms     308.827us            41  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us      12.095ms         0.14%      12.095ms       2.332us          5187  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us       4.057ms         0.05%       4.057ms      10.167us           399  
+                                            aten::copy_         0.02%       9.513ms         0.04%      23.080ms      13.174us       2.523ms         0.03%       2.523ms       1.440us          1752  
+                                            aten::index         0.02%      10.827ms         0.03%      18.336ms      34.145us       2.309ms         0.03%       2.309ms       4.300us           537  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.111ms         0.02%       2.111ms       5.290us           399  
+                                          memcpy32_post         0.00%       0.000us         0.00%       0.000us       0.000us       2.039ms         0.02%       2.039ms       1.542us          1322  
+void flash::flash_fwd_splitkv_combine_kernel<Flash_f...         0.00%       0.000us         0.00%       0.000us       0.000us       1.979ms         0.02%       1.979ms       7.438us           266  
+ampere_fp16_s16816gemm_fp16_128x128_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.804ms         0.02%       1.804ms     902.078us             2  
+                                       _resample_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.795ms         0.02%       1.795ms      13.601us           132  
+              triton_red_fused_add_fused_add_rms_norm_2         0.00%       0.000us         0.00%       0.000us       0.000us       1.772ms         0.02%       1.772ms       4.442us           399  
+                          _compute_slot_mappings_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.619ms         0.02%       1.619ms       4.057us           399  
+                     _compute_local_logits_stats_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.617ms         0.02%       1.617ms      12.252us           132  
+                                    _temperature_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.548ms         0.02%       1.548ms      11.641us           133  
+                                     triton_red_fused_0         0.00%       0.000us         0.00%       0.000us       0.000us       1.447ms         0.02%       1.447ms       3.628us           399  
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s...         0.00%       0.000us         0.00%       0.000us       0.000us       1.390ms         0.02%       1.390ms     695.214us             2  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.361ms         0.02%       1.361ms       5.098us           267  
+                                   _topp_sb_step_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       1.253ms         0.01%       1.253ms       1.898us           660  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.215ms         0.01%       1.215ms       4.551us           267  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       1.199ms         0.01%       1.199ms       9.017us           133  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.185ms         0.01%       1.185ms       2.970us           399  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.025ms         0.01%       1.025ms       3.839us           267  
+triton_poi_fused_add_cat_index_select_mul_split_spli...         0.00%       0.000us         0.00%       0.000us       0.000us     882.396us         0.01%     882.396us       2.212us           399  
+triton_poi_fused_add_cat_index_select_mul_split_spli...         0.00%       0.000us         0.00%       0.000us       0.000us     800.743us         0.01%     800.743us       2.007us           399  
+                                      _rejection_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     792.444us         0.01%     792.444us       6.003us           132  
+         triton_red_fused__to_copy_embedding_rms_norm_0         0.00%       0.000us         0.00%       0.000us       0.000us     760.125us         0.01%     760.125us       5.715us           133  
+                            _update_draft_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     723.133us         0.01%     723.133us       2.719us           266  
+void (anonymous namespace)::elementwise_kernel_with_...         0.00%       0.000us         0.00%       0.000us       0.000us     695.028us         0.01%     695.028us       1.742us           399  
+                                    _post_update_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     680.420us         0.01%     680.420us       5.116us           133  
+                           _gather_draft_sampled_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     659.174us         0.01%     659.174us       4.994us           132  
+ampere_fp16_s16816gemm_fp16_64x128_ldg8_f2f_stages_6...         0.00%       0.000us         0.00%       0.000us       0.000us     652.414us         0.01%     652.414us     652.414us             1  
+                            _gather_block_tables_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     646.367us         0.01%     646.367us       4.860us           133  
+                               _insert_resampled_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     632.159us         0.01%     632.159us       4.789us           132  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     587.808us         0.01%     587.808us       1.473us           399  
+               _combine_sampled_and_draft_tokens_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     564.324us         0.01%     564.324us       4.243us           133  
+                                 aten::_index_put_impl_         0.00%       2.068ms         0.01%       4.054ms      30.252us     548.543us         0.01%     548.543us       4.094us           134  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     542.559us         0.01%     542.559us       4.079us           133  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     527.510us         0.01%     527.510us       1.954us           270  
+                   _get_num_sampled_and_rejected_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     497.923us         0.01%     497.923us       3.744us           133  
+                         Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     476.779us         0.01%     476.779us       0.697us           684  
+                                            aten::fill_         0.00%       2.823ms         0.01%       6.538ms       9.773us     470.561us         0.01%     471.649us       0.705us           669  
+                                              aten::cat         0.00%       2.576ms         0.01%       4.253ms      31.980us     458.978us         0.01%     458.978us       3.451us           133  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us     458.978us         0.01%     458.978us       3.451us           133  
+                          _prepare_decode_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     409.860us         0.00%     409.860us       3.082us           133  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us     383.041us         0.00%     383.041us       2.880us           133  
+                         _prepare_prefill_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     381.663us         0.00%     381.663us       2.848us           134  
+void at::native::vectorized_gather_kernel<16, long>(...         0.00%       0.000us         0.00%       0.000us       0.000us     369.467us         0.00%     369.467us       2.799us           132  
+triton_red_fused_add_cat_index_select_mul_rms_norm_s...         0.00%       0.000us         0.00%       0.000us       0.000us     363.324us         0.00%     363.324us       2.732us           133  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us     360.067us         0.00%     360.067us       1.349us           267  
+                                        Memset (Device)         0.00%       0.000us         0.00%       0.000us       0.000us     327.177us         0.00%     327.177us       0.820us           399  
+                         Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us     317.031us         0.00%     317.031us       1.192us           266  
+                                              aten::sub         0.00%       2.162ms         0.01%       3.642ms      27.593us     309.155us         0.00%     309.155us       2.342us           132  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     309.155us         0.00%     309.155us       2.342us           132  
+                                   _topp_sb_mask_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     289.824us         0.00%     289.824us       2.196us           132  
+                           _prepare_pos_seq_lens_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     280.990us         0.00%     280.990us       2.113us           133  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     250.496us         0.00%     250.496us       1.883us           133  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us     246.015us         0.00%     246.015us       1.850us           133  
+                             _expand_idx_mapping_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     241.788us         0.00%     241.788us       1.832us           132  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     214.785us         0.00%     214.785us       1.603us           134  
+                                  _topp_sb_stats_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     193.432us         0.00%     193.432us       1.465us           132  
+                  _C_cache_ops::reshape_and_cache_flash         0.00%     435.131us         0.00%     910.473us      22.207us     123.550us         0.00%     123.550us       3.013us            41  
+                                    _apply_write_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     109.951us         0.00%     109.951us       5.236us            21  
+                                         aten::_softmax         0.00%      15.771us         0.00%      25.231us      25.231us      90.688us         0.00%      90.688us      90.688us             1  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us      90.688us         0.00%      90.688us      90.688us             1  
+void flashinfer::sampling::TopPSamplingFromProbKerne...         0.00%       0.000us         0.00%       0.000us       0.000us      76.768us         0.00%      76.768us      76.768us             1  
+void flashinfer::sampling::RadixTopKMaskLogitsKernel...         0.00%       0.000us         0.00%       0.000us       0.000us      34.752us         0.00%      34.752us      34.752us             1  
+                                           aten::argmax         0.00%      26.882us         0.00%      47.212us      47.212us      11.138us         0.00%      11.138us      11.138us             1  
+void cublasLt::splitKreduce_kernel<32, 16, int, __ha...         0.00%       0.000us         0.00%       0.000us       0.000us       9.888us         0.00%       9.888us       4.944us             2  
+                                              aten::add         0.00%      30.750us         0.00%      46.171us      23.086us       4.992us         0.00%       4.992us       2.496us             2  
+                                           aten::arange         0.00%      34.131us         0.00%     134.245us      33.561us       2.913us         0.00%       5.826us       1.457us             4  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.592us         0.00%       2.592us       1.296us             2  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       2.496us         0.00%       2.496us       2.496us             1  
+                                Activity Buffer Request         0.00%       1.341ms         0.00%       1.341ms     268.139us       1.088us         0.00%       1.088us       0.218us             5  
+void (anonymous namespace)::elementwise_kernel_with_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.056us         0.00%       1.056us       1.056us             1  
+                         threading.py(1032): _bootstrap         0.00%       3.291us       114.29%       68.621s        8.578s       0.000us         0.00%       0.000us       0.000us             8  
+                   threading.py(1075): _bootstrap_inner         0.00%       6.759us       114.29%       68.621s        8.578s       0.000us         0.00%       0.000us       0.000us             8  
+                                threading.py(1012): run         0.00%       4.811us        71.43%       42.888s        8.578s       0.000us         0.00%       0.000us       0.000us             5  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.270us        14.29%        8.578s        8.578s       0.000us         0.00%       0.000us       0.000us             1  
+                                threading.py(655): wait         0.00%      17.991us        59.09%       35.478s        7.096s       0.000us         0.00%       0.000us       0.000us             5  
+                                threading.py(355): wait         0.00%     522.122us        14.29%        8.578s        4.289s       0.000us         0.00%       0.000us       0.000us             2  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.922ms        14.29%        8.578s        8.578s       0.000us         0.00%       0.000us       0.000us             1  
+                                     queue.py(171): get         0.00%       8.990us         0.00%     541.743us     541.743us       0.000us         0.00%       0.000us       0.000us             1  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     218.239us        14.29%        8.578s        8.578s       0.000us         0.00%       0.000us       0.000us             1  
+                           zmq/sugar/poll.py(106): poll         0.04%      24.504ms         0.04%      24.504ms      24.504ms       0.000us         0.00%       0.000us       0.000us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 60.044s
+Self CUDA time total: 8.528s
+(APIServer pid=10907) INFO 11-04 04:48:08 [api_router.py:52] Profiler stopped.
+INFO:     127.0.0.1:60798 - "POST /stop_profile HTTP/1.1" 200 OK

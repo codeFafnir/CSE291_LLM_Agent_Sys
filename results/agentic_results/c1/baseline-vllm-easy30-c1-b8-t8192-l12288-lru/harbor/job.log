@@ -1,0 +1,56 @@
+Inference credentials: 1 mappings across 30 trials
+terminus-2 / openai (30 trials): OPENAI_API_KEY → OPENAI_API_KEY; base URL=http://host.docker.internal:8000/v1 (configured/default); API format=openai_chat_completions (cli_flag_override)
+Registered custom model 'openai/Qwen/Qwen3-14B-AWQ' with info: {'max_input_tokens': 12288, 'max_output_tokens': 2048, 'input_cost_per_token': 0, 'output_cost_per_token': 0}
+Skipping image OS validation for ghcr.io/scaleapi/swe-bench_pro-v2:instance_future-architect__vuls-01441351c3407abfc21c48a38e28828e1b504e0c: docker inspect returned 1
+Installing: tmux, asciinema
+Detected system: {'os': 'debian-based', 'package_manager': 'apt-get', 'update_command': None}
+Installing tools using apt-get: DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y tmux asciinema
+Starting recording.
+Sending keys: ['asciinema rec --stdin /logs/agent/recording.cast', 'Enter'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Sending keys: ['clear', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 180.0
+Agent 'terminus-2' exposes no native web search or fetch tools for Harbor to disable; continuing. Sandbox network policy still applies.
+Sending keys: ['cd /app\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Sending keys: ['ls -la\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Sending keys: ['ls -la detector\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Sending keys: ['ls -la scanner\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Sending keys: ['cat detector/detector.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Sending keys: ['cat scanner/scanner.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7685
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-1-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-1-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-1-answers.json
+Sending keys: ['cat detector/detector.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Sending keys: ['cat scanner/scanner.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7199
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-2-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-2-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-2-answers.json
+Sending keys: ['cat detector/detector.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Sending keys: ['cat scanner/scanner.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7159
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-3-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-3-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-3-answers.json
+Sending keys: ['cd detector\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Sending keys: ['cat detector.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 7205
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-4-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-4-questions.json
+Answers subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-4-answers.json
+Sending keys: ['cd ../scanner\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Sending keys: ['ls -la\n'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Sending keys: ['cat scanner.go\n'] min_timeout_sec: 1.0 max_timeout_sec: 180.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Proactively summarizing. Free tokens: approximately 6432
+Summary subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-5-summary.json
+Questions subagent trajectory saved to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.summarization-5-questions.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor/instance_future-architect__vuls__zT9KLUN/agent/trajectory.json
+Trial instance_future-architect__vuls__zT9KLUN cancelled
+Collecting main service artifacts

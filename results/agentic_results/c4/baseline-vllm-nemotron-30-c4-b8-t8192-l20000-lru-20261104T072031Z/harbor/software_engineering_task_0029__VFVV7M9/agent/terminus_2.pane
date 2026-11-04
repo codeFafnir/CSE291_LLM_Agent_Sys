@@ -1,0 +1,344 @@
+[?2004hroot@96366957485c:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@96366957485c:/app# clear
+[?2004l[H[J[3J[?2004hroot@96366957485c:/app# mkdir -p /app/build/output
+[?2004l[?2004hroot@96366957485c:/app# touch /app/scripts/csv_to_json.py
+[?2004ltouch: cannot touch '/app/scripts/csv_to_json.py': No such file or directory
+[?2004hroot@96366957485c:/app# echo "import csv\nimport json\nimport sys\n\nif __name__ == \"__main__\":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"--input\", required=True)\n    parser.add_argument(\"--output\", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print(\"Error: Input file not found.\", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f\"Error: {str(e)}\", file=sys.stderr)\n        sys.exit(1)" > /app/scripts/csv_to_json.py M[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ky
+[?2004lbash: /app/scripts/csv_to_json.py: No such file or directory
+[?2004hroot@96366957485c:/app# touch /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# echo "# CMakeLists.txt for the project\n\n# Add a custom target to generate JSON from CSV\nadd_custom_target(generate_data_json\n    COMMAND python3 /app/scripts/csv_to_json.py --input /app/data/input.csv --output /app/build/output/data.json\n    DEPENDS /app/data/input.csv\n    COMMENT \"Generating JSON data from CSV input.\")" > /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# mkdir -p /app/scripts
+[?2004l[?2004hroot@96366957485c:/app# touch /app/scripts/csv_to_json.py
+[?2004l[?2004hroot@96366957485c:/app# echo "import csv\nimport json\nimport sys\n\nif __name__ == \"__main__\":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"--input\", required=True)\n    parser.add_argument(\"--output\", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print(\"Error: Input file not found.\", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f\"Error: {str(e)}\", file=sys.stderr)\n        sys.exit(1)" > /app/scripts/csv_to_json.py M[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ky
+[?2004l[?2004hroot@96366957485c:/app# touch /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# echo "# CMakeLists.txt for the project\n\n# Add a custom target to generate JSON from CSV\nadd_custom_target(generate_data_json\n    COMMAND python3 /app/scripts/csv_to_json.py --input /app/data/input.csv --output /app/build/output/data.json\n    DEPENDS /app/data/input.csv\n    COMMENT \"Generating JSON data from CSV input.\")" > /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# cmake .
+[?2004l[33mCMake Warning (dev) in CMakeLists.txt:
+  No project() command is present.  The top-level CMakeLists.txt file must
+  contain a literal, direct call to the project() command.  Add a line of
+  code such as
+
+    project(ProjectName)
+
+  near the top of the file, but after cmake_minimum_required().
+
+  CMake is pretending there is a "project(Project)" command on the first
+  line.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+[0m
+[33mCMake Warning (dev) in CMakeLists.txt:
+  cmake_minimum_required() should be called prior to this top-level project()
+  call.  Please see the cmake-commands(7) manual for usage documentation of
+  both commands.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+[0m
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.5s)
+-- Generating done (0.0s)
+-- Build files have been written to: /app
+[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004lmake: *** No rule to make target 'generate_data_json'.  Stop.
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# echo "cmake_minimum_required(VERSION 3.10)\nproject(MyProject)" > /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# echo "# Add a custom target to generate JSON from CSV\nadd_custom_target(generate_data_json\n    COMMAND python3 /app/scripts/csv_to_json.py --input /app/data/input.csv --output /app/build/output/data.json\n    DEPENDS /app/data/input.csv\n    COMMENT \"Generating JSON data from CSV input.\")" >> /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# cmake .
+[?2004l[31mCMake Error at CMakeLists.txt:1:
+  Parse error.  Expected a command name, got unquoted argument with text
+  "\nproject".
+
+[0m
+-- Configuring incomplete, errors occurred!
+[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004lmake: *** No rule to make target 'generate_data_json'.  Stop.
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# echo "cmake_minimum_required(VERSION 3.10)\nproject(MyProject)\n\n# Add a custom target to generate JSON from CSV\nadd_custom_target(generate_data_json\n    COMMAND python3 /app/scripts/csv_to_json.py --input /app/data/input.csv --output /app/build/output/data.json\n    DEPENDS /app/data/input.csv\n    COMMENT \"Generating JSON data from CSV input.\")" > /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# cmake .
+[?2004l[31mCMake Error at CMakeLists.txt:1:
+  Parse error.  Expected a command name, got unquoted argument with text
+  "\nproject".
+
+[0m
+-- Configuring incomplete, errors occurred!
+[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004lmake: *** No rule to make target 'generate_data_json'.  Stop.
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# echo "cmake_minimum_required(VERSION 3.10)\nproject(MyProject)\n\n# Add a custom target to generate JSON from CSV\nadd_custom_target(generate_data_json\n    COMMAND python3 /app/scripts/csv_to_json.py --input /app/data/input.csv --output /app/build/output/data.json\n    DEPENDS /app/data/input.csv\n    COMMENT \"Generating JSON data from CSV input.\")" > /app/CMakeLists.txt
+[?2004l[?2004hroot@96366957485c:/app# cmake .
+[?2004l[31mCMake Error at CMakeLists.txt:1:
+  Parse error.  Expected a command name, got unquoted argument with text
+  "\nproject".
+
+[0m
+-- Configuring incomplete, errors occurred!
+[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004lmake: *** No rule to make target 'generate_data_json'.  Stop.
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# cat > /app/CMakeLists.txt <<EOF
+[?2004l[?2004h>  cmake_minimum_required(VERSION 3.10)
+[?2004l[?2004h> project(MyProject)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Add a custom target to generate JSON from CSV
+[?2004l[?2004h> add_custom_target(generate_data_json
+[?2004l[?2004h>     COMMAND python3 /app/scripts/csv_to_json.py --input /app/data/input.csv --output /app/build/output/data.json
+[?2004l[?2004h>     DEPENDS /app/data/input.csv
+[?2004l[?2004h>     COMMENT "Generating JSON data from CSV input.")
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@96366957485c:/app# cmake .
+[?2004l-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /app
+[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+  File "/app/scripts/csv_to_json.py", line 1
+    import csv\nimport json\nimport sys\n\nif __name__ == "__main__":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument("--input", required=True)\n    parser.add_argument("--output", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print("Error: Input file not found.", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f"Error: {str(e)}", file=sys.stderr)\n        sys.exit(1)
+               ^
+SyntaxError: unexpected character after line continuation character
+make[3]: *** [CMakeFiles/generate_data_json.dir/build.make:71: CMakeFiles/generate_data_json] Error 1
+make[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/generate_data_json.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/generate_data_json.dir/rule] Error 2
+make: *** [Makefile:124: generate_data_json] Error 2
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# echo "import csv\nimport json\nimport sys\n\nif __name__ == \"__main__\":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"--input\", required=True)\n    parser.add_argument(\"--output\", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print(\"Error: Input file not found.\", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f\"Error: {str(e)}\", file=sys.stderr)\n        sys.exit(1)" > /app/scripts/csv_to_json.py M[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ky
+[?2004l[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+  File "/app/scripts/csv_to_json.py", line 1
+    import csv\nimport json\nimport sys\n\nif __name__ == "__main__":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument("--input", required=True)\n    parser.add_argument("--output", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print("Error: Input file not found.", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f"Error: {str(e)}", file=sys.stderr)\n        sys.exit(1)
+               ^
+SyntaxError: unexpected character after line continuation character
+make[3]: *** [CMakeFiles/generate_data_json.dir/build.make:71: CMakeFiles/generate_data_json] Error 1
+make[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/generate_data_json.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/generate_data_json.dir/rule] Error 2
+make: *** [Makefile:124: generate_data_json] Error 2
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# nano /app/scripts/csv_to_json.py
+[?2004lbash: nano: command not found
+[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+  File "/app/scripts/csv_to_json.py", line 1
+    import csv\nimport json\nimport sys\n\nif __name__ == "__main__":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument("--input", required=True)\n    parser.add_argument("--output", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print("Error: Input file not found.", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f"Error: {str(e)}", file=sys.stderr)\n        sys.exit(1)
+               ^
+SyntaxError: unexpected character after line continuation character
+make[3]: *** [CMakeFiles/generate_data_json.dir/build.make:71: CMakeFiles/generate_data_json] Error 1
+make[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/generate_data_json.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/generate_data_json.dir/rule] Error 2
+make: *** [Makefile:124: generate_data_json] Error 2
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# echo "import csv\nimport json\nimport sys\n\nif __name__ == \"__main__\":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"--input\", required=True)\n    parser.add_argument(\"--output\", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print(\"Error: Input file not found.\", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f\"Error: {str(e)}\", file=sys.stderr)\n        sys.exit(1)" > /app/scripts/csv_to_json.py M[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ky
+[?2004l[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+  File "/app/scripts/csv_to_json.py", line 1
+    import csv\nimport json\nimport sys\n\nif __name__ == "__main__":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument("--input", required=True)\n    parser.add_argument("--output", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print("Error: Input file not found.", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f"Error: {str(e)}", file=sys.stderr)\n        sys.exit(1)
+               ^
+SyntaxError: unexpected character after line continuation character
+make[3]: *** [CMakeFiles/generate_data_json.dir/build.make:71: CMakeFiles/generate_data_json] Error 1
+make[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/generate_data_json.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/generate_data_json.dir/rule] Error 2
+make: *** [Makefile:124: generate_data_json] Error 2
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004lls: cannot access '/app/build/output/data.json': No such file or directory
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004lcat: /app/build/output/data.json: No such file or directory
+[?2004hroot@96366957485c:/app# echo 'import csv
+[?2004l[?2004h> import json
+[?2004l[?2004h> import sys
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == "__main__":
+[?2004l[?2004h>     import argparse
+[?2004l[?2004h>     parser = argparse.ArgumentParser()
+[?2004l[?2004h>     parser.add_argument("--input", required=True)
+[?2004l[?2004h>     parser.add_argument("--output", required=True)
+[?2004l[?2004h>     args = parser.parse_args()
+[?2004l[?2004h> 
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         with open(args.input, "r") as csvfile:
+[?2004l[?2004h>             reader = csv.DictReader(csvfile)
+[?2004l[?2004h>             data = [row for row in reader]
+[?2004l[?2004h> 
+[?2004l[?2004h>         with open(args.output, "w") as jsonfile:
+[?2004l[?2004h>             json.dump(data, jsonfile, indent=2)
+[?2004l[?2004h>     except FileNotFoundError:
+[?2004l[?2004h>         print("Error: Input file not found.", file=sys.stderr)
+[?2004l[?2004h>         sys.exit(1)
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         print(f"Error: {str(e)}", file=sys.stderr)
+[?2004l[?2004h>         sys.exit(1)' > /app/scripts/csv_to_json.py
+[?2004l[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+[100%] Built target generate_data_json
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004l-rw-r--r--. 1 root root 474 Nov  4 07:49 /app/build/output/data.json
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004l[
+  {
+    "id": "1",
+    "name": "Alice",
+    "age": "30",
+    "salary": "75000.50",
+    "department": "Engineering"
+  },
+  {
+    "id": "2",
+    "name": "Bob",
+    "age": "25",
+    "salary": "65000.00",
+    "department": "Sales"
+  },
+  {
+    "id": "3",
+    "name": "Charlie",
+    "age": "35",
+    "salary": "82000.75",
+    "department": "Marketing"
+  },
+  {
+    "id": "4",
+    "name": "Diana",
+    "age": "28",
+    "salary": "71000.25",
+    "department": "Engineering"
+  }
+][?2004hroot@96366957485c:/app# echo "import csv\nimport json\nimport sys\n\nif __name__ == \"__main__\":\n    import argparse\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"--input\", required=True)\n    parser.add_argument(\"--output\", required=True)\n    args = parser.parse_args()\n\n    try:\n        with open(args.input, 'r') as csvfile:\n            reader = csv.DictReader(csvfile)\n            data = [row for row in reader]\n\n            # Convert numeric strings to numbers\n            for row in data:\n                for key, value in row.items():\n                    try:\n                        row[key] = float(value)\n                    except ValueError:\n                        pass\n\n        with open(args.output, 'w') as jsonfile:\n            json.dump(data, jsonfile, indent=2)\n    except FileNotFoundError:\n        print(\"Error: Input file not found.\", file=sys.stderr)\n        sys.exit(1)\n    except Exception as e:\n        print(f\"Error: {str(e)}\", file=sys.stderr)\n        sys.exit(1)" > /app/scripts/csv_to_json.py
+[?2004l[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+  File "/app/scripts/csv_to_json.py", line 1
+    it(1)
+         ^
+SyntaxError: unexpected character after line continuation character
+make[3]: *** [CMakeFiles/generate_data_json.dir/build.make:71: CMakeFiles/generate_data_json] Error 1
+make[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/generate_data_json.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/generate_data_json.dir/rule] Error 2
+make: *** [Makefile:124: generate_data_json] Error 2
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004l-rw-r--r--. 1 root root 474 Nov  4 07:49 /app/build/output/data.json
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004l[
+  {
+    "id": "1",
+    "name": "Alice",
+    "age": "30",
+    "salary": "75000.50",
+    "department": "Engineering"
+  },
+  {
+    "id": "2",
+    "name": "Bob",
+    "age": "25",
+    "salary": "65000.00",
+    "department": "Sales"
+  },
+  {
+    "id": "3",
+    "name": "Charlie",
+    "age": "35",
+    "salary": "82000.75",
+    "department": "Marketing"
+  },
+  {
+    "id": "4",
+    "name": "Diana",
+    "age": "28",
+    "salary": "71000.25",
+    "department": "Engineering"
+  }
+][?2004hroot@96366957485c:/app# echo 'import csv
+[?2004l[?2004h> import json
+[?2004l[?2004h> import sys
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == "__main__":
+[?2004l[?2004h>     import argparse
+[?2004l[?2004h>     parser = argparse.ArgumentParser()
+[?2004l[?2004h>     parser.add_argument("--input", required=True)
+[?2004l[?2004h>     parser.add_argument("--output", required=True)
+[?2004l[?2004h>     args = parser.parse_args()
+[?2004l[?2004h> 
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         with open(args.input, "r") as csvfile:
+[?2004l[?2004h>             reader = csv.DictReader(csvfile)
+[?2004l[?2004h>             data = [row for row in reader]
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Convert numeric strings to numbers
+[?2004l[?2004h>             for row in data:
+[?2004l[?2004h>                 for key, value in row.items():
+[?2004l[?2004h>                     try:
+[?2004l[?2004h>                         row[key] = float(value)
+[?2004l[?2004h>                     except ValueError:
+[?2004l[?2004h>                         pass
+[?2004l[?2004h> 
+[?2004l[?2004h>         with open(args.output, "w") as jsonfile:
+[?2004l[?2004h>             json.dump(data, jsonfile, indent=2)
+[?2004l[?2004h>     except FileNotFoundError:
+[?2004l[?2004h>         print("Error: Input file not found.", file=sys.stderr)
+[?2004l[?2004h>         sys.exit(1)
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         print(f"Error: {str(e)}", file=sys.stderr)
+[?2004l[?2004h>         sys.exit(1)' > /app/scripts/csv_to_json.py
+[?2004l[?2004hroot@96366957485c:/app# make generate_data_json
+[?2004l[100%] [34m[1mGenerating JSON data from CSV input.[0m
+[100%] Built target generate_data_json
+[?2004hroot@96366957485c:/app# ls -la /app/build/output/data.json
+[?2004l-rw-r--r--. 1 root root 464 Nov  4 07:50 /app/build/output/data.json
+[?2004hroot@96366957485c:/app# cat /app/build/output/data.json
+[?2004l[
+  {
+    "id": 1.0,
+    "name": "Alice",
+    "age": 30.0,
+    "salary": 75000.5,
+    "department": "Engineering"
+  },
+  {
+    "id": 2.0,
+    "name": "Bob",
+    "age": 25.0,
+    "salary": 65000.0,
+    "department": "Sales"
+  },
+  {
+    "id": 3.0,
+    "name": "Charlie",
+    "age": 35.0,
+    "salary": 82000.75,
+    "department": "Marketing"
+  },
+  {
+    "id": 4.0,
+    "name": "Diana",
+    "age": 28.0,
+    "salary": 71000.25,
+    "department": "Engineering"
+  }
+][?2004hroot@96366957485c:/app# 

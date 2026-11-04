@@ -1,0 +1,83 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pytest
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pytest in /usr/local/lib/python3.12/dist-packages (9.2.0)
+Requirement already satisfied: iniconfig>=2 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.3.1)
+Requirement already satisfied: packaging>=24 in /usr/local/lib/python3.12/dist-packages (from pytest) (26.3)
+Requirement already satisfied: pluggy<2,>=1.6 in /usr/local/lib/python3.12/dist-packages (from pytest) (1.7.0)
+Requirement already satisfied: pygments>=2.15 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.21.0)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py ....F                                           [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_output_correctness ____________________________
+
+    def test_output_correctness():
+        """Verify output contains correct calculations."""
+        # Read input data
+        with open('/app/config.json', 'r') as f:
+            config = json.load(f)
+    
+        # Read output
+        with open('/app/output.json', 'r') as f:
+            output = json.load(f)
+    
+        # Calculate expected values
+        records = config.get('records', [])
+        total_records = len(records)
+    
+        valid_records = []
+        invalid_count = 0
+    
+        for record in records:
+            if isinstance(record, dict):
+                has_id = 'id' in record and isinstance(record['id'], (int, float))
+                has_value = 'value' in record and isinstance(record['value'], (int, float))
+                if has_id and has_value:
+                    valid_records.append(record)
+                else:
+                    invalid_count += 1
+            else:
+                invalid_count += 1
+    
+        valid_count = len(valid_records)
+    
+        # Calculate average if there are valid records
+        if valid_count > 0:
+            total_value = sum(float(record['value']) for record in valid_records)
+            average_value = round(total_value / valid_count, 2)
+        else:
+            average_value = 0.0
+    
+        # Check values match
+        assert output['total_records'] == total_records, \
+            f"total_records mismatch: expected {total_records}, got {output['total_records']}"
+    
+>       assert output['valid_count'] == valid_count, \
+            f"valid_count mismatch: expected {valid_count}, got {output['valid_count']}"
+E       AssertionError: valid_count mismatch: expected 6, got 8
+E       assert 8 == 6
+
+/tests/test_outputs.py:102: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_exists
+PASSED ../tests/test_outputs.py::test_output_valid_json
+PASSED ../tests/test_outputs.py::test_output_structure
+PASSED ../tests/test_outputs.py::test_script_runs_without_errors
+FAILED ../tests/test_outputs.py::test_output_correctness - AssertionError: va...
+========================= 1 failed, 4 passed in 0.05s ==========================
+Some tests failed.

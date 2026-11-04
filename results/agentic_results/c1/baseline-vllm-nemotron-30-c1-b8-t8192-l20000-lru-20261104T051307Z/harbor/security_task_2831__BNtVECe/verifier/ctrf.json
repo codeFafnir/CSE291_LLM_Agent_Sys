@@ -1,0 +1,72 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "1343e37f-57d6-4782-af6e-ecb672a52017",
+    "timestamp": "2026-11-04T06:25:41.241535+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793773541208,
+            "stop": 1793773541241,
+            "duration": 33
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_cleaned_file_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 14,
+                "start": 1793773541225,
+                "stop": 1793773541239,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_cleaned_file_correct():\n        \"\"\"Verify malicious Base64 injections are properly replaced.\"\"\"\n        # Read original file\n        with open('/app/web_access.log', 'r') as f:\n            original_lines = f.readlines()\n    \n        # Read cleaned file\n        with open('/app/cleaned_web_access.log', 'r') as f:\n            cleaned_lines = f.readlines()\n    \n        # They should have same number of lines\n        assert len(original_lines) == len(cleaned_lines), \"Line count mismatch\"\n    \n        # Track found injections for validation\n        found_injections = []\n    \n        for i, (orig, cleaned) in enumerate(zip(original_lines, cleaned_lines)):\n            # Find all Base64 strings in original (min 20 chars)\n            b64_pattern = r'[A-Za-z0-9+/=]{20,}'\n            b64_matches = re.findall(b64_pattern, orig)\n    \n            for b64_str in b64_matches:\n                try:\n                    # Decode and check for \"eval(\"\n                    decoded = base64.b64decode(b64_str).decode('utf-8', errors='ignore').lower()\n                    if 'eval(' in decoded:\n                        # This should be replaced\n                        if b64_str in cleaned:\n                            raise AssertionError(f\"Malicious Base64 not replaced on line {i+1}: {b64_str}\")\n                        # Check replacement token exists\n                        assert '[REDACTED_B64_INJECTION]' in cleaned, f\"Replacement token missing on line {i+1}\"\n                        found_injections.append(i+1)\n                except Exception:\n                    # Invalid Base64, skip\n                    continue\n    \n            # Verify non-malicious content unchanged\n            # Remove the replacement tokens for comparison\n            temp_cleaned = cleaned.replace('[REDACTED_B64_INJECTION]', '')\n            temp_original = orig\n            # Remove malicious Base64 strings from original for comparison\n            for b64_str in b64_matches:\n                try:\n                    decoded = base64.b64decode(b64_str).decode('utf-8', errors='ignore').lower()\n                    if 'eval(' in decoded:\n                        temp_original = temp_original.replace(b64_str, '')\n                except:\n                    continue\n    \n            # Compare after removing malicious content\n>           assert temp_original.strip() == temp_cleaned.strip(), f\"Non-malicious content altered on line {i+1}\"\nE           AssertionError: Non-malicious content altered on line 1\nE           assert '2024-01-15 1...] POST /login' == '2024-01-15 1...] POST /login'\nE             \nE             Skipping 39 identical leading characters in diff, use -v to show\nE             - zilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] POST /login\nE             + zilla/5.0  [valid] POST /login\n\n/tests/test_outputs.py:57: AssertionError",
+                "message": "AssertionError: Non-malicious content altered on line 1\nassert '2024-01-15 1...] POST /login' == '2024-01-15 1...] POST /login'\n  \n  Skipping 39 identical leading characters in diff, use -v to show\n  - zilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] POST /login\n  + zilla/5.0  [valid] POST /login"
+            },
+            {
+                "name": "test_outputs.py::test_security_report_valid",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793773541239,
+                "stop": 1793773541240,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_file_structure_preserved",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793773541240,
+                "stop": 1793773541241,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

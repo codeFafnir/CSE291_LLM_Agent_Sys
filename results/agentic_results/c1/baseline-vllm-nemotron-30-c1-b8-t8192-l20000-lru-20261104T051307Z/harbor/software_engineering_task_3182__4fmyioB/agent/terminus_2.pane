@@ -1,0 +1,141 @@
+[?2004hroot@0fce004c3d5a:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@0fce004c3d5a:/app# clear
+[?2004l[H[J[3J[?2004hroot@0fce004c3d5a:/app# nano Makefile
+[?2004lbash: nano: command not found
+[?2004hroot@0fce004c3d5a:/app# cat Makefile
+[?2004l# Current broken Makefile
+PROJECT_NAME = myproject
+PYTHON = python3
+TEST_DIR = tests/
+
+all: install test lint
+
+install:
+    pip install -r requirements.txt
+    
+build:
+    $(PYTHON) -m py_compile src/*.py
+    
+run:
+    $(PYTHON) src/main.py
+    
+# Missing test target
+# Missing lint target
+# Missing clean target
+
+.PHONY: all install build run[?2004hroot@0fce004c3d5a:/app# echo "test:
+[?2004l[?2004h>     pytest $(TEST_DIR)" >> Makefile
+[?2004lbash: TEST_DIR: command not found
+[?2004hroot@0fce004c3d5a:/app# echo "lint:
+[?2004l[?2004h>     black --check src/" >> Makefile
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo "clean:
+[?2004l[?2004h>     rm -f src/*.pyc" >> Makefile
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo ".PHONY: all install build run test lint clean" >> Makefile
+[?2004l[?2004hroot@0fce004c3d5a:/app# make all > build_output.txt 2>&1
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo $? > exit_code.txt
+[?2004l[?2004hroot@0fce004c3d5a:/app# cat Makefile
+[?2004l# Current broken Makefile
+PROJECT_NAME = myproject
+PYTHON = python3
+TEST_DIR = tests/
+
+all: install test lint
+
+install:
+    pip install -r requirements.txt
+    
+build:
+    $(PYTHON) -m py_compile src/*.py
+    
+run:
+    $(PYTHON) src/main.py
+    
+# Missing test target
+# Missing lint target
+# Missing clean target
+
+.PHONY: all install build runtest:
+    pytest 
+lint:
+    black --check src/
+clean:
+    rm -f src/*.pyc
+.PHONY: all install build run test lint clean
+[?2004hroot@0fce004c3d5a:/app# make all > build_output.txt 2>&1
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo $? > exit_code.txt
+[?2004l[?2004hroot@0fce004c3d5a:/app# make test
+[?2004lMakefile:9: *** missing separator.  Stop.
+[?2004hroot@0fce004c3d5a:/app# make lint
+[?2004lMakefile:9: *** missing separator.  Stop.
+[?2004hroot@0fce004c3d5a:/app# make clean
+[?2004lMakefile:9: *** missing separator.  Stop.
+[?2004hroot@0fce004c3d5a:/app# make all > build_output.txt 2>&1
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo $? > exit_code.txt
+[?2004l[?2004hroot@0fce004c3d5a:/app# nano Makefile
+[?2004lbash: nano: command not found
+[?2004hroot@0fce004c3d5a:/app# cat Makefile
+[?2004l# Current broken Makefile
+PROJECT_NAME = myproject
+PYTHON = python3
+TEST_DIR = tests/
+
+all: install test lint
+
+install:
+    pip install -r requirements.txt
+    
+build:
+    $(PYTHON) -m py_compile src/*.py
+    
+run:
+    $(PYTHON) src/main.py
+    
+# Missing test target
+# Missing lint target
+# Missing clean target
+
+.PHONY: all install build runtest:
+    pytest 
+lint:
+    black --check src/
+clean:
+    rm -f src/*.pyc
+.PHONY: all install build run test lint clean
+[?2004hroot@0fce004c3d5a:/app# echo "# Current broken Makefile
+[?2004l[?2004h> PROJECT_NAME = myproject
+[?2004l[?2004h> PYTHON = python3
+[?2004l[?2004h> TEST_DIR = tests/
+[?2004l[?2004h> 
+[?2004l[?2004h> all: install test lint
+[?2004l[?2004h> 
+[?2004l[?2004h> install:
+[?2004l[?2004h> pip install -r requirements.txt
+[?2004l[?2004h> 
+[?2004l[?2004h> build:
+[?2004l[?2004h> $(PYTHON) -m py_compile src/*.py
+[?2004l[?2004h> 
+[?2004l[?2004h> run:
+[?2004l[?2004h> $(PYTHON) src/main.py
+[?2004l[?2004h> 
+[?2004l[?2004h> test:
+[?2004l[?2004h> pytest $(TEST_DIR)
+[?2004l[?2004h> lint:
+[?2004l[?2004h> black --check src/
+[?2004l[?2004h> clean:
+[?2004l[?2004h> rm -f src/*.pyc
+[?2004l[?2004h> 
+[?2004l[?2004h> .PHONY: all install build run test lint clean" > Makefile
+[?2004lbash: PYTHON: command not found
+bash: PYTHON: command not found
+bash: TEST_DIR: command not found
+[?2004hroot@0fce004c3d5a:/app# make all > build_output.txt 2>&1
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo $? > exit_code.txt
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo "# Current broken Makefile\nPROJECT_NAME = myproject\nPYTHON = python3\nTEST_DIR = tests/\n\nall: install test lint\n\ninstall:\n\tpip install -r requirements.txt\n\nbuild:\n\t$(PYTHON) -m py_compile src/*.py\n\nrun:\n\t$(PYTHON) src/main.py\n\ntest:\n\tpytest $(TEST_DIR)\nlint:\n\tblack --check src/\nclean:\n\trm -f src/*.pyc\n\n.PHONY: all install build run test lint clean" > Makefile
+[?2004lbash: PYTHON: command not found
+bash: PYTHON: command not found
+bash: TEST_DIR: command not found
+[?2004hroot@0fce004c3d5a:/app# make all > build_output.txt 2>&1
+[?2004l[?2004hroot@0fce004c3d5a:/app# echo $? > exit_code.txt
+[?2004l[?2004hroot@0fce004c3d5a:/app# 

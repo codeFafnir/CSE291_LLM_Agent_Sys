@@ -1,0 +1,60 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "fba579ea-43dc-4604-847b-fb88d334cc5e",
+    "timestamp": "2026-11-04T07:21:02.802082+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793776862772,
+            "stop": 1793776862801,
+            "duration": 29
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776862788,
+                "stop": 1793776862789,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 12,
+                "start": 1793776862789,
+                "stop": 1793776862801,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_correct():\n        \"\"\"Verify the SPARQL query content is correct.\"\"\"\n        with open('/app/classic_books_query.sparql', 'r') as f:\n            content = f.read()\n    \n        # Check file is not empty\n        assert len(content.strip()) > 0, \"File is empty\"\n    \n        # Check for required prefixes (case-insensitive)\n        content_lower = content.lower()\n        assert 'prefix ex:' in content_lower or 'prefix ex :' in content_lower, \"Missing ex: prefix\"\n        assert 'prefix dc:' in content_lower or 'prefix dc :' in content_lower, \"Missing dc: prefix\"\n        assert 'prefix rdf:' in content_lower or 'prefix rdf :' in content_lower, \"Missing rdf: prefix\"\n    \n        # Check for SELECT clause with required variables\n        assert 'select' in content_lower, \"Missing SELECT clause\"\n        assert '?title' in content, \"Missing ?title variable in SELECT\"\n        assert '?authorname' in content_lower, \"Missing ?authorName variable in SELECT\"\n    \n        # Check for WHERE clause\n>       assert 'where' in content_lower, \"Missing WHERE clause\"\nE       AssertionError: Missing WHERE clause\nE       assert 'where' in '@prefix ex: <http://example.org/> .\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\n@prefix rdf: <http://www.w3.or...    dc:creator ?author .\\n  ?author dc:title ?authorname .\\n  filter (?book/dc:subject = classic)\\n} order by ?title\\n'\n\n/tests/test_outputs.py:28: AssertionError",
+                "message": "AssertionError: Missing WHERE clause\nassert 'where' in '@prefix ex: <http://example.org/> .\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\n@prefix rdf: <http://www.w3.or...    dc:creator ?author .\\n  ?author dc:title ?authorname .\\n  filter (?book/dc:subject = classic)\\n} order by ?title\\n'"
+            }
+        ]
+    }
+}

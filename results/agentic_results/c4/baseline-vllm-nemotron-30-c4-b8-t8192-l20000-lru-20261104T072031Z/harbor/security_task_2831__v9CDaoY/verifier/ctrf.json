@@ -1,0 +1,75 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "906d3e9f-fd46-4471-af0a-199e213dd46a",
+    "timestamp": "2026-11-04T07:46:36.251836+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 1,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793778396217,
+            "stop": 1793778396251,
+            "duration": 34
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_cleaned_file_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 13,
+                "start": 1793778396234,
+                "stop": 1793778396247,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_cleaned_file_correct():\n        \"\"\"Verify malicious Base64 injections are properly replaced.\"\"\"\n        # Read original file\n        with open('/app/web_access.log', 'r') as f:\n            original_lines = f.readlines()\n    \n        # Read cleaned file\n        with open('/app/cleaned_web_access.log', 'r') as f:\n            cleaned_lines = f.readlines()\n    \n        # They should have same number of lines\n>       assert len(original_lines) == len(cleaned_lines), \"Line count mismatch\"\nE       AssertionError: Line count mismatch\nE       assert 19 == 1\nE        +  where 19 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...WARN Suspicious activity detected: c2NyaXB0PmV2YWwoZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg== from IP: 192.168.1.100\\n', ...])\nE        +  and   1 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...5bWVudF9ldmFsPSJhbGVydCgnaGFja2VkJykiOw== status: declined2024-01-15 10:48:22 INFO Email sent to: support@example.com'])\n\n/tests/test_outputs.py:18: AssertionError",
+                "message": "AssertionError: Line count mismatch\nassert 19 == 1\n +  where 19 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...WARN Suspicious activity detected: c2NyaXB0PmV2YWwoZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg== from IP: 192.168.1.100\\n', ...])\n +  and   1 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...5bWVudF9ldmFsPSJhbGVydCgnaGFja2VkJykiOw== status: declined2024-01-15 10:48:22 INFO Email sent to: support@example.com'])"
+            },
+            {
+                "name": "test_outputs.py::test_security_report_valid",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793778396247,
+                "stop": 1793778396248,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_file_structure_preserved",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793778396248,
+                "stop": 1793778396251,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_file_structure_preserved():\n        \"\"\"Verify file structure and order are preserved.\"\"\"\n        with open('/app/web_access.log', 'r') as f:\n            original = f.readlines()\n    \n        with open('/app/cleaned_web_access.log', 'r') as f:\n            cleaned = f.readlines()\n    \n        # Same number of lines\n>       assert len(original) == len(cleaned)\nE       AssertionError: assert 19 == 1\nE        +  where 19 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...WARN Suspicious activity detected: c2NyaXB0PmV2YWwoZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg== from IP: 192.168.1.100\\n', ...])\nE        +  and   1 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...5bWVudF9ldmFsPSJhbGVydCgnaGFja2VkJykiOw== status: declined2024-01-15 10:48:22 INFO Email sent to: support@example.com'])\n\n/tests/test_outputs.py:112: AssertionError",
+                "message": "AssertionError: assert 19 == 1\n +  where 19 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...WARN Suspicious activity detected: c2NyaXB0PmV2YWwoZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg== from IP: 192.168.1.100\\n', ...])\n +  and   1 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...5bWVudF9ldmFsPSJhbGVydCgnaGFja2VkJykiOw== status: declined2024-01-15 10:48:22 INFO Email sent to: support@example.com'])"
+            }
+        ]
+    }
+}

@@ -1,0 +1,114 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "d5f10b6b-3cc2-4ce2-8849-49733999fc53",
+    "timestamp": "2026-11-04T07:58:32.107142+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 3,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793779112046,
+            "stop": 1793779112107,
+            "duration": 61
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793779112078,
+                "stop": 1793779112079,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_graph_json_structure",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793779112079,
+                "stop": 1793779112079,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_validation_json_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 16,
+                "start": 1793779112080,
+                "stop": 1793779112096,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_validation_json_correct():\n        \"\"\"Verify validation.json correctly identifies allowed/disallowed imports.\"\"\"\n        with open('/app/output/validation.json', 'r') as f:\n            validation = json.load(f)\n    \n        # Check structure\n        assert 'valid_files' in validation\n        assert 'invalid_files' in validation\n        assert 'validation_passed' in validation\n    \n        # Types\n        assert isinstance(validation['valid_files'], list)\n        assert isinstance(validation['invalid_files'], dict)\n        assert isinstance(validation['validation_passed'], bool)\n    \n        # Load allowed modules\n        with open('/app/allowed_modules.txt', 'r') as f:\n            allowed_modules = {line.strip() for line in f if line.strip()}\n    \n        # Load all source files to verify\n        source_dir = '/app/sources/'\n        for filename in os.listdir(source_dir):\n            filepath = os.path.join(source_dir, filename)\n    \n            # Parse file based on extension\n            if filename.endswith('.json'):\n                with open(filepath, 'r') as f:\n                    data = json.load(f)\n                    imports = set(data.get('imports', []))\n            elif filename.endswith('.yaml'):\n                with open(filepath, 'r') as f:\n                    data = yaml.safe_load(f)\n                    imports = set(data.get('imports', []))\n            elif filename.endswith('.txt'):\n                with open(filepath, 'r') as f:\n                    content = f.read()\n                    imports_line = None\n                    for line in content.split('\\n'):\n                        if line.startswith('IMPORTS:'):\n                            imports_line = line\n                            break\n                    if imports_line:\n                        imports_str = imports_line.split(':', 1)[1].strip()\n                        imports = set(m.strip() for m in imports_str.split(',') if m.strip())\n                    else:\n                        imports = set()\n    \n            # Check if validation matches expectations\n            disallowed_imports = imports - allowed_modules\n    \n            if disallowed_imports:\n                # File should be in invalid_files\n                assert filename in validation['invalid_files'], \\\n                    f\"File {filename} has disallowed imports but not in invalid_files\"\n                reported_disallowed = set(validation['invalid_files'][filename])\n                assert disallowed_imports == reported_disallowed, \\\n                    f\"Mismatch in disallowed imports for {filename}\"\n            else:\n                # File should be in valid_files\n>               assert filename in validation['valid_files'], \\\n                    f\"File {filename} has all allowed imports but not in valid_files\"\nE               AssertionError: File utils.txt has all allowed imports but not in valid_files\nE               assert 'utils.txt' in ['circular2.yaml', 'module2.yaml', 'circular1.json', 'math.yaml', 'module1.json']\n\n/tests/test_outputs.py:101: AssertionError",
+                "message": "AssertionError: File utils.txt has all allowed imports but not in valid_files\nassert 'utils.txt' in ['circular2.yaml', 'module2.yaml', 'circular1.json', 'math.yaml', 'module1.json']"
+            },
+            {
+                "name": "test_outputs.py::test_build_order_valid",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 5,
+                "start": 1793779112096,
+                "stop": 1793779112101,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_build_order_valid():\n        \"\"\"Verify build_order.txt represents valid build order considering dependencies.\"\"\"\n        # Load graph\n        with open('/app/output/graph.json', 'r') as f:\n            graph_data = json.load(f)\n    \n        graph = graph_data['graph']\n    \n        # Load build order\n        with open('/app/output/build_order.txt', 'r') as f:\n            content = f.read()\n    \n        # Parse build order lines (skip comments and empty lines)\n        build_order = []\n        in_circular_section = False\n        circular_files = []\n    \n        for line in content.split('\\n'):\n            line = line.strip()\n            if not line or line.startswith('#'):\n                if 'Circular dependencies' in line:\n                    in_circular_section = True\n                continue\n    \n            if in_circular_section:\n                circular_files.append(line)\n            else:\n                build_order.append(line)\n    \n        all_files = set(build_order + circular_files)\n    \n        # Verify all files from graph are in build order\n>       assert set(graph.keys()).issubset(all_files), \\\n            \"Not all files from graph are in build order\"\nE       AssertionError: Not all files from graph are in build order\nE       assert False\nE        +  where False = <built-in method issubset of set object at 0x7f062a54cac0>({'file1.json', 'file2.yaml', 'file3.txt'})\nE        +    where <built-in method issubset of set object at 0x7f062a54cac0> = {'circular1.json', 'circular2.yaml', 'logging.json', 'module1.json', 'module2.yaml', 'utils.txt'}.issubset\nE        +      where {'circular1.json', 'circular2.yaml', 'logging.json', 'module1.json', 'module2.yaml', 'utils.txt'} = set(dict_keys(['circular2.yaml', 'module2.yaml', 'utils.txt', 'logging.json', 'circular1.json', 'module1.json']))\nE        +        where dict_keys(['circular2.yaml', 'module2.yaml', 'utils.txt', 'logging.json', 'circular1.json', 'module1.json']) = <built-in method keys of dict object at 0x7f062a7bdfc0>()\nE        +          where <built-in method keys of dict object at 0x7f062a7bdfc0> = {'circular2.yaml': ['circular1'], 'module2.yaml': ['module1', 'logging'], 'utils.txt': [''], 'logging.json': ['forbidden_external'], ...}.keys\n\n/tests/test_outputs.py:141: AssertionError",
+                "message": "AssertionError: Not all files from graph are in build order\nassert False\n +  where False = <built-in method issubset of set object at 0x7f062a54cac0>({'file1.json', 'file2.yaml', 'file3.txt'})\n +    where <built-in method issubset of set object at 0x7f062a54cac0> = {'circular1.json', 'circular2.yaml', 'logging.json', 'module1.json', 'module2.yaml', 'utils.txt'}.issubset\n +      where {'circular1.json', 'circular2.yaml', 'logging.json', 'module1.json', 'module2.yaml', 'utils.txt'} = set(dict_keys(['circular2.yaml', 'module2.yaml', 'utils.txt', 'logging.json', 'circular1.json', 'module1.json']))\n +        where dict_keys(['circular2.yaml', 'module2.yaml', 'utils.txt', 'logging.json', 'circular1.json', 'module1.json']) = <built-in method keys of dict object at 0x7f062a7bdfc0>()\n +          where <built-in method keys of dict object at 0x7f062a7bdfc0> = {'circular2.yaml': ['circular1'], 'module2.yaml': ['module1', 'logging'], 'utils.txt': [''], 'logging.json': ['forbidden_external'], ...}.keys"
+            },
+            {
+                "name": "test_outputs.py::test_makefile_dependencies_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 5,
+                "start": 1793779112101,
+                "stop": 1793779112106,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_makefile_dependencies_correct():\n        \"\"\"Verify Makefile.snippet has correct dependency chains.\"\"\"\n        # Load graph\n        with open('/app/output/graph.json', 'r') as f:\n            graph_data = json.load(f)\n    \n        graph = graph_data['graph']\n    \n        # Parse Makefile\n        with open('/app/output/Makefile.snippet', 'r') as f:\n            makefile = f.read()\n    \n        lines = makefile.split('\\n')\n    \n        # Extract targets and their dependencies\n        targets = {}\n        current_target = None\n    \n        for line in lines:\n            line = line.strip()\n    \n            if not line or line.startswith('@echo'):\n                continue\n    \n            # Check if it's a target line (ends with :)\n            if ':' in line and not line.startswith('\\t'):\n                parts = line.split(':')\n                target = parts[0].strip()\n                deps = [d.strip() for d in parts[1].split()] if len(parts) > 1 else []\n                targets[target] = deps\n                current_target = target\n    \n        # Check compile_all target exists and includes all files\n        assert 'compile_all' in targets, \"Missing compile_all target\"\n    \n        # Verify each target's dependencies match the graph\n        for target, deps in targets.items():\n            if target == 'compile_all':\n                continue\n    \n            # Get expected dependencies from graph (only those that are also targets)\n            expected_deps = set(graph.get(target, [])) & set(targets.keys())\n    \n            # Compare (order doesn't matter in Makefile)\n>           assert set(deps) == expected_deps, \\\n                f\"Makefile dependencies for {target} don't match graph: expected {expected_deps}, got {set(deps)}\"\nE           AssertionError: Makefile dependencies for circular2.yaml don't match graph: expected set(), got {'circular1'}\nE           assert {'circular1'} == set()\nE             \nE             Extra items in the left set:\nE             'circular1'\nE             Use -v to get more diff\n\n/tests/test_outputs.py:207: AssertionError",
+                "message": "AssertionError: Makefile dependencies for circular2.yaml don't match graph: expected set(), got {'circular1'}\nassert {'circular1'} == set()\n  \n  Extra items in the left set:\n  'circular1'\n  Use -v to get more diff"
+            },
+            {
+                "name": "test_outputs.py::test_end_to_end_processing",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793779112106,
+                "stop": 1793779112106,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

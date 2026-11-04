@@ -1,0 +1,129 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "4296f3c9-8ddc-4078-b5bb-67496ac446b3",
+    "timestamp": "2026-11-03T09:56:05.521034+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 3,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793699765477,
+            "stop": 1793699765520,
+            "duration": 43
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_makefile_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793699765492,
+                "stop": 1793699765492,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_makefile_syntax",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 16,
+                "start": 1793699765492,
+                "stop": 1793699765508,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_makefile_syntax():\n        \"\"\"Verify Makefile has correct syntax.\"\"\"\n        # Test basic make syntax by running make --dry-run\n        try:\n            result = subprocess.run(\n                ['make', '-n', 'all'],\n                cwd='/app',\n                capture_output=True,\n                text=True,\n                timeout=5\n            )\n            # Should not have syntax errors\n>           assert result.returncode == 0, f\"Make syntax check failed: {result.stderr}\"\nE           AssertionError: Make syntax check failed: Makefile:8: *** missing separator.  Stop.\nE             \nE           assert 2 == 0\nE            +  where 2 = CompletedProcess(args=['make', '-n', 'all'], returncode=2, stdout='', stderr='Makefile:8: *** missing separator.  Stop.\\n').returncode\n\n/tests/test_outputs.py:21: AssertionError",
+                "message": "AssertionError: Make syntax check failed: Makefile:8: *** missing separator.  Stop.\n  \nassert 2 == 0\n +  where 2 = CompletedProcess(args=['make', '-n', 'all'], returncode=2, stdout='', stderr='Makefile:8: *** missing separator.  Stop.\\n').returncode"
+            },
+            {
+                "name": "test_outputs.py::test_all_targets_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793699765508,
+                "stop": 1793699765509,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_make_all_completes",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 6,
+                "start": 1793699765509,
+                "stop": 1793699765515,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_make_all_completes():\n        \"\"\"Verify make all completes successfully.\"\"\"\n        # First run make clean to ensure clean state\n        subprocess.run(['make', 'clean'], cwd='/app', capture_output=True)\n    \n        # Run make all\n        result = subprocess.run(\n            ['make', 'all'],\n            cwd='/app',\n            capture_output=True,\n            text=True,\n            timeout=30\n        )\n    \n        # Should complete with exit code 0\n>       assert result.returncode == 0, f\"make all failed with exit code {result.returncode}: {result.stderr}\"\nE       AssertionError: make all failed with exit code 2: Makefile:8: *** missing separator.  Stop.\nE         \nE       assert 2 == 0\nE        +  where 2 = CompletedProcess(args=['make', 'all'], returncode=2, stdout='', stderr='Makefile:8: *** missing separator.  Stop.\\n').returncode\n\n/tests/test_outputs.py:56: AssertionError",
+                "message": "AssertionError: make all failed with exit code 2: Makefile:8: *** missing separator.  Stop.\n  \nassert 2 == 0\n +  where 2 = CompletedProcess(args=['make', 'all'], returncode=2, stdout='', stderr='Makefile:8: *** missing separator.  Stop.\\n').returncode"
+            },
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793699765515,
+                "stop": 1793699765516,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_exit_code_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 2,
+                "start": 1793699765516,
+                "stop": 1793699765518,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_exit_code_correct():\n        \"\"\"Verify exit code is 0 (success).\"\"\"\n        with open('/app/exit_code.txt', 'r') as f:\n            exit_code = f.read().strip()\n    \n>       assert exit_code == '0', f\"Expected exit code 0, got {exit_code}\"\nE       AssertionError: Expected exit code 0, got 2\nE       assert '2' == '0'\nE         \nE         - 0\nE         + 2\n\n/tests/test_outputs.py:68: AssertionError",
+                "message": "AssertionError: Expected exit code 0, got 2\nassert '2' == '0'\n  \n  - 0\n  + 2"
+            },
+            {
+                "name": "test_outputs.py::test_build_output_contains_expected",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 2,
+                "start": 1793699765518,
+                "stop": 1793699765520,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_build_output_contains_expected():\n        \"\"\"Verify build output shows successful execution.\"\"\"\n        with open('/app/build_output.txt', 'r') as f:\n            output = f.read()\n    \n        # Check for common success indicators in make output\n        success_indicators = [\n            'make: Nothing to be done',\n            'test passed',\n            'linting',\n            'installing',\n            'compiling',\n            'OK',\n            'SUCCESS'\n        ]\n    \n        # At least one indicator should be present (or output should be empty if make had nothing to do)\n        if output.strip():\n            has_indicator = any(indicator.lower() in output.lower() for indicator in success_indicators)\n>           assert has_indicator or result.returncode == 0, \"Build output doesn't show successful execution\"\n                                    ^^^^^^\nE           NameError: name 'result' is not defined\n\n/tests/test_outputs.py:89: NameError",
+                "message": "NameError: name 'result' is not defined"
+            }
+        ]
+    }
+}

@@ -1,0 +1,15 @@
+Skipping image OS validation for hb__83a3f3fffe4f98ef002d1085316e8ba7: docker inspect returned 1
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Parser warnings: - No valid JSON object found
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Context length exceeded and summarization is OFF.
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/software_engineering_task_3229__TArQtDn/agent/trajectory.json
+Trial software_engineering_task_3229__TArQtDn failed: 
+Collecting main service artifacts

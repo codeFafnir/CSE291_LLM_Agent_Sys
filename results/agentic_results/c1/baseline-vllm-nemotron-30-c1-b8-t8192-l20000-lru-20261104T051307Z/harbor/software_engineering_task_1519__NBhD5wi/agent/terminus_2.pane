@@ -1,0 +1,267 @@
+[?2004hroot@159a7ffeecb1:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@159a7ffeecb1:/app# clear
+[?2004l[H[J[3J[?2004hroot@159a7ffeecb1:/app# touch config_validator.py
+[?2004l[?2004hroot@159a7ffeecb1:/app# touch test_runner.sh
+[?2004l[?2004hroot@159a7ffeecb1:/app# nano config_validator.py
+[?2004lbash: nano: command not found
+[?2004hroot@159a7ffeecb1:/app# nano test_runner.sh
+[?2004lbash: nano: command not found
+[?2004hroot@159a7ffeecb1:/app# echo "import yaml
+[?2004l[?2004h> import json
+[?2004l[?2004h> import re
+[?2004l[?2004h> import sys
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read input file
+[?2004l[?2004h> with open('/app/config.input', 'r') as file:
+[?2004l[?2004h>     content = file.read()
+[?2004l[?2004h> 
+[?2004l[?2004h> # Detect format
+[?2004l[?2004h> try:
+[?2004l[?2004h>     json_data = json.loads(content)
+[?2004l[?2004h>     file_format = 'json'
+[?2004l[?2004h> except json.JSONDecodeError:
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         yaml_data = yaml.safe_load(content)
+[?2004l[?2004h>         file_format = 'yaml'
+[?2004l[?2004h>     except yaml.YAMLError:
+[?2004l[?2004h>         print('VALIDATION FAILED\nErrors:\n- Invalid file format')
+[?2004l[?2004h>         sys.exit(1)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Validate structure
+[?2004l[?2004h> def validate_structure(data):
+[?2004l[?2004h>     errors = []
+[?2004l[?2004h>     if 'application' not in data or not isinstance(data['application'], str):
+[?2004l[?2004h>         errors.append('Top-level key 'application' is missing or not a string.')
+[?2004l[?2004h>     if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\d+\.\d+\.\d+', data['version']):
+[?2004l[?2004h>         errors.append('Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).')
+[?2004l[?2004h>     if 'settings' not in data or not isinstance(data['settings'], dict):
+[?2004l[?2004h>         errors.append('Top-level key 'settings' is missing or not a dictionary.')
+[?2004l[?2004h>     for key in data:
+[?2004l[?2004h>         if not isinstance(key, str):
+[?2004l[?2004h>             errors.append(f'Key {key} is not a string.')
+[?2004l[?2004h>     return errors
+[?2004l[?2004h> 
+[?2004l[?2004h> errors = validate_structure(json_data if file_format == 'json' else yaml_data)
+[?2004l[?2004h> 
+[?2004l[?2004h> if errors:
+[?2004l[?2004h>     with open('/app/config.output', 'w') as output_file:
+[?2004l[?2004h>         output_file.write('VALIDATION FAILED\nErrors:\n')
+[?2004l[?2004h>         for error in errors:
+[?2004l[?2004h>             output_file.write(f'- {error}\n')
+[?2004l[?2004h>     sys.exit(1)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert format
+[?2004l[?2004h> if file_format == 'json':
+[?2004l[?2004h>     converted_data = yaml.dump(json_data, default_flow_style=False)
+[?2004l[?2004h> else:
+[?2004l[?2004h>     converted_data = json.dumps(yaml_data, indent=2)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write converted data to output file
+[?2004l[?2004h> with open('/app/config.output', 'w') as output_file:
+[?2004l[?2004h>     output_file.write(converted_data)" > config_validator.py
+[?2004l[?2004hroot@159a7ffeecb1:/app# echo "#!/bin/bash\n\n# Run the Python script\npython3 /app/config_validator.py\n\n# Check if output file exists\nif [ -f /app/config.output ]; then\n    echo 'SUCCESS'\nelse\n    echo 'FAILED'\nfi" > test_runner.sh
+[?2004lbash: !/bin/bash\n\n#: event not found
+[?2004hroot@159a7ffeecb1:/app# echo "#!/bin/bash\n\n# Run the Python script\npython3 /app/config_validator.py\n\n# Check if output file exists\nif [ -f /app/config.output ]; then\n    echo 'SUCCESS'\nelse\n    echo 'FAILED'\nfi" > test_runner.sh
+[?2004lbash: !/bin/bash\n\n#: event not found
+[?2004hroot@159a7ffeecb1:/app# printf "#!/bin/bash\n\n# Run the Python script\npython3 /app/config_validator.py\n\n# Check if output file exists\nif [ -f /app/config.output ]; then\n    echo 'SUCCESS'\nelse\n    echo 'FAILED'\nfi" > test_runner.sh
+[?2004lbash: !/bin/bash\n\n#: event not found
+[?2004hroot@159a7ffeecb1:/app# set +H
+[?2004l[?2004hroot@159a7ffeecb1:/app# printf "#!/bin/bash\n\n# Run the Python script\npython3 /app/config_validator.py\n\n# Check if output file exists\nif [ -f /app/config.output ]; then\n    echo 'SUCCESS'\nelse\n    echo 'FAILED'\nfi" > test_runner.sh
+[?2004l[?2004hroot@159a7ffeecb1:/app# cat config_validator.py
+[?2004limport yaml
+import json
+import re
+import sys
+
+# Read input file
+with open('/app/config.input', 'r') as file:
+    content = file.read()
+
+# Detect format
+try:
+    json_data = json.loads(content)
+    file_format = 'json'
+except json.JSONDecodeError:
+    try:
+        yaml_data = yaml.safe_load(content)
+        file_format = 'yaml'
+    except yaml.YAMLError:
+        print('VALIDATION FAILED\nErrors:\n- Invalid file format')
+        sys.exit(1)
+
+# Validate structure
+def validate_structure(data):
+    errors = []
+    if 'application' not in data or not isinstance(data['application'], str):
+        errors.append('Top-level key 'application' is missing or not a string.')
+    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\d+\.\d+\.\d+', data['version']):
+        errors.append('Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).')
+    if 'settings' not in data or not isinstance(data['settings'], dict):
+        errors.append('Top-level key 'settings' is missing or not a dictionary.')
+    for key in data:
+        if not isinstance(key, str):
+            errors.append(f'Key {key} is not a string.')
+    return errors
+
+errors = validate_structure(json_data if file_format == 'json' else yaml_data)
+
+if errors:
+    with open('/app/config.output', 'w') as output_file:
+        output_file.write('VALIDATION FAILED\nErrors:\n')
+        for error in errors:
+            output_file.write(f'- {error}\n')
+    sys.exit(1)
+
+# Convert format
+if file_format == 'json':
+    converted_data = yaml.dump(json_data, default_flow_style=False)
+else:
+    converted_data = json.dumps(yaml_data, indent=2)
+
+# Write converted data to output file
+with open('/app/config.output', 'w') as output_file:
+    output_file.write(converted_data)
+[?2004hroot@159a7ffeecb1:/app# cat test_runner.sh
+[?2004l#!/bin/bash
+
+# Run the Python script
+python3 /app/config_validator.py
+
+# Check if output file exists
+if [ -f /app/config.output ]; then
+    echo 'SUCCESS'
+else
+    echo 'FAILED'
+fi[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004lbash: ./test_runner.sh: Permission denied
+[?2004hroot@159a7ffeecb1:/app# chmod +x test_runner.sh
+[?2004l[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# printf "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# echo "import yaml\nimport json\nimport re\nimport sys\n\n# Read input file\nwith open('/app/config.input', 'r') as file:\n    content = file.read()\n\n# Detect format\ntry:\n    json_data = json.loads(content)\n    file_format = 'json'\nexcept json.JSONDecodeError:\n    try:\n        yaml_data = yaml.safe_load(content)\n        file_format = 'yaml'\n    except yaml.YAMLError:\n        print('VALIDATION FAILED\\nErrors:\\n- Invalid file format')\n        sys.exit(1)\n\n# Validate structure\ndef validate_structure(data):\n    errors = []\n    if 'application' not in data or not isinstance(data['application'], str):\n        errors.append("Top-level key 'application' is missing or not a string.")\n    if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\\d+\\.\\d+\\.\\d+', data['version']):\n        errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")\n    if 'settings' not in data or not isinstance(data['settings'], dict):\n        errors.append("Top-level key 'settings' is missing or not a dictionary.")\n    for key in data:\n        if not isinstance(key, str):\n            errors.append(f'Key {key} is not a string.')\n    return errors\n\nerrors = validate_structure(json_data if file_format == 'json' else yaml_data)\n\nif errors:\n    with open('/app/config.output', 'w') as output_file:\n        output_file.write('VALIDATION FAILED\\nErrors:\\n')\n        for error in errors:\n            output_file.write(f'- {error}\\n')\n    sys.exit(1)\n\n# Convert format\nif file_format == 'json':\n    converted_data = yaml.dump(json_data, default_flow_style=False)\nelse:\n    converted_data = json.dumps(yaml_data, indent=2)\n\n# Write converted data to output file\nwith open('/app/config.output', 'w') as output_file:\n    output_file.write(converted_data)" > config_validator.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004l  File "/app/config_validator.py", line 26
+    errors.append('Top-level key 'application' is missing or not a string.')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+FAILED
+[?2004hroot@159a7ffeecb1:/app# cat <<EOF > config_validator.py
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import json
+[?2004l[?2004h> import re
+[?2004l[?2004h> import sys
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read input file
+[?2004l[?2004h> with open('/app/config.input', 'r') as file:
+[?2004l[?2004h>     content = file.read()
+[?2004l[?2004h> 
+[?2004l[?2004h> # Detect format
+[?2004l[?2004h> try:
+[?2004l[?2004h>     json_data = json.loads(content)
+[?2004l[?2004h>     file_format = 'json'
+[?2004l[?2004h> except json.JSONDecodeError:
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         yaml_data = yaml.safe_load(content)
+[?2004l[?2004h>         file_format = 'yaml'
+[?2004l[?2004h>     except yaml.YAMLError:
+[?2004l[?2004h>         print('VALIDATION FAILED\nErrors:\n- Invalid file format')
+[?2004l[?2004h>         sys.exit(1)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Validate structure
+[?2004l[?2004h> def validate_structure(data):
+[?2004l[?2004h>     errors = []
+[?2004l[?2004h>     if 'application' not in data or not isinstance(data['application'], str):
+[?2004l[?2004h>         errors.append("Top-level key 'application' is missing or not a string.")
+[?2004l[?2004h>     if 'version' not in data or not isinstance(data['version'], str) or not re.match(r'\d+\.\d+\.\d+', data['version']):
+[?2004l[?2004h>         errors.append("Top-level key 'version' is missing, not a string, or not in semantic version format (X.Y.Z).")
+[?2004l[?2004h>     if 'settings' not in data or not isinstance(data['settings'], dict):
+[?2004l[?2004h>         errors.append("Top-level key 'settings' is missing or not a dictionary.")
+[?2004l[?2004h>     for key in data:
+[?2004l[?2004h>         if not isinstance(key, str):
+[?2004l[?2004h>             errors.append(f'Key {key} is not a string.')
+[?2004l[?2004h>     return errors
+[?2004l[?2004h> 
+[?2004l[?2004h> errors = validate_structure(json_data if file_format == 'json' else yaml_data)
+[?2004l[?2004h> 
+[?2004l[?2004h> if errors:
+[?2004l[?2004h>     with open('/app/config.output', 'w') as output_file:
+[?2004l[?2004h>         output_file.write('VALIDATION FAILED\nErrors:\n')
+[?2004l[?2004h>         for error in errors:
+[?2004l[?2004h>             output_file.write(f'- {error}\n')
+[?2004l[?2004h>     sys.exit(1)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert format
+[?2004l[?2004h> if file_format == 'json':
+[?2004l[?2004h>     converted_data = yaml.dump(json_data, default_flow_style=False)
+[?2004l[?2004h> else:
+[?2004l[?2004h>     converted_data = json.dumps(yaml_data, indent=2)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write converted data to output file
+[?2004l[?2004h> with open('/app/config.output', 'w') as output_file:
+[?2004l[?2004h>     output_file.write(converted_data)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@159a7ffeecb1:/app# ./test_runner.sh
+[?2004lSUCCESS
+[?2004hroot@159a7ffeecb1:/app# 

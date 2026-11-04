@@ -1,0 +1,93 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "3a62236f-f2ef-4132-a097-4c84afef357c",
+    "timestamp": "2026-11-04T08:07:29.944366+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793779649909,
+            "stop": 1793779649944,
+            "duration": 35
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793779649939,
+                "stop": 1793779649939,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_yaml_is_valid",
+                "status": "passed",
+                "duration": 2,
+                "start": 1793779649939,
+                "stop": 1793779649941,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_format",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793779649941,
+                "stop": 1793779649942,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_no_extra_files",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793779649942,
+                "stop": 1793779649942,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_preserves_data_types",
+                "status": "passed",
+                "duration": 2,
+                "start": 1793779649942,
+                "stop": 1793779649944,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

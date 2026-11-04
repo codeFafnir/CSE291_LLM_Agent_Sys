@@ -1,0 +1,28 @@
+[?2004hroot@6f9d621de2de:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@6f9d621de2de:/app# clear
+[?2004l[H[J[3J[?2004hroot@6f9d621de2de:/app# cat /app/application.log | sed -E 's/"password": ".*"/"password": "[REDACTED]"/g; s/AKIA[0-9A-Z]{16}/[REDACTED]/g; s/"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/"[EMAIL_REDACTED]"/g' > /app/sanitized.log
+[?2004l[?2004hroot@6f9d621de2de:/app# wc -l /app/sanitized.log > /app/total_lines.txt
+[?2004l[?2004hroot@6f9d621de2de:/app# grep -oE "password": ".*" /app/sanitized.log | wc -l > /app/passwords_redacted.txt
+[?2004lgrep: .*: No such file or directory
+[?2004hroot@6f9d621de2de:/app# grep -oE "AKIA[0-9A-Z]{16}" /app/sanitized.log | wc -l > /app/api_keys_redacted.txt
+[?2004l[?2004hroot@6f9d621de2de:/app# grep -oE "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" /app/sanitized.log | wc -l > /app/emails_redacted.txt
+[?2004l[?2004hroot@6f9d621de2de:/app# cat <<EOF > /app/security_report.json
+[?2004l[?2004h> {
+[?2004l[?2004h>   "total_lines": $(cat /app/total_lines.txt),
+[?2004l[?2004h>   "passwords_redacted": $(cat /app/passwords_redacted.txt),
+[?2004l[?2004h>   "api_keys_redacted": $(cat /app/api_keys_redacted.txt),
+[?2004l[?2004h>   "emails_redacted": $(cat /app/emails_redacted.txt)
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@6f9d621de2de:/app# grep -oE ""password": ".*"" /app/sanitized.log | wc -l > /app/passwords_redacted.txt
+[?2004l[?2004hroot@6f9d621de2de:/app# cat <<EOF > /app/security_report.json
+[?2004l[?2004h> {
+[?2004l[?2004h>   "total_lines": $(cat /app/total_lines.txt),
+[?2004l[?2004h>   "passwords_redacted": $(cat /app/passwords_redacted.txt),
+[?2004l[?2004h>   "api_keys_redacted": $(cat /app/api_keys_redacted.txt),
+[?2004l[?2004h>   "emails_redacted": $(cat /app/emails_redacted.txt)
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@6f9d621de2de:/app# 

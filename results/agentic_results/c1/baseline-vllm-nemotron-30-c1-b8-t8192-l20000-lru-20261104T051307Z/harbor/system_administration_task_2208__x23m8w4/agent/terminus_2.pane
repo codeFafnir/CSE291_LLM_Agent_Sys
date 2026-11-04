@@ -1,0 +1,517 @@
+[?2004hroot@107526b08db2:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@107526b08db2:/app# clear
+[?2004l[H[J[3J[?2004hroot@107526b08db2:/app# nano /app/service_health_monitor.py
+[?2004lbash: nano: command not found
+[?2004hroot@107526b08db2:/app# echo "import json
+[?2004l[?2004h> import subprocess
+[?2004l[?2004h> from datetime import datetime, timedelta
+[?2004l[?2004h> import os
+[?2004l[?2004h> 
+[?2004l[?2004h> # Load service configuration
+[?2004l[?2004h> with open('/app/services.json') as f:
+[?2004l[?2004h>     services = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Initialize restart tracking
+[?2004l[?2004h> time_now = datetime.now()
+[?2004l[?2004h> restart_count = {service['name']: 0 for service in services}
+[?2004l[?2004h> 
+[?2004l[?2004h> # Track service statuses
+[?2004l[?2004h> service_status = {}
+[?2004l[?2004h> 
+[?2004l[?2004h> # Helper function to check if a process is running
+[?2004l[?2004h> def is_process_running(process_name):
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         subprocess.check_output(['pgrep', '-f', process_name])
+[?2004l[?2004h>         return True
+[?2004l[?2004h>     except subprocess.CalledProcessError:
+[?2004l[?2004h>         return False
+[?2004l[?2004h> 
+[?2004l[?2004h> # Helper function to log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open('/app/restart_log.txt', 'a') as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app# # Helper function to check if all dependencies are healthy
+[?2004l[?2004hroot@107526b08db2:/app# def are_dependencies_healthy(service):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     for dependency in service.get('dependencies', []):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#         if dependency not in service_status or service_status[dependency] != 'healthy':
+[?2004l[?2004h>             return False
+[?2004l[?2004h>     return True
+[?2004l[?2004h> 
+[?2004l[?2004h> # Check each service
+[?2004l[?2004h> for service in services:
+[?2004l[?2004h>     name = service['name']
+[?2004lbash: syntax error near unexpected token `name'
+[?2004hroot@107526b08db2:/app#     process = service['process']
+[?2004lbash: process: command not found
+[?2004hroot@107526b08db2:/app#     health_check = service.get('health_check')
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     max_restarts = service.get('max_restarts_per_hour', 0)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Check dependencies
+[?2004l[?2004hroot@107526b08db2:/app#     dependencies_met = are_dependencies_healthy(service)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Check if the main process is running
+[?2004l[?2004hroot@107526b08db2:/app#     process_running = is_process_running(process)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Execute health check if provided
+[?2004l[?2004hroot@107526b08db2:/app#     health_check_passed = True
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app#     if health_check:
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             subprocess.check_output(health_check, shell=True)
+[?2004lbash: syntax error near unexpected token `health_check,'
+[?2004hroot@107526b08db2:/app#         except subprocess.CalledProcessError:
+[?2004lbash: except: command not found
+[?2004hroot@107526b08db2:/app#             health_check_passed = False
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Determine service status
+[?2004l[?2004hroot@107526b08db2:/app#     if not dependencies_met:
+[?2004l[?2004h>         status = 'dependency_failed'
+[?2004l[?2004h>     elif not process_running:
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         status = 'unhealthy'
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app#     elif not health_check_passed:
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         status = 'unhealthy'
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app#     else:
+[?2004lbash: else:: command not found
+[?2004hroot@107526b08db2:/app#         status = 'healthy'
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Track restart attempts
+[?2004l[?2004hroot@107526b08db2:/app#     if status == 'unhealthy':
+[?2004l[?2004h>         # Log restart and increment counter
+[?2004l[?2004h>         log_restart(name, 'process not running' if not process_running else 'health check failed')
+[?2004lbash: syntax error near unexpected token `name,'
+[?2004hroot@107526b08db2:/app#         restart_count[name] += 1
+[?2004lbash: restart_count[name]: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#         # Check if max restarts per hour are exceeded
+[?2004l[?2004hroot@107526b08db2:/app#         if restart_count[name] > max_restarts:
+[?2004l[?2004h>             status = 'disabled'
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Record service status
+[?2004l[?2004h>     service_status[name] = status
+[?2004l[?2004h> 
+[?2004l[?2004h> # Generate health report
+[?2004l[?2004h> report = {
+[?2004l[?2004h>     'timestamp': datetime.now().isoformat(),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     'services': {},
+[?2004lbash: services:: command not found
+[?2004hroot@107526b08db2:/app#     'summary': {
+[?2004lbash: summary:: command not found
+[?2004hroot@107526b08db2:/app#         'total_services': len(services),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#         'healthy': 0,
+[?2004lbash: healthy:: command not found
+[?2004hroot@107526b08db2:/app#         'unhealthy': 0,
+[?2004lbash: unhealthy:: command not found
+[?2004hroot@107526b08db2:/app#         'disabled': 0,
+[?2004lbash: disabled:: command not found
+[?2004hroot@107526b08db2:/app#         'dependency_failed': 0
+[?2004lbash: dependency_failed:: command not found
+[?2004hroot@107526b08db2:/app#     }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@107526b08db2:/app# }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app# for service in services:
+[?2004l[?2004h>     name = service['name']
+[?2004lbash: syntax error near unexpected token `name'
+[?2004hroot@107526b08db2:/app#     status = service_status[name]
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app#     process_running = is_process_running(service['process'])
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     health_check_passed = True
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app#     if service.get('health_check'):
+[?2004lbash: syntax error near unexpected token `'health_check''
+[?2004hroot@107526b08db2:/app#         try:
+[?2004lbash: try:: command not found
+[?2004hroot@107526b08db2:/app#             subprocess.check_output(service['health_check'], shell=True)
+[?2004lbash: syntax error near unexpected token `service['health_check'],'
+[?2004hroot@107526b08db2:/app#         except subprocess.CalledProcessError:
+[?2004lbash: except: command not found
+[?2004hroot@107526b08db2:/app#             health_check_passed = False
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app#     dependencies_met = are_dependencies_healthy(service)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Update service report entry
+[?2004l[?2004hroot@107526b08db2:/app#     report['services'][name] = {
+[?2004lbash: report[services][name]: command not found
+[?2004hroot@107526b08db2:/app#         'status': status,
+[?2004lbash: status:: command not found
+[?2004hroot@107526b08db2:/app#         'process_running': process_running,
+[?2004lbash: process_running:: command not found
+[?2004hroot@107526b08db2:/app#         'health_check_passed': health_check_passed if service.get('health_check') else 'no_check',
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#         'dependencies_met': dependencies_met,
+[?2004lbash: dependencies_met:: command not found
+[?2004hroot@107526b08db2:/app#         'restarts_last_hour': restart_count[name],
+[?2004lbash: restarts_last_hour:: command not found
+[?2004hroot@107526b08db2:/app#         'last_check': datetime.now().isoformat()
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Update summary
+[?2004l[?2004hroot@107526b08db2:/app#     if status == 'healthy':
+[?2004l[?2004h>         report['summary']['healthy'] += 1
+[?2004l[?2004h>     elif status == 'unhealthy':
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         report['summary']['unhealthy'] += 1
+[?2004lbash: report[summary][unhealthy]: command not found
+[?2004hroot@107526b08db2:/app#     elif status == 'disabled':
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         report['summary']['disabled'] += 1
+[?2004lbash: report[summary][disabled]: command not found
+[?2004hroot@107526b08db2:/app#     elif status == 'dependency_failed':
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         report['summary']['dependency_failed'] += 1
+[?2004lbash: report[summary][dependency_failed]: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app# # Write health report to file
+[?2004l[?2004hroot@107526b08db2:/app# with open('/app/health_report.json', 'w') as f:
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     json.dump(report, f, indent=4)
+[?2004lbash: syntax error near unexpected token `report,'
+[?2004hroot@107526b08db2:/app# " > /app/service_health_monitor.py
+[?2004l[?2004h> cat << EOF > /app/service_health_monitor.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import subprocess
+[?2004l[?2004h> from datetime import datetime, timedelta
+[?2004l[?2004h> import os
+[?2004l[?2004h> 
+[?2004l[?2004h> # Load service configuration
+[?2004l[?2004h> with open('/app/services.json') as f:
+[?2004l[?2004h>     services = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Initialize restart tracking
+[?2004l[?2004h> time_now = datetime.now()
+[?2004l[?2004h> restart_count = {service['name']: 0 for service in services}
+[?2004l[?2004h> 
+[?2004l[?2004h> # Track service statuses
+[?2004l[?2004h> service_status = {}
+[?2004l[?2004h> 
+[?2004l[?2004h> # Helper function to check if a process is running
+[?2004l[?2004h> def is_process_running(process_name):
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         subprocess.check_output(['pgrep', '-f', process_name])
+[?2004l[?2004h>         return True
+[?2004l[?2004h>     except subprocess.CalledProcessError:
+[?2004l[?2004h>         return False
+[?2004l[?2004h> 
+[?2004l[?2004h> # Helper function to log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open('/app/restart_log.txt', 'a') as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")
+[?2004lbash: syntax error near unexpected token `.isoformat'
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app# # Helper function to check if all dependencies are healthy
+[?2004l[?2004hroot@107526b08db2:/app# def are_dependencies_healthy(service):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     for dependency in service.get('dependencies', []):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#         if dependency not in service_status or service_status[dependency] != 'healthy':
+[?2004l[?2004h>             return False
+[?2004l[?2004h>     return True
+[?2004l[?2004h> 
+[?2004l[?2004h> # Check each service
+[?2004l[?2004h> for service in services:
+[?2004l[?2004h>     name = service['name']
+[?2004lbash: syntax error near unexpected token `name'
+[?2004hroot@107526b08db2:/app#     process = service['process']
+[?2004lbash: process: command not found
+[?2004hroot@107526b08db2:/app#     health_check = service.get('health_check')
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     max_restarts = service.get('max_restarts_per_hour', 0)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Check dependencies
+[?2004l[?2004hroot@107526b08db2:/app#     dependencies_met = are_dependencies_healthy(service)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Check if the main process is running
+[?2004l[?2004hroot@107526b08db2:/app#     process_running = is_process_running(process)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Execute health check if provided
+[?2004l[?2004hroot@107526b08db2:/app#     health_check_passed = True
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app#     if health_check:
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             subprocess.check_output(health_check, shell=True)
+[?2004lbash: syntax error near unexpected token `health_check,'
+[?2004hroot@107526b08db2:/app#         except subprocess.CalledProcessError:
+[?2004lbash: except: command not found
+[?2004hroot@107526b08db2:/app#             health_check_passed = False
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Determine service status
+[?2004l[?2004hroot@107526b08db2:/app#     if not dependencies_met:
+[?2004l[?2004h>         status = 'dependency_failed'
+[?2004l[?2004h>     elif not process_running:
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         status = 'unhealthy'
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app#     elif not health_check_passed:
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         status = 'unhealthy'
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app#     else:
+[?2004lbash: else:: command not found
+[?2004hroot@107526b08db2:/app#         status = 'healthy'
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Track restart attempts
+[?2004l[?2004hroot@107526b08db2:/app#     if status == 'unhealthy':
+[?2004l[?2004h>         # Log restart and increment counter
+[?2004l[?2004h>         log_restart(name, 'process not running' if not process_running else 'health check failed')
+[?2004lbash: syntax error near unexpected token `name,'
+[?2004hroot@107526b08db2:/app#         restart_count[name] += 1
+[?2004lbash: restart_count[name]: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#         # Check if max restarts per hour are exceeded
+[?2004l[?2004hroot@107526b08db2:/app#         if restart_count[name] > max_restarts:
+[?2004l[?2004h>             status = 'disabled'
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Record service status
+[?2004l[?2004h>     service_status[name] = status
+[?2004l[?2004h> 
+[?2004l[?2004h> # Generate health report
+[?2004l[?2004h> report = {
+[?2004l[?2004h>     'timestamp': datetime.now().isoformat(),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     'services': {},
+[?2004lbash: services:: command not found
+[?2004hroot@107526b08db2:/app#     'summary': {
+[?2004lbash: summary:: command not found
+[?2004hroot@107526b08db2:/app#         'total_services': len(services),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#         'healthy': 0,
+[?2004lbash: healthy:: command not found
+[?2004hroot@107526b08db2:/app#         'unhealthy': 0,
+[?2004lbash: unhealthy:: command not found
+[?2004hroot@107526b08db2:/app#         'disabled': 0,
+[?2004lbash: disabled:: command not found
+[?2004hroot@107526b08db2:/app#         'dependency_failed': 0
+[?2004lbash: dependency_failed:: command not found
+[?2004hroot@107526b08db2:/app#     }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@107526b08db2:/app# }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app# for service in services:
+[?2004l[?2004h>     name = service['name']
+[?2004lbash: syntax error near unexpected token `name'
+[?2004hroot@107526b08db2:/app#     status = service_status[name]
+[?2004lbash: status: command not found
+[?2004hroot@107526b08db2:/app#     process_running = is_process_running(service['process'])
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     health_check_passed = True
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app#     if service.get('health_check'):
+[?2004lbash: syntax error near unexpected token `'health_check''
+[?2004hroot@107526b08db2:/app#         try:
+[?2004lbash: try:: command not found
+[?2004hroot@107526b08db2:/app#             subprocess.check_output(service['health_check'], shell=True)
+[?2004lbash: syntax error near unexpected token `service['health_check'],'
+[?2004hroot@107526b08db2:/app#         except subprocess.CalledProcessError:
+[?2004lbash: except: command not found
+[?2004hroot@107526b08db2:/app#             health_check_passed = False
+[?2004lbash: health_check_passed: command not found
+[?2004hroot@107526b08db2:/app#     dependencies_met = are_dependencies_healthy(service)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Update service report entry
+[?2004l[?2004hroot@107526b08db2:/app#     report['services'][name] = {
+[?2004lbash: report[services][name]: command not found
+[?2004hroot@107526b08db2:/app#         'status': status,
+[?2004lbash: status:: command not found
+[?2004hroot@107526b08db2:/app#         'process_running': process_running,
+[?2004lbash: process_running:: command not found
+[?2004hroot@107526b08db2:/app#         'health_check_passed': health_check_passed if service.get('health_check') else 'no_check',
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#         'dependencies_met': dependencies_met,
+[?2004lbash: dependencies_met:: command not found
+[?2004hroot@107526b08db2:/app#         'restarts_last_hour': restart_count[name],
+[?2004lbash: restarts_last_hour:: command not found
+[?2004hroot@107526b08db2:/app#         'last_check': datetime.now().isoformat()
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app#     # Update summary
+[?2004l[?2004hroot@107526b08db2:/app#     if status == 'healthy':
+[?2004l[?2004h>         report['summary']['healthy'] += 1
+[?2004l[?2004h>     elif status == 'unhealthy':
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         report['summary']['unhealthy'] += 1
+[?2004lbash: report[summary][unhealthy]: command not found
+[?2004hroot@107526b08db2:/app#     elif status == 'disabled':
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         report['summary']['disabled'] += 1
+[?2004lbash: report[summary][disabled]: command not found
+[?2004hroot@107526b08db2:/app#     elif status == 'dependency_failed':
+[?2004lbash: syntax error near unexpected token `elif'
+[?2004hroot@107526b08db2:/app#         report['summary']['dependency_failed'] += 1
+[?2004lbash: report[summary][dependency_failed]: command not found
+[?2004hroot@107526b08db2:/app# 
+[?2004l[?2004hroot@107526b08db2:/app# # Write health report to file
+[?2004l[?2004hroot@107526b08db2:/app# with open('/app/health_report.json', 'w') as f:
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@107526b08db2:/app#     json.dump(report, f, indent=4)
+[?2004lbash: syntax error near unexpected token `report,'
+[?2004hroot@107526b08db2:/app# EOF
+[?2004lbash: EOF: command not found
+[?2004hroot@107526b08db2:/app# echo 'import json
+[?2004l[?2004h> import subprocess
+[?2004l[?2004h> from datetime import datetime, timedelta
+[?2004l[?2004h> import os' > /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Load service configuration
+[?2004l[?2004h> with open("/app/services.json") as f:
+[?2004l[?2004h>     services = json.load(f)' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Initialize restart tracking
+[?2004l[?2004h> time_now = datetime.now()
+[?2004l[?2004h> restart_count = {service["name"]: 0 for service in services}' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Track service statuses
+[?2004l[?2004h> service_status = {}' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Helper function to check if a process is running
+[?2004l[?2004h> def is_process_running(process_name):
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         subprocess.check_output(["pgrep", "-f", process_name])
+[?2004l[?2004h>         return True
+[?2004l[?2004h>     except subprocess.CalledProcessError:
+[?2004l[?2004h>         return False' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Helper function to log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open("/app/restart_log.txt", "a") as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Helper function to check if all dependencies are healthy
+[?2004l[?2004h> def are_dependencies_healthy(service):
+[?2004l[?2004h>     for dependency in service.get("dependencies", []):
+[?2004l[?2004h>         if dependency not in service_status or service_status[dependency] != "healthy":
+[?2004l[?2004h>             return False
+[?2004l[?2004h>     return True' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Check each service
+[?2004l[?2004h> for service in services:
+[?2004l[?2004h>     name = service["name"]
+[?2004l[?2004h>     process = service["process"]
+[?2004l[?2004h>     health_check = service.get("health_check")
+[?2004l[?2004h>     max_restarts = service.get("max_restarts_per_hour", 0)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check dependencies
+[?2004l[?2004h>     dependencies_met = are_dependencies_healthy(service)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check if the main process is running
+[?2004l[?2004h>     process_running = is_process_running(process)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Execute health check if provided
+[?2004l[?2004h>     health_check_passed = True
+[?2004l[?2004h>     if health_check:
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             subprocess.check_output(health_check, shell=True)
+[?2004l[?2004h>         except subprocess.CalledProcessError:
+[?2004l[?2004h>             health_check_passed = False
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Determine service status
+[?2004l[?2004h>     if not dependencies_met:
+[?2004l[?2004h>         status = "dependency_failed"
+[?2004l[?2004h>     elif not process_running:
+[?2004l[?2004h>         status = "unhealthy"
+[?2004l[?2004h>     elif not health_check_passed:
+[?2004l[?2004h>         status = "unhealthy"
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         status = "healthy"
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Track restart attempts
+[?2004l[?2004h>     if status == "unhealthy":
+[?2004l[?2004h>         # Log restart and increment counter
+[?2004l[?2004h>         log_restart(name, "process not running" if not process_running else "health check failed")
+[?2004l[?2004h>         restart_count[name] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if max restarts per hour are exceeded
+[?2004l[?2004h>         if restart_count[name] > max_restarts:
+[?2004l[?2004h>             status = "disabled"
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Record service status
+[?2004l[?2004h>     service_status[name] = status' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Generate health report
+[?2004l[?2004h> report = {
+[?2004l[?2004h>     "timestamp": datetime.now().isoformat(),
+[?2004l[?2004h>     "services": {},
+[?2004l[?2004h>     "summary": {
+[?2004l[?2004h>         "total_services": len(services),
+[?2004l[?2004h>         "healthy": 0,
+[?2004l[?2004h>         "unhealthy": 0,
+[?2004l[?2004h>         "disabled": 0,
+[?2004l[?2004h>         "dependency_failed": 0
+[?2004l[?2004h>     }
+[?2004l[?2004h> }' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo 'for service in services:
+[?2004l[?2004h>     name = service["name"]
+[?2004l[?2004h>     status = service_status[name]
+[?2004l[?2004h>     process_running = is_process_running(service["process"])
+[?2004l[?2004h>     health_check_passed = True
+[?2004l[?2004h>     if service.get("health_check"):
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             subprocess.check_output(service["health_check"], shell=True)
+[?2004l[?2004h>         except subprocess.CalledProcessError:
+[?2004l[?2004h>             health_check_passed = False
+[?2004l[?2004h>     dependencies_met = are_dependencies_healthy(service)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Update service report entry
+[?2004l[?2004h>     report["services"][name] = {
+[?2004l[?2004h>         "status": status,
+[?2004l[?2004h>         "process_running": process_running,
+[?2004l[?2004h>         "health_check_passed": health_check_passed if service.get("health_check") else "no_check",
+[?2004l[?2004h>         "dependencies_met": dependencies_met,
+[?2004l[?2004h>         "restarts_last_hour": restart_count[name],
+[?2004l[?2004h>         "last_check": datetime.now().isoformat()
+[?2004l[?2004h>     }
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Update summary
+[?2004l[?2004h>     if status == "healthy":
+[?2004l[?2004h>         report["summary"]["healthy"] += 1
+[?2004l[?2004h>     elif status == "unhealthy":
+[?2004l[?2004h>         report["summary"]["unhealthy"] += 1
+[?2004l[?2004h>     elif status == "disabled":
+[?2004l[?2004h>         report["summary"]["disabled"] += 1
+[?2004l[?2004h>     elif status == "dependency_failed":
+[?2004l[?2004h>         report["summary"]["dependency_failed"] += 1' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# echo '# Write health report to file
+[?2004l[?2004h> with open("/app/health_report.json", "w") as f:
+[?2004l[?2004h>     json.dump(report, f, indent=4)' >> /app/service_health_monitor.py
+[?2004l[?2004hroot@107526b08db2:/app# python3 /app/service_health_monitor.py
+[?2004l/bin/sh: 1: pg_isready: not found
+/bin/sh: 1: redis-cli: not found
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (7) Failed to connect to localhost port 8000 after 2 ms: Couldn't connect to server
+/bin/sh: 1: nginx: not found
+/bin/sh: 1: pg_isready: not found
+/bin/sh: 1: redis-cli: not found
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (7) Failed to connect to localhost port 8000 after 0 ms: Couldn't connect to server
+/bin/sh: 1: nginx: not found
+[?2004hroot@107526b08db2:/app# ls -la /app/health_report.json /app/restart_log.txt
+[?2004l-rw-r--r--. 1 root root 1634 Nov  4 07:17 /app/health_report.json
+-rw-r--r--. 1 root root  233 Nov  4 07:17 /app/restart_log.txt
+[?2004hroot@107526b08db2:/app# 

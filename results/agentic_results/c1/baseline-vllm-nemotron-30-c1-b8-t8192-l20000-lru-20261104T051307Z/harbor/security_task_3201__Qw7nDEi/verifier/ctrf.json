@@ -1,0 +1,102 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "4515669d-cf1e-4fef-b841-2e7d0492bb46",
+    "timestamp": "2026-11-04T06:26:36.216034+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 2,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793773596168,
+            "stop": 1793773596215,
+            "duration": 47
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_files_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793773596184,
+                "stop": 1793773596185,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_structure",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 19,
+                "start": 1793773596185,
+                "stop": 1793773596204,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_report_structure():\n        \"\"\"Verify the security report has correct structure and values.\"\"\"\n        with open(\"/app/security_report.json\", \"r\") as f:\n>           report = json.load(f)\n                     ^^^^^^^^^^^^\n\n/tests/test_outputs.py:14: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f4f80e4ba10>\ns = '{\\n  \"total_lines\": 14 /app/sanitized.log,\\n  \"passwords_redacted\": 1,\\n  \"api_keys_redacted\": 0,\\n  \"emails_redacted\": 5\\n}\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 21 (char 22)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 21 (char 22)"
+            },
+            {
+                "name": "test_outputs.py::test_no_sensitive_data_remaining",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 2,
+                "start": 1793773596204,
+                "stop": 1793773596206,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_no_sensitive_data_remaining():\n        \"\"\"Verify no passwords, API keys, or email addresses remain in sanitized log.\"\"\"\n        with open(\"/app/sanitized.log\", \"r\") as f:\n            content = f.read()\n    \n        # Check for password values (should be [REDACTED])\n        # Common password patterns that should be removed\n        password_patterns = [\n            r'password:\\s*[^\\s\\]]+',  # password: followed by non-space\n            r'\"password\":\\s*\"[^\"]+\"',  # JSON style\n            r\"'password':\\s*'[^']+'\",  # Single quote JSON\n            r'passwd:\\s*\\S+',          # passwd: format\n            r'pwd:\\s*\\S+',             # pwd: format\n        ]\n    \n        for pattern in password_patterns:\n            matches = re.findall(pattern, content, re.IGNORECASE)\n            # Only allow matches that contain [REDACTED]\n            for match in matches:\n>               assert '[REDACTED]' in match.lower(), f\"Password not redacted: {match}\"\nE               AssertionError: Password not redacted: password: mySecret123\nE               assert '[REDACTED]' in 'password: mysecret123'\nE                +  where 'password: mysecret123' = <built-in method lower of str object at 0x7f4f803ba7b0>()\nE                +    where <built-in method lower of str object at 0x7f4f803ba7b0> = 'password: mySecret123'.lower\n\n/tests/test_outputs.py:46: AssertionError",
+                "message": "AssertionError: Password not redacted: password: mySecret123\nassert '[REDACTED]' in 'password: mysecret123'\n +  where 'password: mysecret123' = <built-in method lower of str object at 0x7f4f803ba7b0>()\n +    where <built-in method lower of str object at 0x7f4f803ba7b0> = 'password: mySecret123'.lower"
+            },
+            {
+                "name": "test_outputs.py::test_line_count_preserved",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793773596207,
+                "stop": 1793773596207,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_accuracy",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793773596207,
+                "stop": 1793773596215,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_report_accuracy():\n        \"\"\"Verify report counts match actual sanitizations.\"\"\"\n        with open(\"/app/security_report.json\", \"r\") as f:\n>           report = json.load(f)\n                     ^^^^^^^^^^^^\n\n/tests/test_outputs.py:76: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f4f80e4ba10>\ns = '{\\n  \"total_lines\": 14 /app/sanitized.log,\\n  \"passwords_redacted\": 1,\\n  \"api_keys_redacted\": 0,\\n  \"emails_redacted\": 5\\n}\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 21 (char 22)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 21 (char 22)"
+            }
+        ]
+    }
+}

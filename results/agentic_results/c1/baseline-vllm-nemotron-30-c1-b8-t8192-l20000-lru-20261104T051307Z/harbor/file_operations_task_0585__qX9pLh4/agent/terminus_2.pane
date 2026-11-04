@@ -1,0 +1,138 @@
+[?2004hroot@1d47f11a9ac4:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@1d47f11a9ac4:/app# clear
+[?2004l[H[J[3J[?2004hroot@1d47f11a9ac4:/app# cat /app/access.log | awk '{print $1, $NF, $9}' > /app/log_data.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{count[$1]++} END {for (ip in count) {if (max < count[ip]) {max = count[ip]; most_common_ip = ip}}} print most_common_ip' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+[?2004hroot@1d47f11a9ac4:/app# awk '{total_requests++} END {print total_requests}' /app/log_data.txt > /app/total_requests.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{total_bytes += $2} END {print total_bytes}' /app/log_data.txt > /app/total_bytes.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{if ($3 >= 200 && $3 <= 299) successful_requests++} END {print successful_requests}' /app/log_data.txt > /app/successful_requests.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{if ($3 >= 400 && $3 <= 499) client_errors++} END {print client_errors}' /app/log_data.txt > /app/client_errors.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{if ($3 >= 500 && $3 <= 599) server_errors++} END {print server_errors}' /app/log_data.txt > /app/server_errors.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{count[$1]++} END {for (ip in count) {if (max < count[ip]) {max = count[ip]; most_common_ip = ip}}} print most_common_ip' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{count[$1]++} END {for (ip in count) {if (max < count[ip]) {max = count[ip]; most_common_ip = ip}}}'} /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: extra '}'
+awk: line 1: syntax error at or near end of line
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{count[$1]++} END {max = 0; most_common_ip = ""; for (ip in count) {if (count[ip] > max) {max = count[ip]; most_common_ip = ip}}} print most_common_ip' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# jq -n --arg total_requests "$(cat /app/total_requests.txt)" --arg total_bytes "$(cat /app/total_bytes.txt)" --arg successful_requests "$(cat /app/successful_requests.txt)" --arg client_errors "$(cat /app/client_errors.txt)" --arg server_errors "$(cat /app/server_errors.txt)" --arg most_common_ip "$(cat /app/most_common_ip.txt)" '{"total_requests": $total_requests, "total_bytes": $total_bytes, "successful_requests": $successful_requests, "client_errors": $client_errors, "server_errors": $server_errors, "most_common_ip": $most_common_ip}' > /app/summary.json
+[?2004lbash: jq: command not found
+[?2004hroot@1d47f11a9ac4:/app# awk '{count[$1]++} END {max = 0; most_common_ip = ""; for (ip in count) {if (count[ip] > max) {max = count[ip]; most_common_ip = ip}}} print most_common_ip' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{ip[$1]++; total_requests++} {total_bytes += $2} {if ($3 >= 200 && $3 <= 299) successful_requests++} {if ($3 >= 400 && $3 <= 499) client_errors++} {if ($3 >= 500 && $3 <= 599) server_errors++} END {for (i in ip) {if (ip[i] > max_requests) {max_requests = ip[i]; most_common_ip = i}}} print "total_requests: " total_requests "\ntotal_bytes: " total_bytes "\nsuccessful_requests: " successful_requests "\nclient_errors: " client_errors "\nserver_errors: " server_errors "\nmost_common_ip: " most_common_ip}' /app/access.log > /app/summary.txt
+[?2004lawk: line 1: syntax error at or near print
+awk: line 1: extra '}'
+[?2004hroot@1d47f11a9ac4:/app# cat /app/summary.txt | jq -R -r 'split("\n") | reduce .[] as $line (""; . + $line + "\n")' > /app/summary.json
+[?2004lbash: jq: command not found
+[?2004hroot@1d47f11a9ac4:/app# awk '{ip[$1]++} END {for (i in ip) {if (ip[i] > max_requests) {max_requests = ip[i]; most_common_ip = i}}} print "most_common_ip: " most_common_ip' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{ip[$1]++} END {for (i in ip) {if (ip[i] > max_requests) {max_requests = ip[i]; most_common_ip = i}}} {print most_common_ip}' /app/log_data.txt > /app/most_common_ip.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/summary.json
+[?2004l{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/summary.json
+[?2004l{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}
+[?2004hroot@1d47f11a9ac4:/app# cat /app/total_requests.txt > /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/total_bytes.txt >> /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/successful_requests.txt >> /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/client_errors.txt >> /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/server_errors.txt >> /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# cat /app/most_common_ip.txt >> /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/total_requests: /"total_requests": /g' /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/total_bytes: /"total_bytes": /g' /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/successful_requests: /"successful_requests": /g' /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/client_errors: /"client_errors": /g' /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/server_errors: /"server_errors": /g' /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/most_common_ip: /"most_common_ip": /g' /app/summary_temp.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# sed -i 's/\n/",
+[?2004l[?2004h> /g' /app/summary_temp.txt
+[?2004lsed: -e expression #1, char 7: unterminated `s' command
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# json_content="{\"total_requests\": $(cat /app/total_requests.txt), \"total_bytes\": $(cat /app/total_bytes.txt), \"successful_requests\": $(cat /app/successful_requests.txt), \"client_errors\": $(cat /app/client_errors.txt), \"server_errors\": $(cat /app/server_errors.txt), \"most_common_ip\": \"$(cat /app/most_common_ip.txt)\"}" && echo "$json_content" > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# json_content="{\"total_requests\": $(cat /app/total_requests.txt), \"total_bytes\": $(cat /app/total_bytes.txt), \"successful_requests\": $(cat /app/successful_requests.txt), \"client_errors\": $(cat /app/client_errors.txt), \"server_errors\": $(cat /app/server_errors.txt), \"most_common_ip\": \"$(cat /app/most_common_ip.txt)\"}" && echo "$json_content" > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# json_content="{\"total_requests\": $(cat /app/total_requests.txt), \"total_bytes\": $(cat /app/total_bytes.txt), \"successful_requests\": $(cat /app/successful_requests.txt), \"client_errors\": $(cat /app/client_errors.txt), \"server_errors\": $(cat /app/server_errors.txt), \"most_common_ip\": \"$(cat /app/most_common_ip.txt)\"}" && echo "$json_content" > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{ip[$1]++} END {for (i in ip) {if (ip[i] > max_requests) {max_requests = ip[i]; most_common_ip = i}}} print "most_common_ip: " most_common_ip}' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+awk: line 1: extra '}'
+[?2004hroot@1d47f11a9ac4:/app# awk '{total_requests++} END {print total_requests}' /app/log_data.txt > /app/total_requests.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{total_bytes += $2} END {print total_bytes}' /app/log_data.txt > /app/total_bytes.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{if ($3 >= 200 && $3 <= 299) successful_requests++} END {print successful_requests}' /app/log_data.txt > /app/successful_requests.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{if ($3 >= 400 && $3 <= 499) client_errors++} END {print client_errors}' /app/log_data.txt > /app/client_errors.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{if ($3 >= 500 && $3 <= 599) server_errors++} END {print server_errors}' /app/log_data.txt > /app/server_errors.txt
+[?2004l[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{ip[$1]++} END {max_requests = 0; most_common_ip = ""; for (i in ip) {if (ip[i] > max_requests) {max_requests = ip[i]; most_common_ip = i}}} print most_common_ip' /app/log_data.txt > /app/most_common_ip.txt
+[?2004lawk: line 1: syntax error at or near print
+[?2004hroot@1d47f11a9ac4:/app# echo '{"total_requests": $(cat /app/total_requests.txt), "total_bytes": $(cat /app/total_bytes.txt), "successful_requests": $(cat /app/successful_requests.txt), "client_errors": $(cat /app/client_errors.txt), "server_errors": $(cat /app/server_errors.txt), "most_common_ip": "$(cat /app/most_common_ip.txt)"}' > /app/summary.json
+[?2004l[?2004hroot@1d47f11a9ac4:/app# awk '{ip[$1]++} {total_requests++} {total_bytes += $2} {if ($3 >= 200 && $3 <= 299) successful_requests++} {if ($3 >= 400 && $3 <= 499) client_errors++} {if ($3 >= 500 && $3 <= 599) server_errors++} END {max_requests = 0; most_common_ip = ""; for (i in ip) {if (ip[i] > max_requests) {max_requests = ip[i]; most_common_ip = i}}} print "{\"total_requests\": " total_requests ", \"total_bytes\": " total_bytes ", \"successful_requests\": " successful_requests ", \"client_errors\": " client_errors ", \"server_errors\": " server_errors ", \"most_common_ip\": " most_common_ip "}"}' /app/access.log > /app/summary.json
+[?2004lawk: line 1: syntax error at or near print
+awk: line 1: extra '}'
+[?2004hroot@1d47f11a9ac4:/app# 

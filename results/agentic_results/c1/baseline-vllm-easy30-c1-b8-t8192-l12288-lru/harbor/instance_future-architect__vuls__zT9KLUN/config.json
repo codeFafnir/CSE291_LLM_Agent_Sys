@@ -1,0 +1,31 @@
+{
+    "task": {
+        "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-01441351c3407abfc21c48a38e28828e1b504e0c",
+        "source": "tasks"
+    },
+    "trial_name": "instance_future-architect__vuls__zT9KLUN",
+    "trials_dir": "/data/cse291-results/baseline-vllm-easy30-c1-b8-t8192-l12288-lru/harbor",
+    "agent": {
+        "name": "terminus-2",
+        "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+        "base_url": "http://host.docker.internal:8000/v1",
+        "model_api_format": "openai_chat_completions",
+        "kwargs": {
+            "model_info": {
+                "max_input_tokens": 12288,
+                "max_output_tokens": 2048,
+                "input_cost_per_token": 0,
+                "output_cost_per_token": 0
+            },
+            "llm_kwargs": {
+                "max_tokens": 2048,
+                "extra_body": {
+                    "chat_template_kwargs": {
+                        "enable_thinking": false
+                    }
+                }
+            }
+        }
+    },
+    "job_id": "7095f06e-b125-41d1-9079-244903b9965f"
+}

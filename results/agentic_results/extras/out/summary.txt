@@ -1,0 +1,36 @@
+c1 agent_steps 463 matched 450 match_rate 0.972
+## c1
+tasks 29  tool_calls_mean 25.55  p50 16.0  max 143
+bash_calls_mean 24.21  p50 14.0
+  easy n 19 tool_calls_mean 21.47
+  medium n 10 tool_calls_mean 33.30
+  passed n 4 tool_calls_mean 24.25
+  failed n 25 tool_calls_mean 25.76
+  context_errors n 11 tool_calls_mean 31.64
+episodes 262  measured_episode_s mean 5.428 p50 1.487 p95 11.168
+measured_per_bash_call_s mean 2.846 p50 1.097
+requested_wait_s mean 2.945 p50 1.200
+exclusive_prefills 262  shared_prefills 0
+exclusive_hit_fraction mean 0.854 p50 0.884
+recompute_episodes 9 / 262  (0.034)
+preempt_during_exclusive_wait 0
+waits_ge_5s 62  recomputed 3
+
+c4 agent_steps 565 matched 554 match_rate 0.981
+## c4
+tasks 29  tool_calls_mean 32.86  p50 28.0  max 107
+bash_calls_mean 31.03  p50 28.0
+  easy n 19 tool_calls_mean 31.53
+  medium n 10 tool_calls_mean 35.40
+  passed n 2 tool_calls_mean 26.50
+  failed n 27 tool_calls_mean 33.33
+  context_errors n 13 tool_calls_mean 46.08
+episodes 416  measured_episode_s mean 4.618 p50 1.206 p95 10.708
+measured_per_bash_call_s mean 2.385 p50 0.652
+requested_wait_s mean 2.942 p50 1.000
+exclusive_prefills 284  shared_prefills 132
+exclusive_hit_fraction mean 0.850 p50 0.920
+recompute_episodes 19 / 284  (0.067)
+preempt_during_exclusive_wait 0
+waits_ge_5s 60  recomputed 6
+

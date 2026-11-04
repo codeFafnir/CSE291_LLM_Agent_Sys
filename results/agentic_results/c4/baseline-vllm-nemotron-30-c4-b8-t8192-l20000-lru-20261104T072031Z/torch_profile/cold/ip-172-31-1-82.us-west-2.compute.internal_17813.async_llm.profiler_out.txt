@@ -1,0 +1,56 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+              concurrent/futures/thread.py(90): _worker        14.29%       15.039s        28.57%       30.069s       15.035s             2  
+<built-in method get of _queue.SimpleQueue object at...        14.29%       15.034s        14.29%       15.034s       15.034s             1  
+<built-in method get of _queue.SimpleQueue object at...        14.26%       15.012s        14.26%       15.012s        7.506s             2  
+                           asyncio/runners.py(118): run        14.22%       14.962s        14.29%       15.035s       15.035s             1  
+<built-in method poll of select.poll object at 0x7ff...        14.18%       14.919s        14.18%       14.919s     994.621ms            15  
+<built-in method acquire of _thread.lock object at 0...        12.97%       13.648s        12.97%       13.648s        1.137s            12  
+                                threading.py(359): wait        10.43%       10.975s        10.43%       10.975s        5.487s             2  
+<built-in method acquire of _thread.lock object at 0...         5.17%        5.444s         5.17%        5.444s        1.361s             4  
+                              selectors.py(415): select         0.11%     114.120ms         0.11%     114.120ms     114.120ms             1  
+<built-in method encode_batch of tokenizers.Tokenize...         0.01%      14.812ms         0.01%      14.812ms      14.812ms             1  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.01%       6.124ms         0.02%      16.365ms     129.882us           126  
+<built-in method step of tokenizers.decoders.DecodeS...         0.00%       5.093ms         0.00%       5.093ms      19.894us           256  
+                                 enum.py(1561): __and__         0.00%       2.543ms         0.01%       5.787ms       5.764us          1004  
+                    zmq/_future.py(670): _handle_events         0.00%       2.475ms         0.01%      11.673ms      93.384us           125  
+                   zmq/_future.py(470): _add_recv_event         0.00%       2.169ms         0.01%       8.317ms      66.008us           126  
+                              enum.py(1543): _get_value         0.00%       1.925ms         0.00%       2.854ms       0.730us          3908  
+                      zmq/_future.py(586): _handle_recv         0.00%       1.739ms         0.01%       6.949ms      55.148us           126  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.680ms         0.03%      34.170ms     273.361us           125  
+                           asyncio/tasks.py(653): sleep         0.00%       1.607ms         0.00%       1.671ms      10.779us           155  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.600ms         0.01%      11.861ms      96.427us           123  
+                   prometheus_client/values.py(27): inc         0.00%       1.573ms         0.00%       1.842ms       0.734us          2508  
+                         <built-in function isinstance>         0.00%       1.569ms         0.00%       1.844ms       0.216us          8537  
+<built-in method decode of msgspec.msgpack.Decoder o...         0.00%       1.418ms         0.00%       1.471ms      11.671us           126  
+                 prometheus_client/metrics.py(337): inc         0.00%       1.415ms         0.00%       3.881ms       1.966us          1974  
+                                 enum.py(720): __call__         0.00%       1.394ms         0.00%       2.086ms       1.034us          2018  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%       1.028ms         0.01%      12.436ms      99.486us           125  
+               zmq/sugar/socket.py(785): recv_multipart         0.00%       1.017ms         0.00%       1.135ms       9.006us           126  
+              prometheus_client/metrics.py(138): labels         0.00%       1.012ms         0.00%       1.249ms       9.318us           134  
+prometheus_client/metrics.py(73): _raise_if_not_obse...         0.00%     986.539us         0.00%       1.755ms       0.611us          2871  
+<built-in method set_result of _asyncio.Future objec...         0.00%     962.838us         0.00%     962.838us       2.303us           418  
+                      grpc/_channel.py(1119): _blocking         0.00%     898.007us         0.00%       1.145ms       1.145ms             1  
+                      uvicorn/server.py(248): main_loop         0.00%     834.080us         0.00%       3.748ms      24.988us           150  
+                          <frozen os>(710): __getitem__         0.00%     796.807us         0.00%       1.434ms       2.481us           578  
+                 prometheus_client/metrics.py(460): set         0.00%     788.980us         0.00%       1.926ms       3.056us           630  
+       prometheus_client/metrics.py(67): _is_observable         0.00%     768.206us         0.00%     768.206us       0.268us          2871  
+                                 enum.py(1128): __new__         0.00%     692.097us         0.00%     692.097us       0.343us          2018  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     688.460us         0.00%       2.345ms      19.067us           123  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     671.077us         0.00%       1.367ms      10.850us           126  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     649.218us         0.00%       2.062ms      16.901us           122  
+                                  enum.py(1550): __or__         0.00%     648.790us         0.00%       1.375ms       5.349us           257  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/v1/...         0.00%     599.695us         0.01%       6.101ms      49.600us           123  
+        zmq/_future.py(682): _schedule_remaining_events         0.00%     578.142us         0.00%       1.311ms       3.487us           376  
+                zmq/sugar/attrsettr.py(43): __getattr__         0.00%     565.798us         0.00%       1.366ms      10.839us           126  
+             prometheus_client/metrics.py(667): observe         0.00%     545.673us         0.00%       1.168ms       4.442us           263  
+/data/CSE291_LLM_Agent_Sys/third_party/vllm/vllm/env...         0.00%     528.209us         0.00%       2.452ms       9.887us           248  
+                  concurrent/futures/thread.py(54): run         0.00%     470.698us         0.02%      18.908ms       6.303ms             3  
+                    zmq/_future.py(704): _drop_io_state         0.00%     467.790us         0.00%       2.023ms      16.059us           126  
+                   prometheus_client/values.py(31): set         0.00%     461.820us         0.00%     554.153us       0.880us           630  
+                    <frozen _collections_abc>(804): get         0.00%     460.482us         0.00%       1.797ms       3.417us           526  
+                                  <template>(101): root         0.00%     438.296us         0.00%     934.198us      54.953us            17  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 105.242s
+

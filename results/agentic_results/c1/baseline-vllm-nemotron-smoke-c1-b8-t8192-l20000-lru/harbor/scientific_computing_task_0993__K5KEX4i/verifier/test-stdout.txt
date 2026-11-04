@@ -1,0 +1,122 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pandas
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (3.1.0)
+Requirement already satisfied: numpy>=2.0.2 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.5.4)
+Requirement already satisfied: python-dateutil>=2.9.0 in /usr/local/lib/python3.12/dist-packages (from pandas) (4.0.0)
+Requirement already satisfied: tzdata in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.9.0->pandas) (2026.6)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+  Installing: numpy
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (2.5.4)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+  Installing: scipy
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: scipy in /usr/local/lib/python3.12/dist-packages (1.18.1)
+Requirement already satisfied: numpy<2.8,>=2.0.0 in /usr/local/lib/python3.12/dist-packages (from scipy) (2.5.4)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py ..FFF                                           [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_numerical_accuracy ____________________________
+
+    def test_numerical_accuracy():
+        """Verify numerical accuracy against reference solution."""
+        params = load_parameters()
+        df = pd.read_csv('/app/output/results.csv')
+    
+        # Compute analytical solution
+        t = df['time'].values
+        y_analytical = analytical_solution(t, params['alpha'], params['K'], params['y0'])
+    
+        # Check accuracy - Euler method should be within reasonable tolerance
+        max_error = np.max(np.abs(df['population'].values - y_analytical))
+>       assert max_error < 0.1, f"Numerical error too large: {max_error}"
+E       AssertionError: Numerical error too large: 16.562376709683747
+E       assert np.float64(16.562376709683747) < 0.1
+
+/tests/test_outputs.py:55: AssertionError
+______________________________ test_summary_json _______________________________
+
+    def test_summary_json():
+        """Verify summary JSON contains correct values."""
+        params = load_parameters()
+        df = pd.read_csv('/app/output/results.csv')
+    
+        # Load summary
+        with open('/app/output/summary.json', 'r') as f:
+>           summary = json.load(f)
+                      ^^^^^^^^^^^^
+
+/tests/test_outputs.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f7c9d59c4d0>
+s = 'time population\nfinal_population: 999.9986\nmax_population: 999.9986\nconvergence_time: 9.4000\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+>           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+/usr/lib/python3.12/json/decoder.py:355: JSONDecodeError
+___________________________ test_decimal_formatting ____________________________
+
+    def test_decimal_formatting():
+        """Verify values are formatted with 4 decimal places."""
+        df = pd.read_csv('/app/output/results.csv')
+    
+        # Check that all values have at most 4 decimal places when rounded
+        for col in ['time', 'population']:
+            # Multiply by 10000 and check if values are close to integers
+            scaled = df[col] * 10000
+            is_close_to_int = np.all(np.abs(scaled - np.round(scaled)) < 1e-10)
+>           assert is_close_to_int, f"Column {col} not formatted to 4 decimal places"
+E           AssertionError: Column population not formatted to 4 decimal places
+E           assert np.False_
+
+/tests/test_outputs.py:102: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_exists
+PASSED ../tests/test_outputs.py::test_csv_format
+FAILED ../tests/test_outputs.py::test_numerical_accuracy - AssertionError: Nu...
+FAILED ../tests/test_outputs.py::test_summary_json - json.decoder.JSONDecodeE...
+FAILED ../tests/test_outputs.py::test_decimal_formatting - AssertionError: Co...
+========================= 3 failed, 2 passed in 0.91s ==========================
+Some tests failed.

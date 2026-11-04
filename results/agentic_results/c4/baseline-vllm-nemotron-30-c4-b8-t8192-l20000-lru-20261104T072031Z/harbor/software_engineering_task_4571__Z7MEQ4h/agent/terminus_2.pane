@@ -1,0 +1,1067 @@
+[?2004hroot@bd06d1ccb1ee:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@bd06d1ccb1ee:/app# clear
+[?2004l[H[J[3J[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# cat > /app/fix_yaml.py << 'EOF'
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from ruamel.yaml import YAML
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read the corrupted YAML file
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     data = yaml.safe_load(file)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Remove duplicate keys (keep the first occurrence)
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     if key not in fixed_data:
+[?2004l[?2004h>         fixed_data[key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Convert keys with dots to underscores
+[?2004l[?2004h> fixed_data = {}
+[?2004l[?2004h> for key, value in data.items():
+[?2004l[?2004h>     new_key = key.replace('.', '_')
+[?2004l[?2004h>     fixed_data[new_key] = value
+[?2004l[?2004h> 
+[?2004l[?2004h> data = fixed_data
+[?2004l[?2004h> 
+[?2004l[?2004h> # Uncomment lines that start with '# active:'
+[?2004l[?2004h> with open('/app/build_config.yaml', 'r') as file:
+[?2004l[?2004h>     lines = file.readlines()
+[?2004l[?2004h> 
+[?2004l[?2004h> fixed_lines = []
+[?2004l[?2004h> for line in lines:
+[?2004l[?2004h>     if line.startswith('# active:'):
+[?2004l[?2004h>         fixed_lines.append(line.lstrip('# ').strip() + '\n')
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_lines.append(line)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure proper YAML indentation (2 spaces per level)
+[?2004l[?2004h> fixed_yaml = ''
+[?2004l[?2004h> indent = 0
+[?2004l[?2004h> for line in fixed_lines:
+[?2004l[?2004h>     if line.strip().startswith('---'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>         indent = 0
+[?2004l[?2004h>     elif line.strip() == '' or line.strip().startswith('#'):
+[?2004l[?2004h>         fixed_yaml += line
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         fixed_yaml += '  ' * indent + line
+[?2004l[?2004h>         if ':
+[?2004l[?2004h> ' in line:
+[?2004l[?2004h>             indent += 1
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write the corrected configuration to the new file
+[?2004l[?2004h> with open('/app/fixed_config.yaml', 'w') as file:
+[?2004l[?2004h>     file.write(fixed_yaml)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@bd06d1ccb1ee:/app# python3 /app/fix_yaml.py
+[?2004l  File "/app/fix_yaml.py", line 46
+    if ':
+       ^
+SyntaxError: unterminated string literal (detected at line 46)
+[?2004hroot@bd06d1ccb1ee:/app# 

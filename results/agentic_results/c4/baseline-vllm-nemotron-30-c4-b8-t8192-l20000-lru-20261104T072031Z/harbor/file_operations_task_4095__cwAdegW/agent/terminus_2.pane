@@ -1,0 +1,405 @@
+[?2004hroot@29ffe4bc60d2:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@29ffe4bc60d2:/app# clear
+[?2004l[H[J[3J[?2004hroot@29ffe4bc60d2:/app# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# ls -la
+[?2004ltotal 24
+drwxr-xr-x. 5 root root 4096 Jan 14  2026 [0m[01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 05:55 [01;34m..[0m
+drwxr-xr-x. 3 root root 4096 Jan 14  2026 [01;34mcache[0m
+drwxr-xr-x. 3 root root 4096 Jan 14  2026 [01;34mdatabase[0m
+drwxr-xr-x. 4 root root 4096 Jan 14  2026 [01;34mweb_servers[0m
+[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log"
+[?2004l./web_servers/frontend/frontend_20240115.log
+./web_servers/frontend/frontend_20240116.log
+./web_servers/frontend/frontend_20240117.log
+./web_servers/api/api_corrupted_20240114.log
+./web_servers/api/api_20240116.log
+./web_servers/api/api_20240115.log
+./database/primary/empty_file.log
+./database/primary/primary_20240116.log
+./database/primary/primary_20240115.log
+./cache/redis/redis_20240115.log
+[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Processing $file"; done
+[?2004lProcessing ./web_servers/frontend/frontend_20240115.log
+Processing ./web_servers/frontend/frontend_20240116.log
+Processing ./web_servers/frontend/frontend_20240117.log
+Processing ./web_servers/api/api_corrupted_20240114.log
+Processing ./web_servers/api/api_20240116.log
+Processing ./web_servers/api/api_20240115.log
+Processing ./database/primary/empty_file.log
+Processing ./database/primary/primary_20240116.log
+Processing ./database/primary/primary_20240115.log
+Processing ./cache/redis/redis_20240115.log
+[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+Validating ./web_servers/frontend/frontend_20240116.log
+Validating ./web_servers/frontend/frontend_20240117.log
+Validating ./web_servers/api/api_corrupted_20240114.log
+Validating ./web_servers/api/api_20240116.log
+Validating ./web_servers/api/api_20240115.log
+Validating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+Validating ./database/primary/primary_20240115.log
+Validating ./cache/redis/redis_20240115.log
+[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Processing $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lProcessing ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDProcessing ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulProcessing ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZProcessing ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashProcessing ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowProcessing ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDProcessing ./database/primary/empty_file.log
+Processing ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedProcessing ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDProcessing ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Processing $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lProcessing ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDProcessing ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulProcessing ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZProcessing ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashProcessing ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowProcessing ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDProcessing ./database/primary/empty_file.log
+Processing ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedProcessing ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDProcessing ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Processing $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lProcessing ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDProcessing ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulProcessing ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZProcessing ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashProcessing ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowProcessing ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDProcessing ./database/primary/empty_file.log
+Processing ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedProcessing ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDProcessing ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Processing $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lProcessing ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDProcessing ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulProcessing ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZProcessing ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashProcessing ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowProcessing ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDProcessing ./database/primary/empty_file.log
+Processing ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedProcessing ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDProcessing ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# cd /app/logs
+[?2004l[?2004hroot@29ffe4bc60d2:/app/logs# find . -type f -name "*.log" | while read file; do echo "Validating $file"; head -n 1 $file; tail -n 1 $file; done
+[?2004lValidating ./web_servers/frontend/frontend_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=8
+LOG_ENDValidating ./web_servers/frontend/frontend_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successfulValidating ./web_servers/frontend/frontend_20240117.log
+LOG_START 2024-01-17T00:00:00Z entries=5
+[ERROR] 2024-01-17T16:05:18ZValidating ./web_servers/api/api_corrupted_20240114.log
+LOG_START 2024-01-14T00:00:00Z entries=invalid
+Missing footer due to crashValidating ./web_servers/api/api_20240116.log
+LOG_START 2024-01-16T00:00:00Z entries=4
+[ERROR] 2024-01-16T15:35:48Z Message queue overflowValidating ./web_servers/api/api_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=7
+LOG_ENDValidating ./database/primary/empty_file.log
+Validating ./database/primary/primary_20240116.log
+[INFO] 2024-01-16T00:10:05Z Database recovery in progress
+[ERROR] 2024-01-16T05:30:18Z Storage allocation failedValidating ./database/primary/primary_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=9
+LOG_ENDValidating ./cache/redis/redis_20240115.log
+LOG_START 2024-01-15T00:00:00Z entries=6
+[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@29ffe4bc60d2:/app/logs# 

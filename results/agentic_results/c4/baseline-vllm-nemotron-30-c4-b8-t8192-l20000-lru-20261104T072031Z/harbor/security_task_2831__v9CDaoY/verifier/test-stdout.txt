@@ -1,0 +1,61 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 3 items
+
+../tests/test_outputs.py F.F                                             [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_cleaned_file_correct ___________________________
+
+    def test_cleaned_file_correct():
+        """Verify malicious Base64 injections are properly replaced."""
+        # Read original file
+        with open('/app/web_access.log', 'r') as f:
+            original_lines = f.readlines()
+    
+        # Read cleaned file
+        with open('/app/cleaned_web_access.log', 'r') as f:
+            cleaned_lines = f.readlines()
+    
+        # They should have same number of lines
+>       assert len(original_lines) == len(cleaned_lines), "Line count mismatch"
+E       AssertionError: Line count mismatch
+E       assert 19 == 1
+E        +  where 19 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...WARN Suspicious activity detected: c2NyaXB0PmV2YWwoZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg== from IP: 192.168.1.100\n', ...])
+E        +  and   1 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...5bWVudF9ldmFsPSJhbGVydCgnaGFja2VkJykiOw== status: declined2024-01-15 10:48:22 INFO Email sent to: support@example.com'])
+
+/tests/test_outputs.py:18: AssertionError
+________________________ test_file_structure_preserved _________________________
+
+    def test_file_structure_preserved():
+        """Verify file structure and order are preserved."""
+        with open('/app/web_access.log', 'r') as f:
+            original = f.readlines()
+    
+        with open('/app/cleaned_web_access.log', 'r') as f:
+            cleaned = f.readlines()
+    
+        # Same number of lines
+>       assert len(original) == len(cleaned)
+E       AssertionError: assert 19 == 1
+E        +  where 19 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...WARN Suspicious activity detected: c2NyaXB0PmV2YWwoZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg== from IP: 192.168.1.100\n', ...])
+E        +  and   1 = len(['2024-01-15 10:30:45 INFO User agent: Mozilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] PO...5bWVudF9ldmFsPSJhbGVydCgnaGFja2VkJykiOw== status: declined2024-01-15 10:48:22 INFO Email sent to: support@example.com'])
+
+/tests/test_outputs.py:112: AssertionError
+==================================== PASSES ====================================
+__________________________ test_security_report_valid __________________________
+----------------------------- Captured stdout call -----------------------------
+✓ Security report validated: 0 injections found
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_security_report_valid
+FAILED ../tests/test_outputs.py::test_cleaned_file_correct - AssertionError: ...
+FAILED ../tests/test_outputs.py::test_file_structure_preserved - AssertionErr...
+========================= 2 failed, 1 passed in 0.03s ==========================
+Some tests failed.

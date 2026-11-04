@@ -1,0 +1,60 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "1f52a007-ab28-452e-9023-bb6a66f60a7e",
+    "timestamp": "2026-11-04T05:16:10.601244+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793769370571,
+            "stop": 1793769370601,
+            "duration": 30
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793769370587,
+                "stop": 1793769370588,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 12,
+                "start": 1793769370588,
+                "stop": 1793769370600,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_correct():\n        \"\"\"Verify the SPARQL query content is correct.\"\"\"\n        with open('/app/classic_books_query.sparql', 'r') as f:\n            content = f.read()\n    \n        # Check file is not empty\n        assert len(content.strip()) > 0, \"File is empty\"\n    \n        # Check for required prefixes (case-insensitive)\n        content_lower = content.lower()\n        assert 'prefix ex:' in content_lower or 'prefix ex :' in content_lower, \"Missing ex: prefix\"\n        assert 'prefix dc:' in content_lower or 'prefix dc :' in content_lower, \"Missing dc: prefix\"\n        assert 'prefix rdf:' in content_lower or 'prefix rdf :' in content_lower, \"Missing rdf: prefix\"\n    \n        # Check for SELECT clause with required variables\n        assert 'select' in content_lower, \"Missing SELECT clause\"\n        assert '?title' in content, \"Missing ?title variable in SELECT\"\n        assert '?authorname' in content_lower, \"Missing ?authorName variable in SELECT\"\n    \n        # Check for WHERE clause\n        assert 'where' in content_lower, \"Missing WHERE clause\"\n    \n        # Check for FILTER condition for Classic genre (allowing various spellings)\n        filter_pattern = r'filter.*classic.*=.*\"classic\"|\"Classic\"|filter.*str.*=.*\"classic\"|\"Classic\"'\n>       assert re.search(filter_pattern, content_lower, re.IGNORECASE | re.DOTALL), \"Missing FILTER for Classic genre\"\nE       AssertionError: Missing FILTER for Classic genre\nE       assert None\nE        +  where None = <function search at 0x7fd15d87a160>('filter.*classic.*=.*\"classic\"|\"Classic\"|filter.*str.*=.*\"classic\"|\"Classic\"', '@prefix ex: <http://example.org/> .\\\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\\\n@prefix rdf: <http://www.w3....  ?book dc:creator ?author .\\\\n  ?author dc:title ?authorname .\\\\n  ?book dc:subject classic .\\\\n}\\\\norder by ?title\\n', (re.IGNORECASE | re.DOTALL))\nE        +    where <function search at 0x7fd15d87a160> = re.search\nE        +    and   re.IGNORECASE = re.IGNORECASE\nE        +    and   re.DOTALL = re.DOTALL\n\n/tests/test_outputs.py:32: AssertionError",
+                "message": "AssertionError: Missing FILTER for Classic genre\nassert None\n +  where None = <function search at 0x7fd15d87a160>('filter.*classic.*=.*\"classic\"|\"Classic\"|filter.*str.*=.*\"classic\"|\"Classic\"', '@prefix ex: <http://example.org/> .\\\\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\\\\n@prefix rdf: <http://www.w3....  ?book dc:creator ?author .\\\\n  ?author dc:title ?authorname .\\\\n  ?book dc:subject classic .\\\\n}\\\\norder by ?title\\n', (re.IGNORECASE | re.DOTALL))\n +    where <function search at 0x7fd15d87a160> = re.search\n +    and   re.IGNORECASE = re.IGNORECASE\n +    and   re.DOTALL = re.DOTALL"
+            }
+        ]
+    }
+}

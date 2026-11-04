@@ -1,0 +1,116 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: rdflib
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Collecting rdflib
+  Downloading rdflib-7.6.0-py3-none-any.whl.metadata (12 kB)
+Collecting pyparsing<4,>=2.1.0 (from rdflib)
+  Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+Downloading rdflib-7.6.0-py3-none-any.whl (615 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 615.4/615.4 kB 16.5 MB/s eta 0:00:00
+Downloading pyparsing-3.3.3-py3-none-any.whl (126 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.4/126.4 kB 12.0 MB/s eta 0:00:00
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Installing collected packages: pyparsing, rdflib
+Successfully installed pyparsing-3.3.3 rdflib-7.6.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py FFF.F                                           [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_output_files_exist ____________________________
+
+    def test_output_files_exist():
+        """Verify both output files were created."""
+>       assert os.path.exists('/app/query_results.csv'), "CSV output file missing"
+E       AssertionError: CSV output file missing
+E       assert False
+E        +  where False = <function exists at 0x7f1deb537560>('/app/query_results.csv')
+E        +    where <function exists at 0x7f1deb537560> = <module 'posixpath' (frozen)>.exists
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:8: AssertionError
+___________________________ test_csv_format_correct ____________________________
+
+    def test_csv_format_correct():
+        """Verify CSV has correct format and headers."""
+>       with open('/app/query_results.csv', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'
+
+/tests/test_outputs.py:13: FileNotFoundError
+__________________________ test_query_results_correct __________________________
+
+    def test_query_results_correct():
+        """Verify the SPARQL query returns correct results."""
+        # Load the RDF data
+        g = rdflib.Graph()
+        g.parse('/app/library.ttl', format='turtle')
+    
+        # Define expected namespace (from the data)
+        ex = rdflib.Namespace("http://example.org/library#")
+    
+        # Execute a verification query to check expected results
+        query = """
+        PREFIX ex: <http://example.org/library#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    
+        SELECT ?title ?author ?year WHERE {
+          ?book a ex:Book ;
+                ex:title ?title ;
+                ex:author ?author ;
+                ex:publicationYear ?year ;
+                ex:genre ?genre .
+    
+          ?author ex:nationality ?nationality .
+    
+          FILTER(?year > 2015)
+          FILTER(?genre = "Fiction")
+          FILTER(?nationality = "American")
+        }
+        ORDER BY ?year ?title
+        """
+    
+        results = list(g.query(query))
+    
+        # Load agent's results
+        agent_results = []
+>       with open('/app/query_results.csv', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'
+
+/tests/test_outputs.py:57: FileNotFoundError
+__________________________ test_csv_sorted_correctly ___________________________
+
+    def test_csv_sorted_correctly():
+        """Verify results are sorted by year then title."""
+>       with open('/app/query_results.csv', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/query_results.csv'
+
+/tests/test_outputs.py:89: FileNotFoundError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.12/dist-packages/_pytest/compat.py:249
+  /usr/local/lib/python3.12/dist-packages/_pytest/compat.py:249: UserWarning: Code: _mock_name is not defined in namespace XSD
+    return getattr(object, name, default)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_explanation_exists
+FAILED ../tests/test_outputs.py::test_output_files_exist - AssertionError: CS...
+FAILED ../tests/test_outputs.py::test_csv_format_correct - FileNotFoundError:...
+FAILED ../tests/test_outputs.py::test_query_results_correct - FileNotFoundErr...
+FAILED ../tests/test_outputs.py::test_csv_sorted_correctly - FileNotFoundErro...
+==================== 4 failed, 1 passed, 1 warning in 0.16s ====================
+Some tests failed.

@@ -1,0 +1,130 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: watchdog
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Collecting watchdog
+  Downloading watchdog-7.0.0-py3-none-manylinux_2_17_x86_64.whl.metadata (60 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.7/60.7 kB 2.6 MB/s eta 0:00:00
+Downloading watchdog-7.0.0-py3-none-manylinux_2_17_x86_64.whl (102 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 102.2/102.2 kB 6.3 MB/s eta 0:00:00
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Installing collected packages: watchdog
+Successfully installed watchdog-7.0.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+  Installing: pytest
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pytest in /usr/local/lib/python3.12/dist-packages (9.2.0)
+Requirement already satisfied: iniconfig>=2 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.3.1)
+Requirement already satisfied: packaging>=24 in /usr/local/lib/python3.12/dist-packages (from pytest) (26.3)
+Requirement already satisfied: pluggy<2,>=1.6 in /usr/local/lib/python3.12/dist-packages (from pytest) (1.7.0)
+Requirement already satisfied: pygments>=2.15 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.21.0)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 7 items
+
+../tests/test_outputs.py F.FF.FF                                         [100%]
+
+=================================== FAILURES ===================================
+_______________________________ test_files_exist _______________________________
+
+    def test_files_exist():
+        """Verify all required output files exist."""
+        required_files = [
+            '/app/log-monitor.service',
+            '/app/log_watcher.py',
+            '/app/reports/log_summary.json',
+            '/app/state/processed_files.json'
+        ]
+    
+        for file_path in required_files:
+>           assert os.path.exists(file_path), f"Missing required file: {file_path}"
+E           AssertionError: Missing required file: /app/log_watcher.py
+E           assert False
+E            +  where False = <function exists at 0x7f2e522df560>('/app/log_watcher.py')
+E            +    where <function exists at 0x7f2e522df560> = <module 'posixpath' (frozen)>.exists
+E            +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:20: AssertionError
+____________________________ test_script_executable ____________________________
+
+    def test_script_executable():
+        """Verify Python script is executable and has proper shebang."""
+>       with open('/app/log_watcher.py', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/log_watcher.py'
+
+/tests/test_outputs.py:47: FileNotFoundError
+______________________________ test_report_schema ______________________________
+
+    def test_report_schema():
+        """Verify JSON report follows required schema."""
+>       with open('/app/reports/log_summary.json', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/reports/log_summary.json'
+
+/tests/test_outputs.py:61: FileNotFoundError
+____________________________ test_state_persistence ____________________________
+
+    def test_state_persistence():
+        """Verify state tracking file exists and is valid JSON."""
+        state_file = '/app/state/processed_files.json'
+    
+>       assert os.path.exists(state_file), "State file not found"
+E       AssertionError: State file not found
+E       assert False
+E        +  where False = <function exists at 0x7f2e522df560>('/app/state/processed_files.json')
+E        +    where <function exists at 0x7f2e522df560> = <module 'posixpath' (frozen)>.exists
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:155: AssertionError
+____________________________ test_pattern_detection ____________________________
+
+    def test_pattern_detection():
+        """Test pattern detection logic independently."""
+        # Create a test implementation check
+        test_log = """ERROR: Something went wrong
+    WARNING: This is a warning
+    INFO: Everything is fine
+    authentication failed for user test
+    IP address: 192.168.1.100
+    Another error here
+    """
+    
+        # Count patterns
+        errors = len(re.findall(r'error', test_log, re.IGNORECASE))
+        warnings = len(re.findall(r'warning', test_log, re.IGNORECASE))
+        auth_fails = len(re.findall(r'authentication failed', test_log, re.IGNORECASE))
+        ips = re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', test_log)
+    
+        assert errors == 2, f"Expected 2 errors, found {errors}"
+>       assert warnings == 1, f"Expected 1 warning, found {warnings}"
+E       AssertionError: Expected 1 warning, found 2
+E       assert 2 == 1
+
+/tests/test_outputs.py:185: AssertionError
+==================================== PASSES ====================================
+______________________________ test_service_file _______________________________
+----------------------------- Captured stdout call -----------------------------
+✓ Service file has correct content
+__________________________ test_script_functionality ___________________________
+----------------------------- Captured stdout call -----------------------------
+✓ Script functionality verified
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_service_file
+PASSED ../tests/test_outputs.py::test_script_functionality
+FAILED ../tests/test_outputs.py::test_files_exist - AssertionError: Missing r...
+FAILED ../tests/test_outputs.py::test_script_executable - FileNotFoundError: ...
+FAILED ../tests/test_outputs.py::test_report_schema - FileNotFoundError: [Err...
+FAILED ../tests/test_outputs.py::test_state_persistence - AssertionError: Sta...
+FAILED ../tests/test_outputs.py::test_pattern_detection - AssertionError: Exp...
+========================= 5 failed, 2 passed in 0.07s ==========================
+Some tests failed.

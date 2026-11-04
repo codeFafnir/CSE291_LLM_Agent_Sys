@@ -1,0 +1,104 @@
+[?2004hroot@3d5caf37b153:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@3d5caf37b153:/app# clear
+[?2004l[H[J[3J[?2004hroot@3d5caf37b153:/app# nano config_validator.py
+[?2004lbash: nano: command not found
+[?2004hroot@3d5caf37b153:/app# nano test_runner.sh
+[?2004lbash: nano: command not found
+[?2004hroot@3d5caf37b153:/app# cat > config_validator.py << EOF
+[?2004l[?2004h> import sys
+[?2004l[?2004h> import os
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import json
+[?2004l[?2004h> 
+[?2004l[?2004h> def validate_config(config):
+[?2004l[?2004h>     errors = []
+[?2004l[?2004h>     if not isinstance(config, dict):
+[?2004l[?2004h>         errors.append("Configuration must be a dictionary.")
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         if not isinstance(config.get('application'), str):
+[?2004l[?2004h>             errors.append("'application' must be a string.")
+[?2004l[?2004h>         if not isinstance(config.get('version'), str) or not re.match(r'\d+\.\d+\.\d+', config.get('version')):
+[?2004l[?2004h>             errors.append("'version' must be a string in semantic version format (X.Y.Z).")
+[?2004l[?2004h>         if not isinstance(config.get('settings'), dict):
+[?2004l[?2004h>             errors.append("'settings' must be a dictionary.")
+[?2004l[?2004h>         for key in config:
+[?2004l[?2004h>             if not isinstance(key, str):
+[?2004l[?2004h>                 errors.append(f"Key '{key}' must be a string.")
+[?2004l[?2004h>     return errors
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == "__main__":
+[?2004l[?2004h>     input_file = '/app/config.input'
+[?2004l[?2004h>     output_file = '/app/config.output'
+[?2004l[?2004h> 
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         with open(input_file, 'r') as f:
+[?2004l[?2004h>             content = f.read()
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Detect format
+[?2004l[?2004h>         if content.strip().startswith('{'):
+[?2004l[?2004h>             config = json.loads(content)
+[?2004l[?2004h>             format = 'json'
+[?2004l[?2004h>         elif content.strip().startswith('-'):
+[?2004l[?2004h>             config = yaml.safe_load(content)
+[?2004l[?2004h>             format = 'yaml'
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             # Try to detect based on file extension
+[?2004l[?2004h>             if input_file.endswith('.json'):
+[?2004l[?2004h>                 config = json.loads(content)
+[?2004l[?2004h>                 format = 'json'
+[?2004l[?2004h>             elif input_file.endswith('.yaml') or input_file.endswith('.yml'):
+[?2004l[?2004h>                 config = yaml.safe_load(content)
+[?2004l[?2004h>                 format = 'yaml'
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 with open(output_file, 'w') as f:
+[?2004l[?2004h>                     f.write("VALIDATION FAILED\n")
+[?2004l[?2004h>                     f.write("Errors:\n")
+[?2004l[?2004h>                     f.write("- File format could not be determined.")
+[?2004l[?2004h>                 sys.exit(1)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Validate configuration
+[?2004l[?2004h>         errors = validate_config(config)
+[?2004l[?2004h>         if errors:
+[?2004l[?2004h>             with open(output_file, 'w') as f:
+[?2004l[?2004h>                 f.write("VALIDATION FAILED\n")
+[?2004l[?2004h>                 f.write("Errors:\n")
+[?2004l[?2004h>                 for error in errors:
+[?2004l[?2004h>                     f.write(f"- {error}\n")
+[?2004l[?2004h>             sys.exit(1)
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             # Convert and write output
+[?2004l[?2004h>             if format == 'json':
+[?2004l[?2004h>                 with open(output_file, 'w') as f:
+[?2004l[?2004h>                     yaml.dump(config, f)
+[?2004l[?2004h>             elif format == 'yaml':
+[?2004l[?2004h>                 with open(output_file, 'w') as f:
+[?2004l[?2004h>                     json.dump(config, f)
+[?2004l[?2004h>             sys.exit(0)
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         with open(output_file, 'w') as f:
+[?2004l[?2004h>             f.write("VALIDATION FAILED\n")
+[?2004l[?2004h>             f.write("Errors:\n")
+[?2004l[?2004h>             f.write(f"- {str(e)}\n")
+[?2004l[?2004h>         sys.exit(1)
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@3d5caf37b153:/app# cat > test_runner.sh << EOF
+[?2004l[?2004h> #!/bin/bash
+[?2004l[?2004h> 
+[?2004l[?2004h> # Run the validation script
+[?2004l[?2004h> python3 /app/config_validator.py
+[?2004l[?2004h> 
+[?2004l[?2004h> # Check if the output file was created
+[?2004l[?2004h> if [ -f /app/config.output ]; then
+[?2004l[?2004h>     echo "SUCCESS"
+[?2004l[?2004h> else
+[?2004l[?2004h>     echo "FAILED"
+[?2004l[?2004h> fi
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@3d5caf37b153:/app# ./test_runner.sh
+[?2004lbash: ./test_runner.sh: Permission denied
+[?2004hroot@3d5caf37b153:/app# chmod +x test_runner.sh
+[?2004l[?2004hroot@3d5caf37b153:/app# ./test_runner.sh
+[?2004lSUCCESS
+[?2004hroot@3d5caf37b153:/app# 

@@ -1,0 +1,37 @@
+{
+    "id": "81fbbbd3-cb5b-4606-851f-58f943245511",
+    "started_at": "2026-11-04T04:39:24.177934",
+    "updated_at": "2026-11-04T04:45:07.131854",
+    "finished_at": "2026-11-04T04:45:07.131854",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 1,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "terminus-2__Qwen/Qwen3-14B-AWQ__smoke5": {
+                "n_trials": 0,
+                "n_errors": 1,
+                "metrics": [
+                    {
+                        "mean": 0.0
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {},
+                "exception_stats": {
+                    "ContextLengthExceededError": [
+                        "software_engineering_task_3182__GUThLeg"
+                    ]
+                }
+            }
+        },
+        "n_input_tokens": 407871,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 15265,
+        "cost_usd": null
+    }
+}

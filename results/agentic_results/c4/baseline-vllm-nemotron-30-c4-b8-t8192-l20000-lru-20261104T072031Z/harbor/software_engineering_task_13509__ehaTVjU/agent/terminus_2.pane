@@ -1,0 +1,103 @@
+[?2004hroot@d6f428bbec97:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@d6f428bbec97:/app# clear
+[?2004l[H[J[3J[?2004hroot@d6f428bbec97:/app# nano generate_makefile.py
+[?2004lbash: nano: command not found
+[?2004hroot@d6f428bbec97:/app# echo "import json\nimport os\n\n# Read configuration\nwith open('/app/project_config.json', 'r') as f:\n    config = json.load(f)\n\n# Validate configuration\nrequired_fields = ['project_name', 'target_type', 'sources', 'headers', 'compiler', 'standard', 'optimization', 'include_dirs', 'library_dirs', 'libraries', 'defines', 'warnings', 'output_dir', 'clean_patterns']\n\nerrors = []\nfor field in required_fields:\n    if field not in config:\n        errors.append(f'Missing required field: {field}')\n\nif config['target_type'] not in ['executable', 'static_lib', 'shared_lib']:\n    errors.append('Invalid target_type')\n\nfor source in config['sources']:\n    if not source.endswith('.cpp'):\n        errors.append(f'Invalid source file: {source} (must end with .cpp)')\n\n# Write Makefile\nwith open('/app/Makefile', 'w') as f:\n    f.write('## Generated Makefile for {config['project_name']}\n\n')\n    f.write(f'PROJECT_NAME = {config['project_name']}\n')\n    f.write(f'TARGET_TYPE = {config['target_type']}\n')\n    f.write(f'SOURCES = {config['sources']}\n')\n    f.write(f'HEADERS = {config['headers']}\n')\n    f.write(f'COMPILER = {config['compiler']}\n')\n    f.write(f'CXXSTD = {config['standard']}\n')\n    f.write(f'OPTIMIZATION = {config['optimization']}\n')\n    f.write(f'INCLUDE_DIRS = {config['include_dirs']}\n')\n    f.write(f'LIBRARY_DIRS = {config['library_dirs']}\n')\n    f.write(f'LIBRARIES = {config['libraries']}\n')\n    f.write(f'DEFINES = {config['defines']}\n')\n    f.write(f'WARNINGS = {config['warnings']}\n')\n    f.write(f'OUTPUT_DIR = {config['output_dir']}\n')\n    f.write(f'CLEAN_PATTERNS = {config['clean_patterns']}\n\n')\n    f.write('ifeq ($(OPTIMIZATION), debug)\n')\n    f.write('CFLAGS += -g\n')\n    f.write('else\n')\n    f.write('CFLAGS += -O2\n')\n    f.write('endif\n\n')\n    f.write('all: $(PROJECT_NAME)\n\n')\n    f.write('$(PROJECT_NAME): $(SOURCES:.cpp=.o)\n')\n    f.write('\t$(COMPILER) $(CFLAGS) $(CXXSTD) $(DEFINES) -I$(INCLUDE_DIRS) -L$(LIBRARY_DIRS) -o $@ $^ $(LIBRARIES)\n\n')\n    f.write('%.o: %.cpp\n')\n    f.write('\t$(COMPILER) $(CFLAGS) $(CXXSTD) $(DEFINES) -I$(INCLUDE_DIRS) -c $< -o $@\n\n')\n    f.write('clean:\n')\n    f.write('\trm -f $(CLEAN_PATTERNS)\n\n')\n    f.write('.PHONY: all clean\n')\n\n# Write test program\nwith open('/app/test_program.cpp', 'w') as f:\n    f.write('#include <iostream>\n#include "include/math.h"\n\n#define DEBUG 1\n\nint main() {\n    std::cout << "Test program for {config['project_name']}\n";\n    std::cout << "Using define: DEBUG = " << DEBUG << std::endl;\n    return 0;\n}\n\n# Write generation report\nreport = {\n    'status': 'success' if len(errors) == 0 else 'failure',\n    'errors': errors,\n    'generated_targets': ['Makefile', 'test_program.cpp'],\n    'variables_defined': ['PROJECT_NAME', 'TARGET_TYPE', 'SOURCES', 'HEADERS', 'COMPILER', 'CXXSTD', 'OPTIMIZATION', 'INCLUDE_DIRS', 'LIBRARY_DIRS', 'LIBRARIES', 'DEFINES', 'WARNINGS', 'OUTPUT_DIR', 'CLEAN_PATTERNS'],\n    'validation_passed': len(errors) == 0\n}\n\nwith open('/app/generation_report.json', 'w') as f:\n    json.dump(report, f, indent=4)\n" > generate_makefile.py
+[?2004lbash: OPTIMIZATION: command not found
+bash: PROJECT_NAME: command not found
+bash: PROJECT_NAME: command not found
+bash: SOURCES:.cpp=.o: command not found
+bash: COMPILER: command not found
+bash: CFLAGS: command not found
+bash: CXXSTD: command not found
+bash: DEFINES: command not found
+bash: INCLUDE_DIRS: command not found
+bash: LIBRARY_DIRS: command not found
+bash: LIBRARIES: command not found
+bash: COMPILER: command not found
+bash: CFLAGS: command not found
+bash: CXXSTD: command not found
+bash: DEFINES: command not found
+bash: INCLUDE_DIRS: command not found
+bash: CLEAN_PATTERNS: command not found
+[?2004hroot@d6f428bbec97:/app# cat << EOF > generate_makefile.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import os
+[?2004l[?2004h> 
+[?2004l[?2004h> # Read configuration
+[?2004l[?2004h> with open('/app/project_config.json', 'r') as f:
+[?2004l[?2004h>     config = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Validate configuration
+[?2004l[?2004h> required_fields = ['project_name', 'target_type', 'sources', 'headers', 'compiler', 'standard', 'optimization', 'include_dirs', 'library_dirs', 'libraries', 'defines', 'warnings', 'output_dir', 'clean_patterns']
+[?2004l[?2004h> 
+[?2004l[?2004h> errors = []
+[?2004l[?2004h> for field in required_fields:
+[?2004l[?2004h>     if field not in config:
+[?2004l[?2004h>         errors.append(f'Missing required field: {field}')
+[?2004l[?2004h> 
+[?2004l[?2004h> if config['target_type'] not in ['executable', 'static_lib', 'shared_lib']:
+[?2004l[?2004h>     errors.append('Invalid target_type')
+[?2004l[?2004h> 
+[?2004l[?2004h> for source in config['sources']:
+[?2004l[?2004h>     if not source.endswith('.cpp'):
+[?2004l[?2004h>         errors.append(f'Invalid source file: {source} (must end with .cpp)')
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write Makefile
+[?2004l[?2004h> with open('/app/Makefile', 'w') as f:
+[?2004l[?2004h>     f.write('## Generated Makefile for {config["project_name"]}\n\n')
+[?2004l[?2004h>     f.write(f'PROJECT_NAME = {config["project_name"]}\n')
+[?2004l[?2004h>     f.write(f'TARGET_TYPE = {config["target_type"]}\n')
+[?2004l[?2004h>     f.write(f'SOURCES = {config["sources"]}\n')
+[?2004l[?2004h>     f.write(f'HEADERS = {config["headers"]}\n')
+[?2004l[?2004h>     f.write(f'COMPILER = {config["compiler"]}\n')
+[?2004l[?2004h>     f.write(f'CXXSTD = {config["standard"]}\n')
+[?2004l[?2004h>     f.write(f'OPTIMIZATION = {config["optimization"]}\n')
+[?2004l[?2004h>     f.write(f'INCLUDE_DIRS = {config["include_dirs"]}\n')
+[?2004l[?2004h>     f.write(f'LIBRARY_DIRS = {config["library_dirs"]}\n')
+[?2004l[?2004h>     f.write(f'LIBRARIES = {config["libraries"]}\n')
+[?2004l[?2004h>     f.write(f'DEFINES = {config["defines"]}\n')
+[?2004l[?2004h>     f.write(f'WARNINGS = {config["warnings"]}\n')
+[?2004l[?2004h>     f.write(f'OUTPUT_DIR = {config["output_dir"]}\n')
+[?2004l[?2004h>     f.write(f'CLEAN_PATTERNS = {config["clean_patterns"]}\n\n')
+[?2004l[?2004h>     f.write('ifeq ($(OPTIMIZATION), debug)\n')
+[?2004l[?2004h>     f.write('CFLAGS += -g\n')
+[?2004l[?2004h>     f.write('else\n')
+[?2004l[?2004h>     f.write('CFLAGS += -O2\n')
+[?2004l[?2004h>     f.write('endif\n\n')
+[?2004l[?2004h>     f.write('all: $(PROJECT_NAME)\n\n')
+[?2004l[?2004h>     f.write('$(PROJECT_NAME): $(SOURCES:.cpp=.o)\n')
+[?2004l[?2004h>     f.write('\t$(COMPILER) $(CFLAGS) $(CXXSTD) $(DEFINES) -I$(INCLUDE_DIRS) -L$(LIBRARY_DIRS) -o $@ $^ $(LIBRARIES)\n\n')
+[?2004l[?2004h>     f.write('%\.o: \.cpp\n')
+[?2004l[?2004h>     f.write('\t$(COMPILER) $(CFLAGS) $(CXXSTD) $(DEFINES) -I$(INCLUDE_DIRS) -c $< -o $@\n\n')
+[?2004l[?2004h>     f.write('clean:\n')
+[?2004l[?2004h>     f.write('\trm -f $(CLEAN_PATTERNS)\n\n')
+[?2004l[?2004h>     f.write('.PHONY: all clean\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> # Write test program
+[?2004l[?2004h> with open('/app/test_program.cpp', 'w') as f:
+[?2004l[?2004h>     f.write('#include <iostream>\n#include "include/math.h"\n\n#define DEBUG 1\n\nint main() {\n    std::cout << "Test program for {config["project_name"]}\n";\n    std::cout << "Using define: DEBUG = " << DEBUG << std::endl;\n    return 0;\n}\n\n# Write generation report\nreport = {\n    "status": "success" if len(errors) == 0 else "failure",\n    "errors": errors,\n    "generated_targets": ["Makefile", "test_program.cpp"],\n    "variables_defined": ["PROJECT_NAME", "TARGET_TYPE", "SOURCES", "HEADERS", "COMPILER", "CXXSTD", "OPTIMIZATION", "INCLUDE_DIRS", "LIBRARY_DIRS", "LIBRARIES", "DEFINES", "WARNINGS", "OUTPUT_DIR", "CLEAN_PATTERNS"],\n    "validation_passed": len(errors) == 0\n}\n\nwith open('/app/generation_report.json', 'w') as f:\n    json.dump(report, f, indent=4)\nEOF
+[?2004l[?2004h> chmod +x generate_makefile.py
+[?2004l[?2004h> ./generate_makefile.py
+[?2004l[?2004h> cat /app/Makefile
+[?2004l[?2004h> cat /app/test_program.cpp
+[?2004l[?2004h> cat /app/generation_report.json
+[?2004l[?2004h> make -n
+[?2004l[?2004h> cat /app/Makefile
+[?2004l[?2004h> cat /app/test_program.cpp
+[?2004l[?2004h> cat /app/generation_report.json
+[?2004l[?2004h> make
+[?2004l[?2004h> ./test_program
+[?2004l[?2004h> cat /app/Makefile
+[?2004l[?2004h> cat /app/test_program.cpp
+[?2004l[?2004h> cat /app/generation_report.json
+[?2004l[?2004h> make
+[?2004l[?2004h> ./test_program
+[?2004l[?2004h> cat /app/Makefile
+[?2004l[?2004h> cat /app/test_program.cpp
+[?2004l[?2004h> cat /app/generation_report.json
+[?2004l[?2004h> make
+[?2004l[?2004h> ./test_program
+[?2004l[?2004h> 

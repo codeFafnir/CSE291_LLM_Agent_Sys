@@ -1,0 +1,117 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "d31f5e93-ad81-47a1-b1f0-0dec274f3c0a",
+    "timestamp": "2026-11-04T07:54:53.674666+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 2,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793778893608,
+            "stop": 1793778893674,
+            "duration": 66
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793778893632,
+                "stop": 1793778893633,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_validation_json_structure",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 21,
+                "start": 1793778893633,
+                "stop": 1793778893654,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_validation_json_structure():\n        \"\"\"Verify validation.json has correct structure and valid JSON.\"\"\"\n        with open('/app/analysis/validation.json', 'r') as f:\n>           data = json.load(f)\n                   ^^^^^^^^^^^^\n\n/tests/test_outputs.py:24: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f4698db8500>\ns = '{\"components\": {\"app_main\": {\"type\": \"executable\", \"dependencies\": [\"network\", \"utils\", \"config\"]}, \"network\": {\"type...}}, \"summary\": {\"total_components\": 12, \"valid_components\": 11, \"total_dependencies\": 13, \"valid_dependencies\": 11}}\\n'\n_w = <built-in method match of re.Pattern object at 0x7f4698db46c0>\n\n    def decode(self, s, _w=WHITESPACE.match):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` instance\n        containing a JSON document).\n    \n        \"\"\"\n        obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end)\nE           json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)\n\n/usr/lib/python3.12/json/decoder.py:340: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)"
+            },
+            {
+                "name": "test_outputs.py::test_graph_dot_format",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793778893654,
+                "stop": 1793778893657,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_graph_dot_format():\n        \"\"\"Verify graph.dot contains valid Graphviz syntax.\"\"\"\n        with open('/app/analysis/graph.dot', 'r') as f:\n            content = f.read()\n    \n        # Check it starts with digraph\n        assert content.strip().startswith('digraph')\n    \n        # Check for required sections\n>       assert 'rankdir=LR' in content\nE       assert 'rankdir=LR' in 'digraph BuildDependencies {\\n  $name [label=\"{$name|$type}\", color=${color[$type]}];\\n  $name [label=\"{$name|$type}\",...$dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n}\\n'\n\n/tests/test_outputs.py:66: AssertionError",
+                "message": "assert 'rankdir=LR' in 'digraph BuildDependencies {\\n  $name [label=\"{$name|$type}\", color=${color[$type]}];\\n  $name [label=\"{$name|$type}\",...$dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n  $name -> $dep;\\n}\\n'"
+            },
+            {
+                "name": "test_outputs.py::test_build_order_format",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793778893657,
+                "stop": 1793778893658,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_validation_accuracy",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793778893658,
+                "stop": 1793778893666,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_validation_accuracy():\n        \"\"\"Verify validation correctly identifies issues from known test cases.\"\"\"\n        # Read the input file to understand the test case\n        with open('/app/build.deps', 'r') as f:\n            input_content = f.read()\n    \n        # Read the validation output\n        with open('/app/analysis/validation.json', 'r') as f:\n>           validation = json.load(f)\n                         ^^^^^^^^^^^^\n\n/tests/test_outputs.py:100: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f4698db8500>\ns = '{\"components\": {\"app_main\": {\"type\": \"executable\", \"dependencies\": [\"network\", \"utils\", \"config\"]}, \"network\": {\"type...}}, \"summary\": {\"total_components\": 12, \"valid_components\": 11, \"total_dependencies\": 13, \"valid_dependencies\": 11}}\\n'\n_w = <built-in method match of re.Pattern object at 0x7f4698db46c0>\n\n    def decode(self, s, _w=WHITESPACE.match):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` instance\n        containing a JSON document).\n    \n        \"\"\"\n        obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end)\nE           json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)\n\n/usr/lib/python3.12/json/decoder.py:340: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)"
+            },
+            {
+                "name": "test_outputs.py::test_build_order_validity",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793778893666,
+                "stop": 1793778893674,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_build_order_validity():\n        \"\"\"Verify build order respects basic dependency rules.\"\"\"\n        with open('/app/analysis/build_order.txt', 'r') as f:\n            build_order = [line.strip() for line in f if line.strip()]\n    \n        with open('/app/analysis/validation.json', 'r') as f:\n>           validation = json.load(f)\n                         ^^^^^^^^^^^^\n\n/tests/test_outputs.py:138: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f4698db8500>\ns = '{\"components\": {\"app_main\": {\"type\": \"executable\", \"dependencies\": [\"network\", \"utils\", \"config\"]}, \"network\": {\"type...}}, \"summary\": {\"total_components\": 12, \"valid_components\": 11, \"total_dependencies\": 13, \"valid_dependencies\": 11}}\\n'\n_w = <built-in method match of re.Pattern object at 0x7f4698db46c0>\n\n    def decode(self, s, _w=WHITESPACE.match):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` instance\n        containing a JSON document).\n    \n        \"\"\"\n        obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end)\nE           json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)\n\n/usr/lib/python3.12/json/decoder.py:340: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Extra data: line 1 column 808 (char 807)"
+            }
+        ]
+    }
+}

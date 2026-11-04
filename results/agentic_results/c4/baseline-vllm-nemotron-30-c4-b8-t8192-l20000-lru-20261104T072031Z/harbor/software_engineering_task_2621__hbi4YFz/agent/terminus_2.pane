@@ -1,0 +1,105 @@
+[?2004hroot@f460478d43b5:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@f460478d43b5:/app# clear
+[?2004l[H[J[3J[?2004hroot@f460478d43b5:/app# ls -la
+[?2004ltotal 20
+drwxr-xr-x. 1 root root 4096 Nov  3 09:49 [0m[01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 07:51 [01;34m..[0m
+-rw-r--r--. 1 root root  373 Jan 12  2026 build.deps
+[?2004hroot@f460478d43b5:/app# cd /app
+[?2004l[?2004hroot@f460478d43b5:/app# cat build.deps
+[?2004lapp_main:executable:network,utils,config
+network:shared_lib:ssl,logging
+ssl:static_lib:crypto
+crypto:static_lib:
+logging:header_only:
+utils:static_lib:logging,common
+common:header_only:
+config:executable:app_main
+invalid:static_lib:missing_lib
+missing_dep:shared_lib:nonexistent
+circular1:static_lib:circular2
+circular2:shared_lib:circular1
+type_violation:executable:config[?2004hroot@f460478d43b5:/app# cat build.deps | awk -F: '{print $1, $2, $3}' | tr ',' ' ' | tr ':' ' ' > /app/analysis/components.txt
+[?2004lbash: /app/analysis/components.txt: No such file or directory
+[?2004hroot@f460478d43b5:/app# cd /app/analysis
+[?2004lbash: cd: /app/analysis: No such file or directory
+[?2004hroot@f460478d43b5:/app# mkdir -p /app/analysis
+[?2004l[?2004hroot@f460478d43b5:/app# cd /app/analysis
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/build.deps | awk -F: '{print $1, $2, $3}' | tr ',' ' ' | tr ':' ' ' > /app/analysis/components.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/components.txt | awk '{print $1, $2, $3}' > /app/analysis/processed_components.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/processed_components.txt | awk '{print $1, $2, $3}' > /app/analysis/validated_components.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "{}" > /app/analysis/validation.json
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "digraph BuildDependencies {" > /app/analysis/graph.dot
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "" > /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/validated_components.txt | while read name type deps; do echo "  $name [label="{$name|$type}", color=${color[$type]}];"; done >> /app/analysis/graph.dot
+[?2004lbash: executable}, color=];: command not found
+bash: shared_lib}, color=];: command not found
+bash: static_lib}, color=];: command not found
+bash: static_lib}, color=];: command not found
+bash: header_only}, color=];: command not found
+bash: static_lib}, color=];: command not found
+bash: header_only}, color=];: command not found
+bash: executable}, color=];: command not found
+bash: static_lib}, color=];: command not found
+bash: shared_lib}, color=];: command not found
+bash: static_lib}, color=];: command not found
+bash: shared_lib}, color=];: command not found
+bash: executable}, color=];: command not found
+[?2004hroot@f460478d43b5:/app/analysis# export color=(executable=blue static_lib=green shared_lib=purple header_only=gray)
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/validated_components.txt | while read name type deps; do echo "  $name [label="{$name|$type}", color=${color[$type]}];"; done >> /app/analysis/graph.dot
+[?2004lbash: executable}, color=executable=blue];: command not found
+bash: shared_lib}, color=executable=blue];: command not found
+bash: static_lib}, color=executable=blue];: command not found
+bash: static_lib}, color=executable=blue];: command not found
+bash: header_only}, color=executable=blue];: command not found
+bash: static_lib}, color=executable=blue];: command not found
+bash: header_only}, color=executable=blue];: command not found
+bash: executable}, color=executable=blue];: command not found
+bash: static_lib}, color=executable=blue];: command not found
+bash: shared_lib}, color=executable=blue];: command not found
+bash: static_lib}, color=executable=blue];: command not found
+bash: shared_lib}, color=executable=blue];: command not found
+bash: executable}, color=executable=blue];: command not found
+[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/validated_components.txt | while read name type deps; do echo '  $name [label="{$name|$type}", color=${color[$type]}];'; done >> /app/analysis/graph.dot
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/validated_components.txt | while read name type deps; do for dep in $deps; do echo '  $name -> $dep;'; done; done >> /app/analysis/graph.dot
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "}" >> /app/analysis/graph.dot
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/build.deps | while read line; do name=$(echo $line | cut -d: -f1); type=$(echo $line | cut -d: -f2); deps=$(echo $line | cut -d: -f3); echo "  ""$name"": "$type": "$deps""; done > /app/analysis/components.json
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/components.json | jq -r '.components[] | {name: .name, type: .type, dependencies: .dependencies}' > /app/analysis/validated_components.json
+[?2004lbash: jq: command not found
+[?2004hroot@f460478d43b5:/app/analysis# which jq
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/components.json > /app/analysis/validated_components_manual.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/validated_components_manual.txt | grep -E '"name":|"type":|"dependencies":' > /app/analysis/component_details.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/component_details.txt | awk '{print $2, $4, $6}' > /app/analysis/validated_components_parsed.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/validated_components_parsed.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/component_details.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# cat /app/analysis/components.json
+[?2004l  app_main: executable: network,utils,config
+  network: shared_lib: ssl,logging
+  ssl: static_lib: crypto
+  crypto: static_lib: 
+  logging: header_only: 
+  utils: static_lib: logging,common
+  common: header_only: 
+  config: executable: app_main
+  invalid: static_lib: missing_lib
+  missing_dep: shared_lib: nonexistent
+  circular1: static_lib: circular2
+  circular2: shared_lib: circular1
+[?2004hroot@f460478d43b5:/app/analysis# echo '{"components": {"app_main": {"type": "executable", "dependencies": ["network", "utils", "config"]}, "network": {"type": "shared_lib", "dependencies": ["ssl", "logging"]}, "ssl": {"type": "static_lib", "dependencies": ["crypto"]}, "crypto": {"type": "static_lib", "dependencies": []}, "logging": {"type": "header_only", "dependencies": []}, "utils": {"type": "static_lib", "dependencies": ["logging", "common"]}, "common": {"type": "header_only", "dependencies": []}, "config": {"type": "executable", "dependencies": ["app_main"]}, "invalid": {"type": "static_lib", "dependencies": ["missing_lib"]}, "missing_dep": {"type": "shared_lib", "dependencies": ["nonexistent"]}, "circular1": {"type": "static_lib", "dependencies": ["circular2"]}, "circular2": {"type": "shared_lib", "dependencies": ["circular1"]}}}, "issues": {"circular_dependencies": [["circular1", "circular2", "circular1"]], "missing_dependencies": ["missing_lib", "nonexistent"], "type_violations": [{"component": "config", "dependency": "app_main", "rule": "executable cannot depend on executable"}]}}, "summary": {"total_components": 12, "valid_components": 11, "total_dependencies": 13, "valid_dependencies": 11}}' > /app/analysis/validation.json
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "Header-only components first:" > /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "logging" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "common" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "Static libraries next:" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "crypto" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "ssl" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "utils" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "invalid" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "Shared libraries next:" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "network" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "missing_dep" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "Executables last:" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "app_main" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# echo "config" >> /app/analysis/build_order.txt
+[?2004l[?2004hroot@f460478d43b5:/app/analysis# 

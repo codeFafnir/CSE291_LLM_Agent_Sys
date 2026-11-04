@@ -1,0 +1,405 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pytest
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pytest in /usr/local/lib/python3.12/dist-packages (9.2.0)
+Requirement already satisfied: iniconfig>=2 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.3.1)
+Requirement already satisfied: packaging>=24 in /usr/local/lib/python3.12/dist-packages (from pytest) (26.3)
+Requirement already satisfied: pluggy<2,>=1.6 in /usr/local/lib/python3.12/dist-packages (from pytest) (1.7.0)
+Requirement already satisfied: pygments>=2.15 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.21.0)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+  Installing: psutil
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Collecting psutil
+  Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 155.6/155.6 kB 6.2 MB/s eta 0:00:00
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Installing collected packages: psutil
+Successfully installed psutil-7.2.2
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 4 items
+
+../tests/test_outputs.py F.FF                                            [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_output_exists ______________________________
+
+    def test_output_exists():
+        """Verify all required output files were created."""
+        required_files = [
+            '/app/performance_report.json',
+            '/app/fixed_queue.py',
+            '/app/reproduction_test.py'
+        ]
+    
+        for file_path in required_files:
+            assert os.path.exists(file_path), f"Missing required file: {file_path}"
+    
+        # Test JSON format
+        with open('/app/performance_report.json', 'r') as f:
+>           report = json.load(f)
+                     ^^^^^^^^^^^^
+
+/tests/test_outputs.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7fccac8e4680>
+s = "{'bottleneck_identified': 'Busy-wait loop in enqueue and linear search for duplicates', 'fix_applied': 'Replaced busy...', 'before_throughput': 200, 'after_throughput': 800, 'data_corruption_fixed': true, 'thread_safety_verified': true}\n"
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+_____________________________ test_data_integrity ______________________________
+
+    def test_data_integrity():
+        """Verify no data corruption in the fixed queue."""
+        sys.path.insert(0, '/app')
+    
+        try:
+            from fixed_queue import MessageQueue
+        except ImportError:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("fixed_queue", "/app/fixed_queue.py")
+            fixed_queue = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(fixed_queue)
+            MessageQueue = fixed_queue.MessageQueue
+    
+        # Test for exactly-once processing
+        queue = MessageQueue()
+        total_messages = 10000
+    
+        # Track all messages
+        sent_messages = set()
+        received_messages = set()
+    
+        # Producer function that sends unique messages
+        def unique_producer(queue, start_idx, count):
+            for i in range(start_idx, start_idx + count):
+                msg = f"unique_{i}"
+                sent_messages.add(msg)
+                queue.enqueue(msg)
+    
+        # Consumer function
+        def tracking_consumer(queue, results, count):
+            for _ in range(count):
+                msg = queue.dequeue()
+                if msg:
+                    results.append(msg)
+                    received_messages.add(msg)
+    
+        # Run with multiple threads
+        num_threads = 10
+        messages_per_thread = total_messages // num_threads
+    
+        producers = []
+        consumers = []
+        all_results = []
+    
+        # Start producers
+        for i in range(num_threads):
+            p = threading.Thread(target=unique_producer,
+                               args=(queue, i * messages_per_thread, messages_per_thread))
+            producers.append(p)
+            p.start()
+    
+        # Start consumers
+        for i in range(num_threads):
+            results = []
+            all_results.append(results)
+            c = threading.Thread(target=tracking_consumer,
+                               args=(queue, results, messages_per_thread))
+            consumers.append(c)
+            c.start()
+    
+        # Wait for completion
+        for p in producers:
+            p.join()
+    
+        for c in consumers:
+            c.join()
+    
+        # Check for duplicates or missing messages
+        received_list = []
+        for results in all_results:
+            received_list.extend(results)
+    
+        # Check all sent messages were received
+        missing = sent_messages - received_messages
+>       assert len(missing) == 0, f"Missing messages: {len(missing)}"
+E       AssertionError: Missing messages: 10000
+E       assert 10000 == 0
+E        +  where 10000 = len({'unique_0', 'unique_1', 'unique_10', 'unique_100', 'unique_1000', 'unique_1001', ...})
+
+/tests/test_outputs.py:219: AssertionError
+____________________________ test_reproduction_test ____________________________
+
+    def test_reproduction_test():
+        """Verify the reproduction test works correctly."""
+        assert os.path.exists('/app/reproduction_test.py')
+    
+        # Try to run the test
+        try:
+>           result = subprocess.run(
+                [sys.executable, '/app/reproduction_test.py'],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+
+/tests/test_outputs.py:231: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/subprocess.py:550: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/subprocess.py:1209: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/subprocess.py:2116: in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Popen: returncode: -9 args: ['/usr/bin/python3', '/app/reproduction_test.py']>
+endtime = 15164.022874915, orig_timeout = 30
+stdout_seq = [b'============================================================\nMessage Queue Test Harness\n============================================================\nRunning bottleneck detection...\n  Testing CPU usage...\n']
+stderr_seq = [], skip_check_and_raise = False
+
+    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
+                       skip_check_and_raise=False):
+        """Convenience for checking if a timeout has expired."""
+        if endtime is None:
+            return
+        if skip_check_and_raise or _time() > endtime:
+>           raise TimeoutExpired(
+                    self.args, orig_timeout,
+                    output=b''.join(stdout_seq) if stdout_seq else None,
+                    stderr=b''.join(stderr_seq) if stderr_seq else None)
+E           subprocess.TimeoutExpired: Command '['/usr/bin/python3', '/app/reproduction_test.py']' timed out after 30 seconds
+
+/usr/lib/python3.12/subprocess.py:1253: TimeoutExpired
+
+During handling of the above exception, another exception occurred:
+
+    def test_reproduction_test():
+        """Verify the reproduction test works correctly."""
+        assert os.path.exists('/app/reproduction_test.py')
+    
+        # Try to run the test
+        try:
+            result = subprocess.run(
+                [sys.executable, '/app/reproduction_test.py'],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            # Test should pass (exit code 0)
+            assert result.returncode == 0, f"Reproduction test failed: {result.stderr}"
+        except subprocess.TimeoutExpired:
+            # Test timed out (possible deadlock)
+>           assert False, "Reproduction test timed out (possible deadlock)"
+E           AssertionError: Reproduction test timed out (possible deadlock)
+E           assert False
+
+/tests/test_outputs.py:241: AssertionError
+=============================== warnings summary ===============================
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-34 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-41 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-38 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-40 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-35 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-39 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-36 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-37 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-33 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+test_outputs.py::test_data_integrity
+  /usr/local/lib/python3.12/dist-packages/_pytest/threadexception.py:54: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-32 (tracking_consumer)
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.12/threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "/tests/test_outputs.py", line 179, in tracking_consumer
+      received_messages.add(msg)
+  TypeError: unhashable type: 'Message'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_fixed_queue_performance
+FAILED ../tests/test_outputs.py::test_output_exists - json.decoder.JSONDecode...
+FAILED ../tests/test_outputs.py::test_data_integrity - AssertionError: Missin...
+FAILED ../tests/test_outputs.py::test_reproduction_test - AssertionError: Rep...
+============= 3 failed, 1 passed, 10 warnings in 861.12s (0:14:21) =============
+Some tests failed.

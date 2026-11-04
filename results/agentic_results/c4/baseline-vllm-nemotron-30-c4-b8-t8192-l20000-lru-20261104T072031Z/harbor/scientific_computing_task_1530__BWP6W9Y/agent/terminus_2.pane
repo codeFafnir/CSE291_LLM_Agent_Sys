@@ -1,0 +1,80 @@
+[?2004hroot@3da2b63402e7:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@3da2b63402e7:/app# clear
+[?2004l[H[J[3J[?2004hroot@3da2b63402e7:/app# cat /app/input.json
+[?2004l{
+  "mass": 1.0,
+  "spring_constant": 1.0,
+  "initial_position": 0.5,
+  "initial_velocity": 0.0,
+  "time_step": 0.01,
+  "total_time": 10.0,
+  "energy_tolerance": 0.1
+}[?2004hroot@3da2b63402e7:/app# nano /app/simulation_script.sh
+[?2004lbash: nano: command not found
+[?2004hroot@3da2b63402e7:/app# echo '#!/bin/bash
+[?2004l[?2004h> # Read parameters from input.json
+[?2004l[?2004h> mass=$(jq -r .mass /app/input.json)
+[?2004l[?2004h> spring_constant=$(jq -r .spring_constant /app/input.json)
+[?2004l[?2004h> initial_position=$(jq -r .initial_position /app/input.json)
+[?2004l[?2004h> initial_velocity=$(jq -r .initial_velocity /app/input.json)
+[?2004l[?2004h> time_step=$(jq -r .time_step /app/input.json)
+[?2004l[?2004h> total_time=$(jq -r .total_time /app/input.json)
+[?2004l[?2004h> energy_tolerance=$(jq -r .energy_tolerance /app/input.json)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Initialize variables
+[?2004l[?2004h> time=0.0
+[?2004l[?2004h> position=$initial_position
+[?2004l[?2004h> velocity=$initial_velocity
+[?2004l[?2004h> initial_energy=$(echo "0.5*$mass*$velocity^2 + 0.5*$spring_constant*$position^2" | bc -l)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Arrays to store results
+[?2004l[?2004h> times=()
+[?2004l[?2004h> positions=()
+[?2004l[?2004h> velocities=()
+[?2004l[?2004h> kinetic_energies=()
+[?2004l[?2004h> potential_energies=()
+[?2004l[?2004h> total_energies=()
+[?2004l[?2004h> 
+[?2004l[?2004h> # Perform simulation
+[?2004l[?2004h> total_steps=$((total_time / time_step))
+[?2004l[?2004h> for (( step=0; step<total_steps; step++ )); do
+[?2004l[?2004h>   times+=($time)
+[?2004l[?2004h>   positions+=($position)
+[?2004l[?2004h>   velocities+=($velocity)
+[?2004l[?2004h>   kinetic_energy=$(echo "0.5*$mass*$velocity^2" | bc -l)
+[?2004l[?2004h>   potential_energy=$(echo "0.5*$spring_constant*$position^2" | bc -l)
+[?2004l[?2004h>   total_energy=$(echo "$kinetic_energy + $potential_energy" | bc -l)
+[?2004l[?2004h>   kinetic_energies+=($kinetic_energy)
+[?2004l[?2004h> potential_energies+=($potential_energy)
+[?2004l[?2004h> total_energies+=($total_energy)
+[?2004l[?2004h> 
+[?2004l[?2004h>   # Update position and velocity
+[?2004l[?2004h>   new_velocity=$(echo "$velocity - ($spring_constant / $mass)*$position*$time_step" | bc -l)
+[?2004l[?2004h>   new_position=$(echo "$position + $velocity*$time_step" | bc -l)
+[?2004l[?2004h> 
+[?2004l[?2004h>   velocity=$new_velocity
+[?2004l[?2004h>   position=$new_position
+[?2004l[?2004h>   time=$(echo "$time + $time_step" | bc -l)
+[?2004l[?2004h> 
+[?2004l[?2004h> done
+[?2004l[?2004h> 
+[?2004l[?2004h> # Analyze energy conservation
+[?2004l[?2004h> final_energy=${total_energies[-1]}
+[?2004l[?2004h> initial_energy=${total_energies[0]}
+[?2004l[?2004h> energy_change=$(echo "100 * (${final_energy} - ${initial_energy}) / ${initial_energy}" | bc -l)
+[?2004l[?2004h> max_energy_change_percent=$(echo "100 * (${initial_energy} - ${final_energy}) / ${initial_energy}" | bc -l)
+[?2004l[?2004h> energy_conserving=$(echo "${max_energy_change_percent} <= $energy_tolerance" | bc -l)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Save results to JSON
+[?2004l[?2004h> echo "{\n  "simulation_summary": {\n    "total_steps": $total_steps,\n    "final_time": $time,\n    "final_position": $position,\n    "final_velocity": $velocity,\n    "initial_energy": $initial_energy,\n    "final_energy": $final_energy,\n    "max_energy_change_percent": $max_energy_change_percent,\n    "energy_conserving": $energy_conserving\n  },\n  "first_5_steps": [\n    {\n      "time": ${times[0]},\n      "position": ${positions[0]},\n      "velocity": ${velocities[0]},\n      "ke": ${kinetic_energies[0]},\n      "pe": ${potential_energies[0]},\n      "te": ${total_energies[0]}\n    },\n    {\n      "time": ${times[1]},\n      "position": ${positions[1]},\n      "velocity": ${velocities[1]},\n      "ke": ${kinetic_energies[1]},\n      "pe": ${potential_energies[1]},\n      "te": ${total_energies[1]}\n    },\n    {\n      "time": ${times[2]},\n      "position": ${positions[2]},\n      "velocity": ${velocities[2]},\n      "ke": ${kinetic_energies[2]},\n      "pe": ${potential_energies[2]},\n      "te": ${total_energies[2]}\n    },\n    {\n      "time": ${times[3]},\n      "position": ${positions[3]},\n      "velocity": ${velocities[3]},\n      "ke": ${kinetic_energies[3]},\n      "pe": ${potential_energies[3]},\n      "te": ${total_energies[3]}\n    },\n    {\n      "time": ${times[4]},\n      "position": ${positions[4]},\n      "velocity": ${velocities[4]},\n      "ke": ${kinetic_energies[4]},\n      "pe": ${potential_energies[4]},\n      "te": ${total_energies[4]}\n    }\n  ],\n  "last_5_steps": [\n    {\n      "time": ${times[-5]},\n      "position": ${positions[-5]},\n      "velocity": ${velocities[-5]},\n      "ke": ${kinetic_energies[-5]},\n      "pe": ${potential_energies[-5]},\n      "te": ${total_energies[-5]}\n    },\n    {\n      "time": ${times[-4]},\n      "position": ${positions[-4]},\n      "velocity": ${velocities[-4]},\n      "ke": ${kinetic_energies[-4]},\n      "pe": ${potential_energies[-4]},\n      "te": ${total_energies[-4]}\n    },\n    {\n      "time": ${times[-3]},\n      "position": ${positions[-3]},\n      "velocity": ${velocities[-3]},\n      "ke": ${kinetic_energies[-3]},\n      "pe": ${potential_energies[-3]},\n      "te": ${total_energies[-3]}\n    },\n    {\n      "time": ${times[-2]},\n      "position": ${positions[-2]},\n      "velocity": ${velocities[-2]},\n      "ke": ${kinetic_energies[-2]},\n      "pe": ${potential_energies[-2]},\n      "te": ${total_energies[-2]}\n    },\n    {\n      "time": ${times[-1]},\n      "position": ${positions[-1]},\n      "velocity": ${velocities[-1]},\n      "ke": ${kinetic_energies[-1]},\n      "pe": ${potential_energies[-1]},\n      "te": ${total_energies[-1]}\n    }\n  ]\n}" > /app/output/results.json
+[?2004l[?2004h> 
+[?2004l[?2004h> # Save trajectory to CSV
+[?2004l[?2004h> echo "time,position,velocity,kinetic_energy,potential_energy,total_energy" > /app/output/trajectory.csv
+[?2004l[?2004h> for (( i=0; i<${#times[@]}; i++ )); do
+[?2004l[?2004h>   echo "${times[i]},${positions[i]},${velocities[i]},${kinetic_energies[i]},${potential_energies[i]},${total_energies[i]}" >> /app/output/trajectory.csv
+[?2004l[?2004h> done" > /app/simulation_script.sh
+[?2004l[?2004h> chmod +x /app/simulation_script.sh
+[?2004l[?2004h> ./simulation_script.sh
+[?2004l[?2004h> 

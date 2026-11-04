@@ -1,0 +1,96 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "61d98eb9-30e0-43a7-b228-fd0da11f6b02",
+    "timestamp": "2026-11-04T07:22:45.496438+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 4,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793776965333,
+            "stop": 1793776965496,
+            "duration": 163
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776965380,
+                "stop": 1793776965381,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_csv_format_correct",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776965381,
+                "stop": 1793776965382,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_query_results_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 112,
+                "start": 1793776965382,
+                "stop": 1793776965494,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_query_results_correct():\n        \"\"\"Verify the SPARQL query returns correct results.\"\"\"\n        # Load the RDF data\n        g = rdflib.Graph()\n        g.parse('/app/library.ttl', format='turtle')\n    \n        # Define expected namespace (from the data)\n        ex = rdflib.Namespace(\"http://example.org/library#\")\n    \n        # Execute a verification query to check expected results\n        query = \"\"\"\n        PREFIX ex: <http://example.org/library#>\n        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n    \n        SELECT ?title ?author ?year WHERE {\n          ?book a ex:Book ;\n                ex:title ?title ;\n                ex:author ?author ;\n                ex:publicationYear ?year ;\n                ex:genre ?genre .\n    \n          ?author ex:nationality ?nationality .\n    \n          FILTER(?year > 2015)\n          FILTER(?genre = \"Fiction\")\n          FILTER(?nationality = \"American\")\n        }\n        ORDER BY ?year ?title\n        \"\"\"\n    \n        results = list(g.query(query))\n    \n        # Load agent's results\n        agent_results = []\n        with open('/app/query_results.csv', 'r') as f:\n            reader = csv.DictReader(f)\n            for row in reader:\n                agent_results.append((row['bookTitle'], row['authorName'], int(row['publicationYear'])))\n    \n        # Convert query results to same format\n        expected_results = []\n        for row in results:\n            title = str(row[0])\n            author = str(row[1])\n            year = int(row[2])\n            expected_results.append((title, author, year))\n    \n        # Sort both for comparison\n        agent_results.sort(key=lambda x: (x[2], x[0]))\n        expected_results.sort(key=lambda x: (x[2], x[0]))\n    \n>       assert agent_results == expected_results, \\\n            f\"Results don't match. Expected {len(expected_results)} rows, got {len(agent_results)}\"\nE       AssertionError: Results don't match. Expected 3 rows, got 3\nE       assert [('Circe', 'M...Owens', 2018)] == [('Circe', 'h...thor6', 2018)]\nE         \nE         At index 0 diff: ('Circe', 'Madeline Miller', 2018) != ('Circe', 'http://example.org/library#author2', 2018)\nE         Use -v to get more diff\n\n/tests/test_outputs.py:74: AssertionError",
+                "message": "AssertionError: Results don't match. Expected 3 rows, got 3\nassert [('Circe', 'M...Owens', 2018)] == [('Circe', 'h...thor6', 2018)]\n  \n  At index 0 diff: ('Circe', 'Madeline Miller', 2018) != ('Circe', 'http://example.org/library#author2', 2018)\n  Use -v to get more diff"
+            },
+            {
+                "name": "test_outputs.py::test_explanation_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793776965495,
+                "stop": 1793776965495,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_csv_sorted_correctly",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776965495,
+                "stop": 1793776965496,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

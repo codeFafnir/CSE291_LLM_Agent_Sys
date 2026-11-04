@@ -1,0 +1,71 @@
+{
+    "job_name": "harbor",
+    "jobs_dir": "/data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z",
+    "environment": {
+        "type": "docker",
+        "force_build": true
+    },
+    "agents": [
+        {
+            "name": "terminus-2",
+            "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+            "base_url": "http://host.docker.internal:8000/v1",
+            "model_api_format": "openai_chat_completions",
+            "kwargs": {
+                "model_info": {
+                    "max_input_tokens": 20000,
+                    "max_output_tokens": 2048,
+                    "input_cost_per_token": 0,
+                    "output_cost_per_token": 0
+                },
+                "llm_kwargs": {
+                    "max_tokens": 2048,
+                    "extra_body": {
+                        "chat_template_kwargs": {
+                            "enable_thinking": false
+                        }
+                    }
+                },
+                "enable_summarize": false,
+                "proactive_summarization_threshold": 0
+            }
+        }
+    ],
+    "datasets": [
+        {
+            "path": "/data/datasets/nemotron-terminal/set30",
+            "task_names": [
+                "software_engineering_task_3182",
+                "scientific_computing_task_0993",
+                "software_engineering_task_1519",
+                "scientific_computing_task_2932",
+                "data_querying_task_0996",
+                "file_operations_task_0585",
+                "software_engineering_task_1347",
+                "software_engineering_task_3229",
+                "security_task_0784",
+                "scientific_computing_task_1530",
+                "data_querying_task_2692",
+                "security_task_2831",
+                "debugging_task_2446",
+                "data_science_task_3348",
+                "debugging_task_2000",
+                "security_task_3201",
+                "software_engineering_task_4571",
+                "software_engineering_task_4146",
+                "software_engineering_task_0029",
+                "debugging_task_2216",
+                "software_engineering_task_13509",
+                "software_engineering_task_2621",
+                "debugging_task_12771",
+                "security_task_11984",
+                "system_administration_task_12762",
+                "software_engineering_task_15464",
+                "debugging_task_18959",
+                "system_administration_task_2208",
+                "model_training_task_18693",
+                "file_operations_task_4095"
+            ]
+        }
+    ]
+}

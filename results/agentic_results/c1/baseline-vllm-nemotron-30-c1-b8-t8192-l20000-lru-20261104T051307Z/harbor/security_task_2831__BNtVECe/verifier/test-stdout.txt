@@ -1,0 +1,88 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 3 items
+
+../tests/test_outputs.py F..                                             [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_cleaned_file_correct ___________________________
+
+    def test_cleaned_file_correct():
+        """Verify malicious Base64 injections are properly replaced."""
+        # Read original file
+        with open('/app/web_access.log', 'r') as f:
+            original_lines = f.readlines()
+    
+        # Read cleaned file
+        with open('/app/cleaned_web_access.log', 'r') as f:
+            cleaned_lines = f.readlines()
+    
+        # They should have same number of lines
+        assert len(original_lines) == len(cleaned_lines), "Line count mismatch"
+    
+        # Track found injections for validation
+        found_injections = []
+    
+        for i, (orig, cleaned) in enumerate(zip(original_lines, cleaned_lines)):
+            # Find all Base64 strings in original (min 20 chars)
+            b64_pattern = r'[A-Za-z0-9+/=]{20,}'
+            b64_matches = re.findall(b64_pattern, orig)
+    
+            for b64_str in b64_matches:
+                try:
+                    # Decode and check for "eval("
+                    decoded = base64.b64decode(b64_str).decode('utf-8', errors='ignore').lower()
+                    if 'eval(' in decoded:
+                        # This should be replaced
+                        if b64_str in cleaned:
+                            raise AssertionError(f"Malicious Base64 not replaced on line {i+1}: {b64_str}")
+                        # Check replacement token exists
+                        assert '[REDACTED_B64_INJECTION]' in cleaned, f"Replacement token missing on line {i+1}"
+                        found_injections.append(i+1)
+                except Exception:
+                    # Invalid Base64, skip
+                    continue
+    
+            # Verify non-malicious content unchanged
+            # Remove the replacement tokens for comparison
+            temp_cleaned = cleaned.replace('[REDACTED_B64_INJECTION]', '')
+            temp_original = orig
+            # Remove malicious Base64 strings from original for comparison
+            for b64_str in b64_matches:
+                try:
+                    decoded = base64.b64decode(b64_str).decode('utf-8', errors='ignore').lower()
+                    if 'eval(' in decoded:
+                        temp_original = temp_original.replace(b64_str, '')
+                except:
+                    continue
+    
+            # Compare after removing malicious content
+>           assert temp_original.strip() == temp_cleaned.strip(), f"Non-malicious content altered on line {i+1}"
+E           AssertionError: Non-malicious content altered on line 1
+E           assert '2024-01-15 1...] POST /login' == '2024-01-15 1...] POST /login'
+E             
+E             Skipping 39 identical leading characters in diff, use -v to show
+E             - zilla/5.0 dXNlcj0iYWRtaW4iO3Bhc3M9ImV2YWwoJ2FsZXJ0KCJ4c3MiKScpIjs= [valid] POST /login
+E             + zilla/5.0  [valid] POST /login
+
+/tests/test_outputs.py:57: AssertionError
+==================================== PASSES ====================================
+__________________________ test_security_report_valid __________________________
+----------------------------- Captured stdout call -----------------------------
+✓ Security report validated: 0 injections found
+________________________ test_file_structure_preserved _________________________
+----------------------------- Captured stdout call -----------------------------
+✓ File structure and order preserved
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_security_report_valid
+PASSED ../tests/test_outputs.py::test_file_structure_preserved
+FAILED ../tests/test_outputs.py::test_cleaned_file_correct - AssertionError: ...
+========================= 1 failed, 2 passed in 0.03s ==========================
+Some tests failed.

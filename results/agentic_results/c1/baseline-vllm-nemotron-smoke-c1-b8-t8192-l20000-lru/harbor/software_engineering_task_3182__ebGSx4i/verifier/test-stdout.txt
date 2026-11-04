@@ -1,0 +1,111 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1, anyio-4.16.0, platformdirs-4.14.3
+collected 7 items
+
+../tests/test_outputs.py .F.F.FF                                         [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_makefile_syntax _____________________________
+
+    def test_makefile_syntax():
+        """Verify Makefile has correct syntax."""
+        # Test basic make syntax by running make --dry-run
+        try:
+            result = subprocess.run(
+                ['make', '-n', 'all'],
+                cwd='/app',
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            # Should not have syntax errors
+>           assert result.returncode == 0, f"Make syntax check failed: {result.stderr}"
+E           AssertionError: Make syntax check failed: Makefile:8: *** missing separator.  Stop.
+E             
+E           assert 2 == 0
+E            +  where 2 = CompletedProcess(args=['make', '-n', 'all'], returncode=2, stdout='', stderr='Makefile:8: *** missing separator.  Stop.\n').returncode
+
+/tests/test_outputs.py:21: AssertionError
+___________________________ test_make_all_completes ____________________________
+
+    def test_make_all_completes():
+        """Verify make all completes successfully."""
+        # First run make clean to ensure clean state
+        subprocess.run(['make', 'clean'], cwd='/app', capture_output=True)
+    
+        # Run make all
+        result = subprocess.run(
+            ['make', 'all'],
+            cwd='/app',
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+    
+        # Should complete with exit code 0
+>       assert result.returncode == 0, f"make all failed with exit code {result.returncode}: {result.stderr}"
+E       AssertionError: make all failed with exit code 2: Makefile:8: *** missing separator.  Stop.
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['make', 'all'], returncode=2, stdout='', stderr='Makefile:8: *** missing separator.  Stop.\n').returncode
+
+/tests/test_outputs.py:56: AssertionError
+____________________________ test_exit_code_correct ____________________________
+
+    def test_exit_code_correct():
+        """Verify exit code is 0 (success)."""
+        with open('/app/exit_code.txt', 'r') as f:
+            exit_code = f.read().strip()
+    
+>       assert exit_code == '0', f"Expected exit code 0, got {exit_code}"
+E       AssertionError: Expected exit code 0, got 2
+E       assert '2' == '0'
+E         
+E         - 0
+E         + 2
+
+/tests/test_outputs.py:68: AssertionError
+_____________________ test_build_output_contains_expected ______________________
+
+    def test_build_output_contains_expected():
+        """Verify build output shows successful execution."""
+        with open('/app/build_output.txt', 'r') as f:
+            output = f.read()
+    
+        # Check for common success indicators in make output
+        success_indicators = [
+            'make: Nothing to be done',
+            'test passed',
+            'linting',
+            'installing',
+            'compiling',
+            'OK',
+            'SUCCESS'
+        ]
+    
+        # At least one indicator should be present (or output should be empty if make had nothing to do)
+        if output.strip():
+            has_indicator = any(indicator.lower() in output.lower() for indicator in success_indicators)
+>           assert has_indicator or result.returncode == 0, "Build output doesn't show successful execution"
+                                    ^^^^^^
+E           NameError: name 'result' is not defined
+
+/tests/test_outputs.py:89: NameError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_makefile_exists
+PASSED ../tests/test_outputs.py::test_all_targets_exist
+PASSED ../tests/test_outputs.py::test_output_files_exist
+FAILED ../tests/test_outputs.py::test_makefile_syntax - AssertionError: Make ...
+FAILED ../tests/test_outputs.py::test_make_all_completes - AssertionError: ma...
+FAILED ../tests/test_outputs.py::test_exit_code_correct - AssertionError: Exp...
+FAILED ../tests/test_outputs.py::test_build_output_contains_expected - NameEr...
+========================= 4 failed, 3 passed in 0.04s ==========================
+Some tests failed.
