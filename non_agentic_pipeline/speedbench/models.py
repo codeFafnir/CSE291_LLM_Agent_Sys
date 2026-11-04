@@ -57,7 +57,7 @@ class RequestRow(BaseModel):
     itl_max_s: float | None
     e2e_s: float
     n_chunks: int
-    peak_gpu_mib: float
+    peak_gpu_mib: float | None
     queue_s: float | None
     prefill_s: float | None
     decode_s: float | None
@@ -81,7 +81,7 @@ class ResponseRecord(BaseModel):
 class Sample(BaseModel):
     model_config = ConfigDict(frozen=True)
     ts: float
-    gpu_used_mib: float
+    gpu_used_mib: float | None
     series: dict[str, float]
 
 

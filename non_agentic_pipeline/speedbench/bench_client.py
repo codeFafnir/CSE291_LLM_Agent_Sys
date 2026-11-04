@@ -24,7 +24,7 @@ from openai import AsyncOpenAI
 from openai.types.chat import ChatCompletionMessageParam
 from pydantic import BaseModel
 
-from gpu import mib, start_gpu_sampler, stop_gpu_sampler
+from gpu import GpuSampler, mib, start_gpu_sampler, stop_gpu_sampler
 from models import ChatMessage, RequestRow, ResponseRecord, ServerDelta, SubsetRow
 from server_metrics import (
     SUCCESS,
@@ -86,7 +86,7 @@ def build_row(
     prompt: SubsetRow,
     turn_index: int,
     result: StreamResult,
-    peak_gpu_mib: float,
+    peak_gpu_mib: float | None,
     server: ServerDelta | None,
     error: str | None,
 ) -> RequestRow:
@@ -168,6 +168,11 @@ async def stream_chat(client: AsyncOpenAI, messages: list[ChatMessage], max_toke
     )
 
 
+def sampled_mib(sampler: GpuSampler) -> float | None:
+    used = stop_gpu_sampler(sampler)
+    return None if used is None else mib(used)
+
+
 def emit(ctx: RunContext, record: ResponseRecord) -> None:
     ctx.requests_writer.writerow(record.row.model_dump())
     ctx.requests_handle.flush()
@@ -186,7 +191,7 @@ async def run_turn(
         result = await stream_chat(ctx.client, history, ctx.max_tokens)
     except openai.BadRequestError as exc:
         # A request the server rejects (for example over the context window) is recorded, not hidden.
-        peak = mib(stop_gpu_sampler(sampler))
+        peak = sampled_mib(sampler)
         failed = StreamResult(
             text="",
             start_ts=started_ts,
@@ -199,7 +204,7 @@ async def run_turn(
         )
         emit(ctx, ResponseRecord(row=build_row(prompt, turn_index, failed, peak, None, str(exc)), text="", chunk_gaps_s=[]))
         return None
-    peak = mib(stop_gpu_sampler(sampler))
+    peak = sampled_mib(sampler)
     server: ServerDelta | None = None
     if before is not None:
         after = await asyncio.to_thread(

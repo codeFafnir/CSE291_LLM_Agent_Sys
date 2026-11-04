@@ -183,6 +183,8 @@ def run_row(
     waiting = present([s.series.get(WAITING) for s in samples])
     running = present([s.series.get(RUNNING) for s in samples])
     queries = delta(first.series, last.series, PREFIX_QUERIES)
+    client_peaks = present([r.peak_gpu_mib for r in rows])
+    scrape_peaks = present([s.gpu_used_mib for s in samples])
     return {
         **identity,
         **{key.lower(): value for key, value in config.items() if key != "RUN_ID"},
@@ -206,9 +208,9 @@ def run_row(
         "completion_tokens_p95": percentile(completions, 0.95),
         "completion_tokens_p99": percentile(completions, 0.99),
         "completion_tokens_max": completions[-1],
-        "peak_gpu_mib_client": max(r.peak_gpu_mib for r in rows),
+        "peak_gpu_mib_client": max(client_peaks) if client_peaks else None,
         "peak_gpu_mib_dmon": max(dmon["fb"]) if dmon["fb"] else None,
-        "peak_gpu_mib_scrape": max(s.gpu_used_mib for s in samples),
+        "peak_gpu_mib_scrape": max(scrape_peaks) if scrape_peaks else None,
         "mean_gpu_util_pct": sum(dmon["sm"]) / len(dmon["sm"]) if dmon["sm"] else None,
         "peak_kv_usage": max(kv) if kv else None,
         "mean_kv_usage": sum(kv) / len(kv) if kv else None,

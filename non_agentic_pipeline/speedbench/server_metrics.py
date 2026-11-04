@@ -150,7 +150,12 @@ def accept_per_position(spec: SpecDelta) -> list[float | None]:
 
 
 def sample(url: str, timeout_s: float) -> Sample:
-    return Sample(ts=time.time(), gpu_used_mib=mib(gpu_used_bytes()), series=scrape_series(url, timeout_s))
+    used = gpu_used_bytes()
+    return Sample(
+        ts=time.time(),
+        gpu_used_mib=None if used is None else mib(used),
+        series=scrape_series(url, timeout_s),
+    )
 
 
 def collect(url: str, out: Path, interval_s: float, timeout_s: float, stop: threading.Event) -> None:
