@@ -1,0 +1,16 @@
+[?2004hroot@170be7c665c5:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@170be7c665c5:/app# clear
+[?2004l[H[J[3J[?2004hroot@170be7c665c5:/app# echo "@prefix ex: <http://example.org/> .
+[?2004l[?2004h> @prefix dc: <http://purl.org/dc/elements/1.1/> .
+[?2004l[?2004h> @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+[?2004l[?2004h> 
+[?2004l[?2004h> SELECT ?title ?authorName {
+[?2004l[?2004h>   ?book rdf:type ex:Book ;
+[?2004l[?2004h>         dc:title ?title ;
+[?2004l[?2004h>         dc:creator ?author .
+[?2004l[?2004h>   ?author dc:title ?authorName .
+[?2004l[?2004h>   FILTER (?book/dc:subject = "Classic")
+[?2004l[?2004h> } ORDER BY ?title" > /app/classic_books_query.sparql
+[?2004l[?2004hroot@170be7c665c5:/app# 

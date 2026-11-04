@@ -1,0 +1,138 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "ba4b85f4-0160-48f5-8243-7696362c8e9e",
+    "timestamp": "2026-11-04T07:50:54.896147+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 0,
+            "failed": 7,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793778654822,
+            "stop": 1793778654896,
+            "duration": 74
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 13,
+                "start": 1793778654842,
+                "stop": 1793778654855,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_files_exist():\n        \"\"\"Verify all required output files were created.\"\"\"\n        required_files = [\n            '/app/Makefile',\n            '/app/test_program.cpp',\n            '/app/generation_report.json'\n        ]\n    \n        for file_path in required_files:\n>           assert os.path.exists(file_path), f\"Missing required file: {file_path}\"\nE           AssertionError: Missing required file: /app/Makefile\nE           assert False\nE            +  where False = <function exists at 0x7f5fdeeff560>('/app/Makefile')\nE            +    where <function exists at 0x7f5fdeeff560> = <module 'posixpath' (frozen)>.exists\nE            +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:17: AssertionError",
+                "message": "AssertionError: Missing required file: /app/Makefile\nassert False\n +  where False = <function exists at 0x7f5fdeeff560>('/app/Makefile')\n +    where <function exists at 0x7f5fdeeff560> = <module 'posixpath' (frozen)>.exists\n +      where <module 'posixpath' (frozen)> = os.path"
+            },
+            {
+                "name": "test_outputs.py::test_makefile_syntax",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793778654855,
+                "stop": 1793778654863,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_makefile_syntax():\n        \"\"\"Verify the generated Makefile has valid syntax.\"\"\"\n        # Test if make can parse the Makefile without errors\n        result = subprocess.run(\n            ['make', '-n', '-f', '/app/Makefile'],\n            capture_output=True,\n            text=True\n        )\n    \n        # Check for common make errors\n        error_indicators = [\n            '*** missing separator',\n            '*** commands commence before first target',\n            '*** missing target pattern',\n            '*** multiple target patterns',\n            'No rule to make target'\n        ]\n    \n        error_found = any(indicator in result.stderr for indicator in error_indicators)\n    \n>       assert result.returncode == 0 or not error_found, \\\n            f\"Makefile syntax error:\\n{result.stderr}\\n{result.stdout}\"\nE       AssertionError: Makefile syntax error:\nE         make: /app/Makefile: No such file or directory\nE         make: *** No rule to make target '/app/Makefile'.  Stop.\nE         \nE         \nE       assert (2 == 0 or not True)\nE        +  where 2 = CompletedProcess(args=['make', '-n', '-f', '/app/Makefile'], returncode=2, stdout='', stderr=\"make: /app/Makefile: No such file or directory\\nmake: *** No rule to make target '/app/Makefile'.  Stop.\\n\").returncode\n\n/tests/test_outputs.py:39: AssertionError",
+                "message": "AssertionError: Makefile syntax error:\n  make: /app/Makefile: No such file or directory\n  make: *** No rule to make target '/app/Makefile'.  Stop.\n  \n  \nassert (2 == 0 or not True)\n +  where 2 = CompletedProcess(args=['make', '-n', '-f', '/app/Makefile'], returncode=2, stdout='', stderr=\"make: /app/Makefile: No such file or directory\\nmake: *** No rule to make target '/app/Makefile'.  Stop.\\n\").returncode"
+            },
+            {
+                "name": "test_outputs.py::test_generation_report_valid",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793778654863,
+                "stop": 1793778654866,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_generation_report_valid():\n        \"\"\"Verify the generation report is valid JSON with required fields.\"\"\"\n>       with open('/app/generation_report.json', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/generation_report.json'\n\n/tests/test_outputs.py:44: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/generation_report.json'"
+            },
+            {
+                "name": "test_outputs.py::test_compilation_with_makefile",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 21,
+                "start": 1793778654866,
+                "stop": 1793778654887,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_compilation_with_makefile():\n        \"\"\"Verify the generated Makefile can compile the test program.\"\"\"\n        # Create a test directory to avoid polluting /app\n        with tempfile.TemporaryDirectory() as tmpdir:\n            # Copy necessary files to temp directory\n>           shutil.copy('/app/Makefile', os.path.join(tmpdir, 'Makefile'))\n\n/tests/test_outputs.py:63: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/shutil.py:435: in copy\n    copyfile(src, dst, follow_symlinks=follow_symlinks)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nsrc = '/app/Makefile', dst = '/tmp/tmpxz3sxl_j/Makefile', follow_symlinks = True\n\n    def copyfile(src, dst, *, follow_symlinks=True):\n        \"\"\"Copy data from src to dst in the most efficient way possible.\n    \n        If follow_symlinks is not set and src is a symbolic link, a new\n        symlink will be created instead of copying the file it points to.\n    \n        \"\"\"\n        sys.audit(\"shutil.copyfile\", src, dst)\n    \n        if _samefile(src, dst):\n            raise SameFileError(\"{!r} and {!r} are the same file\".format(src, dst))\n    \n        file_size = 0\n        for i, fn in enumerate([src, dst]):\n            try:\n                st = _stat(fn)\n            except OSError:\n                # File most likely does not exist\n                pass\n            else:\n                # XXX What about other special files? (sockets, devices...)\n                if stat.S_ISFIFO(st.st_mode):\n                    fn = fn.path if isinstance(fn, os.DirEntry) else fn\n                    raise SpecialFileError(\"`%s` is a named pipe\" % fn)\n                if _WINDOWS and i == 0:\n                    file_size = st.st_size\n    \n        if not follow_symlinks and _islink(src):\n            os.symlink(os.readlink(src), dst)\n        else:\n>           with open(src, 'rb') as fsrc:\n                 ^^^^^^^^^^^^^^^\nE           FileNotFoundError: [Errno 2] No such file or directory: '/app/Makefile'\n\n/usr/lib/python3.12/shutil.py:260: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/Makefile'"
+            },
+            {
+                "name": "test_outputs.py::test_makefile_contains_required_targets",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793778654887,
+                "stop": 1793778654890,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_makefile_contains_required_targets():\n        \"\"\"Verify the Makefile contains required targets and variables.\"\"\"\n>       with open('/app/Makefile', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/Makefile'\n\n/tests/test_outputs.py:110: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/Makefile'"
+            },
+            {
+                "name": "test_outputs.py::test_test_program_content",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793778654890,
+                "stop": 1793778654893,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_test_program_content():\n        \"\"\"Verify the test program includes required elements.\"\"\"\n>       with open('/app/test_program.cpp', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/test_program.cpp'\n\n/tests/test_outputs.py:131: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/test_program.cpp'"
+            },
+            {
+                "name": "test_outputs.py::test_clean_target_removes_files",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 2,
+                "start": 1793778654893,
+                "stop": 1793778654895,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_clean_target_removes_files():\n        \"\"\"Verify the clean target specifies removal of generated files.\"\"\"\n>       with open('/app/Makefile', 'r') as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/app/Makefile'\n\n/tests/test_outputs.py:146: FileNotFoundError",
+                "message": "FileNotFoundError: [Errno 2] No such file or directory: '/app/Makefile'"
+            }
+        ]
+    }
+}

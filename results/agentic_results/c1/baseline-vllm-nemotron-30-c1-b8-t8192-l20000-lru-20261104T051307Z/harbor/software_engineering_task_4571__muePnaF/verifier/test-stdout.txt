@@ -1,0 +1,103 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pyyaml
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pyyaml in /usr/lib/python3/dist-packages (6.0.1)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1, anyio-4.16.0, platformdirs-4.14.3
+collected 10 items
+
+../tests/test_outputs.py ...F..FFF.                                      [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_keys_have_underscores_not_dots ______________________
+
+    def test_keys_have_underscores_not_dots():
+        """Verify keys with dots have been converted to underscores."""
+        with open('/app/fixed_config.yaml', 'r') as f:
+            content = f.read()
+    
+        # Check that no keys contain dots (except in values)
+        lines = content.split('\n')
+        for line_num, line in enumerate(lines, 1):
+            line = line.strip()
+            if line and not line.startswith('#'):
+                # Split on colon to get key part
+                if ':' in line:
+                    key = line.split(':')[0].strip()
+                    # Key should not contain dots
+                    if '.' in key:
+                        # Check if it's in a comment or string value
+                        if not (key.startswith('#') or key.startswith('"')):
+>                           pytest.fail(f"Key '{key}' contains dot at line {line_num}")
+                            ^^^^^^
+E                           NameError: name 'pytest' is not defined
+
+/tests/test_outputs.py:65: NameError
+________________________ test_compiler_flags_key_exists ________________________
+
+    def test_compiler_flags_key_exists():
+        """Verify compiler_flags key exists with underscore."""
+        with open('/app/fixed_config.yaml', 'r') as f:
+            data = yaml.safe_load(f)
+    
+        assert 'build' in data, "Missing 'build' section"
+>       assert 'compiler_flags' in data['build'], f"Missing 'compiler_flags' key. Found keys: {list(data['build'].keys())}"
+E       AssertionError: Missing 'compiler_flags' key. Found keys: ['source_dir', 'output_dir', 'compiler.flags', 'tests']
+E       assert 'compiler_flags' in {'source_dir': 'src', 'output_dir': 'dist', 'compiler.flags': '-O2 -Wall', 'tests': True}
+
+/tests/test_outputs.py:94: AssertionError
+______________________ test_deployment_target_key_exists _______________________
+
+    def test_deployment_target_key_exists():
+        """Verify deployment_target key exists with underscore."""
+        with open('/app/fixed_config.yaml', 'r') as f:
+            data = yaml.safe_load(f)
+    
+        assert 'deployment' in data, "Missing 'deployment' section"
+>       assert 'target' in data['deployment'], f"Missing 'target' key in deployment. Found keys: {list(data['deployment'].keys())}"
+E       AssertionError: Missing 'target' key in deployment. Found keys: ['deployment_target', 'deployment_region']
+E       assert 'target' in {'deployment_target': 'production', 'deployment_region': 'us-east-1'}
+
+/tests/test_outputs.py:102: AssertionError
+_______________________________ test_line_count ________________________________
+
+    def test_line_count():
+        """Verify the file has exactly 12 non-empty, non-comment lines."""
+        with open('/app/fixed_config.yaml', 'r') as f:
+            lines = f.readlines()
+    
+        non_empty_lines = 0
+        for line in lines:
+            stripped = line.strip()
+            if stripped and not stripped.startswith('#'):
+                non_empty_lines += 1
+    
+>       assert non_empty_lines == 12, f"Expected 12 non-empty lines, found {non_empty_lines}"
+E       AssertionError: Expected 12 non-empty lines, found 17
+E       assert 17 == 12
+
+/tests/test_outputs.py:115: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_exists
+PASSED ../tests/test_outputs.py::test_yaml_parsable
+PASSED ../tests/test_outputs.py::test_no_duplicate_keys
+PASSED ../tests/test_outputs.py::test_active_lines_uncommented
+PASSED ../tests/test_outputs.py::test_tests_is_true
+PASSED ../tests/test_outputs.py::test_proper_indentation
+FAILED ../tests/test_outputs.py::test_keys_have_underscores_not_dots - NameEr...
+FAILED ../tests/test_outputs.py::test_compiler_flags_key_exists - AssertionEr...
+FAILED ../tests/test_outputs.py::test_deployment_target_key_exists - Assertio...
+FAILED ../tests/test_outputs.py::test_line_count - AssertionError: Expected 1...
+========================= 4 failed, 6 passed in 0.06s ==========================
+Some tests failed.

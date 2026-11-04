@@ -1,0 +1,90 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pytest
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pytest in /usr/local/lib/python3.12/dist-packages (9.2.0)
+Requirement already satisfied: iniconfig>=2 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.3.1)
+Requirement already satisfied: packaging>=24 in /usr/local/lib/python3.12/dist-packages (from pytest) (26.3)
+Requirement already satisfied: pluggy<2,>=1.6 in /usr/local/lib/python3.12/dist-packages (from pytest) (1.7.0)
+Requirement already satisfied: pygments>=2.15 in /usr/lib/python3/dist-packages (from pytest) (2.17.2)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1, anyio-4.16.0, platformdirs-4.14.3
+collected 8 items
+
+../tests/test_outputs.py ....F..F                                        [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_json_content_correct ___________________________
+
+    def test_json_content_correct():
+        """Verify the generated JSON has the exact expected structure."""
+        with open('/app/build/output/data.json', 'r') as f:
+            data = json.load(f)
+    
+        # Check structure
+        assert isinstance(data, list), "Output should be a JSON array"
+        assert len(data) == 4, "Should have 4 records from input.csv"
+    
+        # Check first record
+        expected_first = {
+            "id": 1,
+            "name": "Alice",
+            "age": 30,
+            "salary": 75000.5,
+            "department": "Engineering"
+        }
+    
+        assert data[0] == expected_first, f"First record mismatch: {data[0]}"
+    
+        # Check all records have correct types
+        for record in data:
+>           assert isinstance(record['id'], int), f"id should be int: {record['id']}"
+E           AssertionError: id should be int: 1.0
+E           assert False
+E            +  where False = isinstance(1.0, int)
+
+/tests/test_outputs.py:77: AssertionError
+___________________________ test_directory_creation ____________________________
+
+    def test_directory_creation():
+        """Verify the script creates output directory if needed."""
+        # Clean up if directory exists
+        if os.path.exists('/app/build/output'):
+            shutil.rmtree('/app/build/output')
+    
+        # Run script directly
+        result = subprocess.run(
+            ['python3', '/app/scripts/csv_to_json.py',
+             '--input', '/app/data/input.csv', '--output', '/app/build/output/data.json'],
+            capture_output=True,
+            text=True
+        )
+    
+>       assert result.returncode == 0, f"Script failed: {result.stderr}"
+E       AssertionError: Script failed: Error: Input file not found.
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', '/app/scripts/csv_to_json.py', '--input', '/app/data/input.csv', '--output', '/app/build/output/data.json'], returncode=1, stdout='', stderr='Error: Input file not found.\n').returncode
+
+/tests/test_outputs.py:118: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_python_script_exists
+PASSED ../tests/test_outputs.py::test_cmake_file_exists
+PASSED ../tests/test_outputs.py::test_json_output_exists
+PASSED ../tests/test_outputs.py::test_python_script_executable
+PASSED ../tests/test_outputs.py::test_cmake_contains_target
+PASSED ../tests/test_outputs.py::test_error_handling
+FAILED ../tests/test_outputs.py::test_json_content_correct - AssertionError: ...
+FAILED ../tests/test_outputs.py::test_directory_creation - AssertionError: Sc...
+========================= 2 failed, 6 passed in 0.12s ==========================
+Some tests failed.

@@ -1,0 +1,102 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "b0aa1154-49d5-4bba-860f-cce656ef3721",
+    "timestamp": "2026-11-03T09:38:19.639943+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 2,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793698698723,
+            "stop": 1793698699639,
+            "duration": 916
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793698699571,
+                "stop": 1793698699571,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_csv_format",
+                "status": "passed",
+                "duration": 2,
+                "start": 1793698699572,
+                "stop": 1793698699574,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_numerical_accuracy",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 52,
+                "start": 1793698699574,
+                "stop": 1793698699626,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_numerical_accuracy():\n        \"\"\"Verify numerical accuracy against reference solution.\"\"\"\n        params = load_parameters()\n        df = pd.read_csv('/app/output/results.csv')\n    \n        # Compute analytical solution\n        t = df['time'].values\n        y_analytical = analytical_solution(t, params['alpha'], params['K'], params['y0'])\n    \n        # Check accuracy - Euler method should be within reasonable tolerance\n        max_error = np.max(np.abs(df['population'].values - y_analytical))\n>       assert max_error < 0.1, f\"Numerical error too large: {max_error}\"\nE       AssertionError: Numerical error too large: 16.562376709683747\nE       assert np.float64(16.562376709683747) < 0.1\n\n/tests/test_outputs.py:55: AssertionError",
+                "message": "AssertionError: Numerical error too large: 16.562376709683747\nassert np.float64(16.562376709683747) < 0.1"
+            },
+            {
+                "name": "test_outputs.py::test_summary_json",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 9,
+                "start": 1793698699626,
+                "stop": 1793698699635,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_summary_json():\n        \"\"\"Verify summary JSON contains correct values.\"\"\"\n        params = load_parameters()\n        df = pd.read_csv('/app/output/results.csv')\n    \n        # Load summary\n        with open('/app/output/summary.json', 'r') as f:\n>           summary = json.load(f)\n                      ^^^^^^^^^^^^\n\n/tests/test_outputs.py:64: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f7c9d59c4d0>\ns = 'time population\\nfinal_population: 999.9986\\nmax_population: 999.9986\\nconvergence_time: 9.4000\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\n/usr/lib/python3.12/json/decoder.py:355: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+            },
+            {
+                "name": "test_outputs.py::test_decimal_formatting",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793698699636,
+                "stop": 1793698699639,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_decimal_formatting():\n        \"\"\"Verify values are formatted with 4 decimal places.\"\"\"\n        df = pd.read_csv('/app/output/results.csv')\n    \n        # Check that all values have at most 4 decimal places when rounded\n        for col in ['time', 'population']:\n            # Multiply by 10000 and check if values are close to integers\n            scaled = df[col] * 10000\n            is_close_to_int = np.all(np.abs(scaled - np.round(scaled)) < 1e-10)\n>           assert is_close_to_int, f\"Column {col} not formatted to 4 decimal places\"\nE           AssertionError: Column population not formatted to 4 decimal places\nE           assert np.False_\n\n/tests/test_outputs.py:102: AssertionError",
+                "message": "AssertionError: Column population not formatted to 4 decimal places\nassert np.False_"
+            }
+        ]
+    }
+}

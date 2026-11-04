@@ -1,0 +1,93 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "3af3ef3e-0224-4670-bfe0-6f7593d07fa3",
+    "timestamp": "2026-11-04T05:18:45.868069+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793769525456,
+            "stop": 1793769525867,
+            "duration": 411
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793769525846,
+                "stop": 1793769525847,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_csv_format",
+                "status": "passed",
+                "duration": 2,
+                "start": 1793769525847,
+                "stop": 1793769525849,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_json_structure",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793769525849,
+                "stop": 1793769525850,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_statistics_accuracy",
+                "status": "passed",
+                "duration": 11,
+                "start": 1793769525850,
+                "stop": 1793769525861,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_missing_value_handling",
+                "status": "passed",
+                "duration": 6,
+                "start": 1793769525861,
+                "stop": 1793769525867,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

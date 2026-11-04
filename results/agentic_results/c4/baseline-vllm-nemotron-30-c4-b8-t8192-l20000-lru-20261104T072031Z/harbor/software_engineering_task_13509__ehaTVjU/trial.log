@@ -1,0 +1,13 @@
+Skipping image OS validation for hb__70b1b2a46f067c0957c3bae23155c7fe: docker inspect returned 1
+Parser warnings: - Command 1: Missing duration field, using default 1.0
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_13509__ehaTVjU/agent/trajectory.json
+Collecting main service artifacts

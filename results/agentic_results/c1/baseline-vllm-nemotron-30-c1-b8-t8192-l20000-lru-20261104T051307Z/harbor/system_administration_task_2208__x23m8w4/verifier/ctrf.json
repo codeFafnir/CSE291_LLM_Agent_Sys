@@ -1,0 +1,105 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "a7e18e81-5750-4e7c-beab-9fd0b09799eb",
+    "timestamp": "2026-11-04T07:17:28.751186+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793776647433,
+            "stop": 1793776648751,
+            "duration": 1318
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776647451,
+                "stop": 1793776647452,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_script_runs_without_errors",
+                "status": "passed",
+                "duration": 73,
+                "start": 1793776647452,
+                "stop": 1793776647525,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_health_report_format",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793776647526,
+                "stop": 1793776647526,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_service_dependency_ordering",
+                "status": "passed",
+                "duration": 72,
+                "start": 1793776647526,
+                "stop": 1793776647598,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_restart_logging",
+                "status": "passed",
+                "duration": 1078,
+                "start": 1793776647599,
+                "stop": 1793776648677,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_summary_counts_match",
+                "status": "passed",
+                "duration": 72,
+                "start": 1793776648678,
+                "stop": 1793776648750,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

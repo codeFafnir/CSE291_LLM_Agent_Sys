@@ -1,0 +1,135 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "01c03e01-4ec7-4f5a-a586-65fe745e2518",
+    "timestamp": "2026-11-04T07:50:38.595216+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 8,
+            "passed": 6,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793778638475,
+            "stop": 1793778638595,
+            "duration": 120
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_python_script_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793778638496,
+                "stop": 1793778638496,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_cmake_file_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793778638496,
+                "stop": 1793778638497,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_json_output_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793778638497,
+                "stop": 1793778638497,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_python_script_executable",
+                "status": "passed",
+                "duration": 26,
+                "start": 1793778638498,
+                "stop": 1793778638524,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_json_content_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 16,
+                "start": 1793778638524,
+                "stop": 1793778638540,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_json_content_correct():\n        \"\"\"Verify the generated JSON has the exact expected structure.\"\"\"\n        with open('/app/build/output/data.json', 'r') as f:\n            data = json.load(f)\n    \n        # Check structure\n        assert isinstance(data, list), \"Output should be a JSON array\"\n        assert len(data) == 4, \"Should have 4 records from input.csv\"\n    \n        # Check first record\n        expected_first = {\n            \"id\": 1,\n            \"name\": \"Alice\",\n            \"age\": 30,\n            \"salary\": 75000.5,\n            \"department\": \"Engineering\"\n        }\n    \n        assert data[0] == expected_first, f\"First record mismatch: {data[0]}\"\n    \n        # Check all records have correct types\n        for record in data:\n>           assert isinstance(record['id'], int), f\"id should be int: {record['id']}\"\nE           AssertionError: id should be int: 1.0\nE           assert False\nE            +  where False = isinstance(1.0, int)\n\n/tests/test_outputs.py:77: AssertionError",
+                "message": "AssertionError: id should be int: 1.0\nassert False\n +  where False = isinstance(1.0, int)"
+            },
+            {
+                "name": "test_outputs.py::test_cmake_contains_target",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793778638540,
+                "stop": 1793778638540,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_error_handling",
+                "status": "passed",
+                "duration": 26,
+                "start": 1793778638540,
+                "stop": 1793778638566,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_directory_creation",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 28,
+                "start": 1793778638566,
+                "stop": 1793778638594,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_directory_creation():\n        \"\"\"Verify the script creates output directory if needed.\"\"\"\n        # Clean up if directory exists\n        if os.path.exists('/app/build/output'):\n            shutil.rmtree('/app/build/output')\n    \n        # Run script directly\n        result = subprocess.run(\n            ['python3', '/app/scripts/csv_to_json.py',\n             '--input', '/app/data/input.csv', '--output', '/app/build/output/data.json'],\n            capture_output=True,\n            text=True\n        )\n    \n>       assert result.returncode == 0, f\"Script failed: {result.stderr}\"\nE       AssertionError: Script failed: Error: Input file not found.\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['python3', '/app/scripts/csv_to_json.py', '--input', '/app/data/input.csv', '--output', '/app/build/output/data.json'], returncode=1, stdout='', stderr='Error: Input file not found.\\n').returncode\n\n/tests/test_outputs.py:118: AssertionError",
+                "message": "AssertionError: Script failed: Error: Input file not found.\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['python3', '/app/scripts/csv_to_json.py', '--input', '/app/data/input.csv', '--output', '/app/build/output/data.json'], returncode=1, stdout='', stderr='Error: Input file not found.\\n').returncode"
+            }
+        ]
+    }
+}

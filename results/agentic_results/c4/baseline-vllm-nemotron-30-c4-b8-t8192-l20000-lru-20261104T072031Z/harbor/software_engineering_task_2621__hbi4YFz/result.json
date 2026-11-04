@@ -1,0 +1,176 @@
+{
+    "id": "5f750e65-8fcb-4e52-a7fb-89a606fedf85",
+    "task_name": "software_engineering_task_2621",
+    "trial_name": "software_engineering_task_2621__hbi4YFz",
+    "trial_uri": "file:///data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_2621__hbi4YFz",
+    "task_id": {
+        "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_2621"
+    },
+    "source": "set30",
+    "task_checksum": "88c4f7fd6540b2f7544afe71ed1062e3d45ca6c64c79ce44dc1410b6a21630e3",
+    "config": {
+        "task": {
+            "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_2621",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "set30"
+        },
+        "trial_name": "software_engineering_task_2621__hbi4YFz",
+        "trials_dir": "/data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "terminus-2",
+            "import_path": null,
+            "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+            "base_url": "http://host.docker.internal:8000/v1",
+            "model_api_key_name": null,
+            "model_api_format": "openai_chat_completions",
+            "skip_model_parsing": false,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "model_info": {
+                    "max_input_tokens": 20000,
+                    "max_output_tokens": 2048,
+                    "input_cost_per_token": 0,
+                    "output_cost_per_token": 0
+                },
+                "llm_kwargs": {
+                    "max_tokens": 2048,
+                    "extra_body": {
+                        "chat_template_kwargs": {
+                            "enable_thinking": false
+                        }
+                    }
+                },
+                "enable_summarize": false,
+                "proactive_summarization_threshold": 0
+            },
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": true,
+            "delete": true,
+            "stream": false,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "6f27728a-2a24-4a52-bdea-5297df4f2cf9",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "terminus-2",
+        "version": "2.0.0",
+        "model_info": {
+            "name": "Qwen/Qwen3-14B-AWQ",
+            "provider": "openai"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 134842,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 5650,
+        "cost_usd": null,
+        "model_usage": {
+            "Qwen/Qwen3-14B-AWQ": {
+                "n_input_tokens": 134842,
+                "n_cache_tokens": 0,
+                "n_output_tokens": 5650,
+                "cost_usd": null
+            }
+        },
+        "rollout_details": [],
+        "metadata": {
+            "n_episodes": 24,
+            "api_request_times_msec": [
+                7895.6286907196045,
+                5035.207748413086,
+                13186.46788597107,
+                8057.9023361206055,
+                7472.986698150635,
+                4612.325191497803,
+                4110.594987869263,
+                7770.127773284912,
+                6394.614458084106,
+                10073.468923568726,
+                6455.329418182373,
+                6457.2296142578125,
+                7843.581438064575,
+                9086.618185043335,
+                7847.517728805542,
+                6500.854015350342,
+                4204.272747039795,
+                5177.52742767334,
+                7920.729160308838,
+                7111.206293106079,
+                6395.802021026611,
+                5694.659233093262,
+                38633.11219215393,
+                6562.748670578003
+            ],
+            "summarization_count": 0
+        }
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "verifier_environment_mode": "shared",
+    "exception_info": null,
+    "started_at": "2026-11-04T07:51:05.990210Z",
+    "finished_at": "2026-11-04T07:55:04.780756Z",
+    "environment_setup": {
+        "started_at": "2026-11-04T07:51:05.993084Z",
+        "finished_at": "2026-11-04T07:51:08.185241Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-11-04T07:51:08.185264Z",
+        "finished_at": "2026-11-04T07:51:09.763778Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-11-04T07:51:09.764011Z",
+        "finished_at": "2026-11-04T07:54:49.907969Z"
+    },
+    "verifier": {
+        "started_at": "2026-11-04T07:54:50.173128Z",
+        "finished_at": "2026-11-04T07:54:53.765437Z"
+    },
+    "step_results": null
+}

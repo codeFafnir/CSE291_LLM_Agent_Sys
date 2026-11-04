@@ -1,0 +1,191 @@
+[?2004hroot@69297a17ae82:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@69297a17ae82:/app# clear
+[?2004l[H[J[3J[?2004hroot@69297a17ae82:/app# cat /app/library.ttl
+[?2004l@prefix ex: <http://example.org/library#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:book1 a ex:Book ;
+    ex:title "The Testaments" ;
+    ex:author ex:author1 ;
+    ex:publicationYear 2019 ;
+    ex:genre "Fiction" .
+
+ex:book2 a ex:Book ;
+    ex:title "Circe" ;
+    ex:author ex:author2 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book3 a ex:Book ;
+    ex:title "Educated" ;
+    ex:author ex:author3 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Non-Fiction" .
+
+ex:book4 a ex:Book ;
+    ex:title "The Overstory" ;
+    ex:author ex:author4 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book5 a ex:Book ;
+    ex:title "The Silent Patient" ;
+    ex:author ex:author5 ;
+    ex:publicationYear 2019 ;
+    ex:genre "Fiction" .
+
+ex:book6 a ex:Book ;
+    ex:title "Where the Crawdads Sing" ;
+    ex:author ex:author6 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book7 a ex:Book ;
+    ex:title "Becoming" ;
+    ex:author ex:author7 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Biography" .
+
+ex:book8 a ex:Book ;
+    ex:title "Normal People" ;
+    ex:author ex:author8 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book9 a ex:Book ;
+    ex:title "Klara and the Sun" ;
+    ex:author ex:author9 ;
+    ex:publicationYear 2021 ;
+    ex:genre "Fiction" .
+
+ex:author1 a ex:Author ;
+    ex:name "Margaret Atwood" ;
+    ex:nationality "Canadian" .
+
+ex:author2 a ex:Author ;
+    ex:name "Madeline Miller" ;
+    ex:nationality "American" .
+
+ex:author3 a ex:Author ;
+    ex:name "Tara Westover" ;
+    ex:nationality "American" .
+
+ex:author4 a ex:Author ;
+    ex:name "Richard Powers" ;
+    ex:nationality "American" .
+
+ex:author5 a ex:Author ;
+    ex:name "Alex Michaelides" ;
+    ex:nationality "British" .
+
+ex:author6 a ex:Author ;
+    ex:name "Delia Owens" ;
+    ex:nationality "American" .
+
+ex:author7 a ex:Author ;
+    ex:name "Michelle Obama" ;
+    ex:nationality "American" .
+
+ex:author8 a ex:Author ;
+    ex:name "Sally Rooney" ;
+    ex:nationality "Irish" .
+
+ex:author9 a ex:Author ;
+    ex:name "Kazuo Ishiguro" ;
+    ex:nationality "British" .[?2004hroot@69297a17ae82:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre "Fiction" . ?author a ex:Author ; ex:name ?authorName ; ex:nationality "American" . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')
+[?2004l[?2004h> ; import csv; with open('/app/query_results.csv', 'w') as f: csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])" 
+[?2004l  File "<string>", line 2
+    ; import csv; with open('/app/query_results.csv', 'w') as f: csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])
+    ^
+SyntaxError: invalid syntax
+[?2004hroot@69297a17ae82:/app# echo 'The SPARQL query uses the ex: namespace prefix to identify the library ontology. It selects books with the genre "Fiction", published after 2015, and authored by individuals with the nationality "American". The query returns the book title, author name, and publication year, sorted by publication year and then by book title alphabetically.' > /app/explanation.txt
+[?2004l[?2004hroot@69297a17ae82:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')
+[?2004l[?2004h> ; import csv; with open('/app/query_results.csv', 'w') as f: csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])" 
+[?2004l  File "<string>", line 2
+    ; import csv; with open('/app/query_results.csv', 'w') as f: csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])
+    ^
+SyntaxError: invalid syntax
+[?2004hroot@69297a17ae82:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')
+[?2004l[?2004h> ; import csv; with open('/app/query_results.csv', 'w') as f: csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])" 
+[?2004l  File "<string>", line 2
+    ; import csv; with open('/app/query_results.csv', 'w') as f: csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])
+    ^
+SyntaxError: invalid syntax
+[?2004hroot@69297a17ae82:/app# echo "import rdflib\ng = rdflib.Graph()\ng.parse('/app/library.ttl', format='turtle')\nqres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')\nimport csv\nwith open('/app/query_results.csv', 'w') as f:\n    csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])" > /app/query_script.py
+[?2004l[?2004hroot@69297a17ae82:/app# python3 /app/query_script.py
+[?2004l  File "/app/query_script.py", line 1
+    import rdflib\ng = rdflib.Graph()\ng.parse('/app/library.ttl', format='turtle')\nqres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')\nimport csv\nwith open('/app/query_results.csv', 'w') as f:\n    csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])
+                  ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@69297a17ae82:/app# echo "import rdflib\ng = rdflib.Graph()\ng.parse('/app/library.ttl', format='turtle')\nqres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')\nimport csv\nwith open('/app/query_results.csv', 'w') as f:\n    csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])" > /app/query_script.py
+[?2004l[?2004hroot@69297a17ae82:/app# python3 /app/query_script.py
+[?2004l  File "/app/query_script.py", line 1
+    import rdflib\ng = rdflib.Graph()\ng.parse('/app/library.ttl', format='turtle')\nqres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')\nimport csv\nwith open('/app/query_results.csv', 'w') as f:\n    csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])
+                  ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@69297a17ae82:/app# cat > /app/query_script.py << EOF
+[?2004l[?2004h> import rdflib
+[?2004l[?2004h> 
+[?2004l[?2004h> g = rdflib.Graph()
+[?2004l[?2004h> g.parse('/app/library.ttl', format='turtle')
+[?2004l[?2004h> 
+[?2004l[?2004h> qres = g.query('''PREFIX ex: <http://example.org/library#> SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book a ex:Book ; ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre 'Fiction' . ?author a ex:Author ; ex:name ?authorName ; ex:nationality 'American' . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle ''')
+[?2004l[?2004h> 
+[?2004l[?2004h> import csv
+[?2004l[?2004h> with open('/app/query_results.csv', 'w') as f:
+[?2004l[?2004h>     csv.writer(f).writerows([['bookTitle', 'authorName', 'publicationYear']] + [[str(row.bookTitle), str(row.authorName), str(row.publicationYear)] for row in qres])
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@69297a17ae82:/app# python3 /app/query_script.py
+[?2004lTraceback (most recent call last):
+  File "/app/query_script.py", line 1, in <module>
+    import rdflib
+ModuleNotFoundError: No module named 'rdflib'
+[?2004hroot@69297a17ae82:/app# pip install rdflib
+[?2004l[1;31merror[0m: [1mexternally-managed-environment[0m
+
+[31m×[0m This environment is externally managed
+[31m╰─>[0m To install Python packages system-wide, try apt install
+[31m   [0m python3-xyz, where xyz is the package you are trying to
+[31m   [0m install.
+[31m   [0m 
+[31m   [0m If you wish to install a non-Debian-packaged Python package,
+[31m   [0m create a virtual environment using python3 -m venv path/to/venv.
+[31m   [0m Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
+[31m   [0m sure you have python3-full installed.
+[31m   [0m 
+[31m   [0m If you wish to install a non-Debian packaged Python application,
+[31m   [0m it may be easiest to use pipx install xyz, which will manage a
+[31m   [0m virtual environment for you. Make sure you have pipx installed.
+[31m   [0m 
+[31m   [0m See /usr/share/doc/python3.12/README.venv for more information.
+
+[1;35mnote[0m: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+[1;36mhint[0m: See PEP 668 for the detailed specification.
+[?2004hroot@69297a17ae82:/app# python3 /app/query_script.py
+[?2004lTraceback (most recent call last):
+  File "/app/query_script.py", line 1, in <module>
+    import rdflib
+ModuleNotFoundError: No module named 'rdflib'
+[?2004hroot@69297a17ae82:/app# python3 -m venv /app/venv
+[?2004l/app/venv/bin/pip install rdflib
+/app/venv/bin/python3 /app/query_script.py
+[?2004hroot@69297a17ae82:/app# /app/venv/bin/pip install rdflib
+[?2004lCollecting rdflib
+  Downloading rdflib-7.6.0-py3-none-any.whl.metadata (12 kB)
+Collecting pyparsing<4,>=2.1.0 (from rdflib)
+  Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+Downloading rdflib-7.6.0-py3-none-any.whl (615 kB)
+[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/615.4 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m [32m614.4/615.4 kB[0m [31m24.6 MB/s[0m eta [36m0:00:01[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m615.4/615.4 kB[0m [31m17.2 MB/s[0m eta [36m0:00:00[0m
+[?25hDownloading pyparsing-3.3.3-py3-none-any.whl (126 kB)
+[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/126.4 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m126.4/126.4 kB[0m [31m11.8 MB/s[0m eta [36m0:00:00[0m
+[?25hInstalling collected packages: pyparsing, rdflib
+Successfully installed pyparsing-3.3.3 rdflib-7.6.0
+[?2004hroot@69297a17ae82:/app# /app/venv/bin/python3 /app/query_script.py
+[?2004l[?2004hroot@69297a17ae82:/app# /app/venv/bin/pip install rdflib
+[?2004lRequirement already satisfied: rdflib in ./venv/lib/python3.12/site-packages (7.6.0)
+Requirement already satisfied: pyparsing<4,>=2.1.0 in ./venv/lib/python3.12/site-packages (from rdflib) (3.3.3)
+[?2004hroot@69297a17ae82:/app# /app/venv/bin/python3 /app/query_script.py
+[?2004l[?2004hroot@69297a17ae82:/app# 

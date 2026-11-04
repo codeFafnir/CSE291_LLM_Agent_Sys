@@ -1,0 +1,1769 @@
+{
+    "schema_version": 3,
+    "created_at": "2026-11-04T05:13:12.918894Z",
+    "harbor": {
+        "version": "0.25.0",
+        "is_editable": false
+    },
+    "n_concurrent_trials": 1,
+    "retry": {
+        "max_retries": 0,
+        "exclude_exceptions": [
+            "ModelNotFoundError",
+            "RewardFileEmptyError",
+            "VerifierTimeoutError",
+            "ApiUsageLimitError",
+            "AgentSafetyRefusalError",
+            "AgentAuthenticationError",
+            "AgentTimeoutError",
+            "RewardFileNotFoundError",
+            "VerifierOutputParseError",
+            "UnsupportedModelParametersError"
+        ],
+        "wait_multiplier": 1.0,
+        "min_wait_sec": 1.0,
+        "max_wait_sec": 60.0
+    },
+    "trials": [
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "data_querying_task_0996",
+                "type": "local",
+                "digest": "sha256:56e3d2dd9be3fbd4e061fce63d0235be798fcc622a93d97c4499532cbfc83c13",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/data_querying_task_0996"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "data_querying_task_2692",
+                "type": "local",
+                "digest": "sha256:c123248132c5aaec24f71650a0b64f29665c5b4b5c78e98fbda2f5b050effce4",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/data_querying_task_2692"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "data_science_task_3348",
+                "type": "local",
+                "digest": "sha256:b0fb237baf2fa5d41785fbcc7d3bf04b5eccbdf67b42ef9ee871b0a031b00301",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/data_science_task_3348"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "debugging_task_12771",
+                "type": "local",
+                "digest": "sha256:dc00897f4d9d19c8485b4ea10d009cad9740f3e9dfa86889272095f04c1815f5",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/debugging_task_12771"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "debugging_task_18959",
+                "type": "local",
+                "digest": "sha256:807c17f353712f259d0e50b78d4d5492e90612ed880ee761e1cc8a06df84c603",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/debugging_task_18959"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "debugging_task_2000",
+                "type": "local",
+                "digest": "sha256:86a53a35b1cf0ae7ae0b20850681acea01e2b09acf8657cfa3770437cd75e7bd",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/debugging_task_2000"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "debugging_task_2216",
+                "type": "local",
+                "digest": "sha256:a12110ea1fbfbe828a72e28db9f10837d1a925024642cbaebabe496bbabca10a",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/debugging_task_2216"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "debugging_task_2446",
+                "type": "local",
+                "digest": "sha256:145d5224d3a01fe4a61f2767ba7f81d21ab344ad961e9d10201a50a1cda68b3f",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/debugging_task_2446"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "file_operations_task_0585",
+                "type": "local",
+                "digest": "sha256:27d187b3ab9947be106a828d5addde27455d7b174b25fdecae6062e736c68829",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/file_operations_task_0585"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "file_operations_task_4095",
+                "type": "local",
+                "digest": "sha256:1ffd517e96f238950a85cedbc5a2833f830476f3e05984e233f659d12534b852",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/file_operations_task_4095"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "model_training_task_18693",
+                "type": "local",
+                "digest": "sha256:c2eb319c94b6da5b94bc097cd62aaa8e5f1131f8654eb4788184599f64a12afb",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/model_training_task_18693"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "scientific_computing_task_0993",
+                "type": "local",
+                "digest": "sha256:df4dd2184d1f36b53fae85535506bb50db3ad2ce7ed67988eab70b717819a0fd",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/scientific_computing_task_0993"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "scientific_computing_task_1530",
+                "type": "local",
+                "digest": "sha256:314683a1a055e47cbc3b670b8a45b73d86d2b5a9e01594322afcb08adbde25e5",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/scientific_computing_task_1530"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "scientific_computing_task_2932",
+                "type": "local",
+                "digest": "sha256:0a17bcc9eeeec6973784987bcf393e660bc7b3f7ed286e9695f93ad98f03399e",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/scientific_computing_task_2932"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "security_task_0784",
+                "type": "local",
+                "digest": "sha256:bd8d2a9aa6210d46da21798e3d541831d0a55adb68020001d9e510f039764d79",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/security_task_0784"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "security_task_11984",
+                "type": "local",
+                "digest": "sha256:18a747140ce06c914db3b95dcbf9bd54adccca5ba44a0f6e4a911ddece7621ce",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/security_task_11984"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "security_task_2831",
+                "type": "local",
+                "digest": "sha256:57e82f0c5bc7cccbd3cd312af5b99dd630f6aaf91f16554cbbea49ef34cc5cb2",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/security_task_2831"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "security_task_3201",
+                "type": "local",
+                "digest": "sha256:4dbb65b34524e99cc6718634a53c7af3477432491800f6cafb81cdc11aa6ddbe",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/security_task_3201"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_0029",
+                "type": "local",
+                "digest": "sha256:33f90e57beae62a89d449ec10bef9f6df736ae96b129f24e053808cde928d59f",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_0029"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_1347",
+                "type": "local",
+                "digest": "sha256:d6816937bbe68eb29e7c4e5e781fcd8480897aac5d8b7f2ac9d5e2e98df98283",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_1347"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_13509",
+                "type": "local",
+                "digest": "sha256:40f3b770b962e381c71d2a17db9c876546798bd2d5dc2dcea80d50db45d47257",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_13509"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_1519",
+                "type": "local",
+                "digest": "sha256:d6d0eae2a779a49816e9099fc6290e61a0b15199c3c2f1cf437bb781c3277ebb",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_1519"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_15464",
+                "type": "local",
+                "digest": "sha256:dc572e4033dfb7902896a26e666f6a45b750069ccfebf9b1a9d41153efcacba6",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_15464"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_2621",
+                "type": "local",
+                "digest": "sha256:ec311fd29e523652ffc7bb1455a04d359e8f26cc6756cd4baf74fe8611922ca7",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_2621"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_3182",
+                "type": "local",
+                "digest": "sha256:b54e0e2341b3cd24ce758947fcaf9b5def28986fa8a586aaee433879b334ff85",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_3182"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_3229",
+                "type": "local",
+                "digest": "sha256:0559fe31c51132ea1b49cee9b0c83470154e61350ce5704c45c6e8e84644bb79",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_3229"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_4146",
+                "type": "local",
+                "digest": "sha256:165ecfc66b9d17b3ac6ddf78b6a7255219a037269c9f2058131e241ef5a942f2",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_4146"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "software_engineering_task_4571",
+                "type": "local",
+                "digest": "sha256:2efc02d813f4240d963c5892b588aabde4056de867af645f67110c7479bed650",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_4571"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "system_administration_task_12762",
+                "type": "local",
+                "digest": "sha256:becc599bc8991939ef5ce61fc53b2d47e5ee072804ee57cea56cb87a2de9f6e7",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/system_administration_task_12762"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "system_administration_task_2208",
+                "type": "local",
+                "digest": "sha256:9f11f0d185b20b2d136a92aa125a3be17b85aa33edc5a3da0e5cbb4f545ef6d1",
+                "source": "set30",
+                "path": "/data/datasets/nemotron-terminal/set30/system_administration_task_2208"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 20000,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    },
+                    "enable_summarize": false,
+                    "proactive_summarization_threshold": 0
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": true,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        }
+    ]
+}

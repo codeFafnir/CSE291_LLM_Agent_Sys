@@ -1,0 +1,379 @@
+[?2004hroot@40b9706e0820:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@40b9706e0820:/app# clear
+[?2004l[H[J[3J[?2004hroot@40b9706e0820:/app# mkdir -p logs/webserver logs/database reports state
+[?2004l[?2004hroot@40b9706e0820:/app# echo '[Unit]
+[?2004l[?2004h> Description=Log Monitoring Service for Security Analysis
+[?2004l[?2004h> 
+[?2004l[?2004h> [Service]
+[?2004l[?2004h> Type=simple
+[?2004l[?2004h> User=nobody
+[?2004l[?2004h> WorkingDirectory=/app
+[?2004l[?2004h> ExecStart=/usr/bin/python3 /app/log_watcher.py
+[?2004l[?2004h> Restart=on-failure
+[?2004l[?2004h> RestartSec=10
+[?2004l[?2004h> StandardOutput=syslog
+[?2004l[?2004h> StandardError=syslog
+[?2004l[?2004h> 
+[?2004l[?2004h> [Install]
+[?2004l[?2004h> WantedBy=multi-user.target' > log-monitor.service
+[?2004l[?2004hroot@40b9706e0820:/app# echo 'import os
+[?2004l[?2004h> import time
+[?2004l[?2004h> import json
+[?2004l[?2004h> import re
+[?2004l[?2004h> from watchdog.observers import Observer
+[?2004l  [?2004h> from watchdog.events import FileSystemEventHandler
+[?2004l[?2004h> 
+[?2004lm[?2004h> class LogMonitorHandler(FileSystemEventHandler):
+[?2004lu[?2004h>     def __init__(self):
+[?2004l[?2004h>         self.patterns = {
+[?2004l[?2004h>             "ERROR": re.compile(r"ERROR", re.IGNORECASE),
+[?2004l[?2004h>             "WARNING": re.compile(r"WARNING", re.IGNORECASE),
+[?2004l[?2004h>             "authentication failed": re.compile(r"authentication failed", re.IGNORECASE),
+[?2004l[?2004h>             "IP": re.compile(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b")
+[?2004l[?2004h>         }
+[?2004lb[?2004h>         self.state_file = "state/processed_files.json"
+[?2004l[?2004h>         self.load_state()
+[?2004l[?2004h> 
+[?2004l[?2004h>     def load_state(self):
+[?2004le[?2004h>         if os.path.exists(self.state_file):
+[?2004l[?2004h>             with open(self.state_file, "r") as f:
+[?2004l[?2004h>                 self.state = json.load(f)
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             self.state = {}
+[?2004l[?2004h> 
+[?2004l[?2004h>     def save_state(self):
+[?2004l[?2004h>         with open(self.state_file, "w") as f:
+[?2004l[?2004h>             json.dump(self.state, f)
+[?2004l[?2004h> 
+[?2004l'[?2004h>     def on_modified(self, event):
+[?2004l[?2004h>         if event.is_directory:
+[?2004l[?2004h>             return
+[?2004l[?2004h>         self.process_file(event.src_path)
+[?2004l[?2004h> 
+[?2004l[?2004h>     def process_file(self, file_path):
+[?2004l[?2004h>         if not file_path.endswith(".log"):
+[?2004l[?2004h>             return
+[?2004l[?2004h> 
+[?2004l[?2004h>         if os.path.getsize(file_path) > 100 * 1024 * 1024:
+[?2004l[?2004h>             return
+[?2004l[?2004h> 
+[?2004l[?2004h>         if file_path not in self.state:
+[?2004l[?2004h>             self.state[file_path] = {"last_position": 0, "lines_processed": 0, "errors": 0, "warnings": 0, "auth_failures": 0, "ips_found": []}
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             last_position = self.state[file_path]["last_position"]
+[?2004l[?2004h>             with open(file_path, "r") as f:
+[?2004l[?2004h>                 f.seek(last_position)
+[?2004l[?2004h>                 lines = f.readlines()
+[?2004l[?2004h>                 self.state[file_path]["lines_processed"] += len(lines)
+[?2004l[?2004h>                 self.state[file_path]["last_position"] = f.tell()
+[?2004l[?2004h> 
+[?2004l[?2004h>                 for line in lines:
+[?2004l[?2004h>                     for pattern, regex in self.patterns.items():
+[?2004l[?2004h>                         if regex.search(line):
+[?2004l[?2004h>                             if pattern == "ERROR":
+[?2004l[?2004h>                                 self.state[file_path]["errors"] += 1
+[?2004l[?2004h>                             elif pattern == "WARNING":
+[?2004l[?2004h>                                 self.state[file_path]["warnings"] += 1
+[?2004l[?2004h>                             elif pattern == "authentication failed":
+[?2004l[?2004h>                                 self.state[file_path]["auth_failures"] += 1
+[?2004l[?2004h>                             elif pattern == "IP":
+[?2004l[?2004h>                                 ip = regex.search(line).group()
+[?2004l[?2004h>                                 if ip not in self.state[file_path]["ips_found"]:
+[?2004l[?2004h>                                     self.state[file_path]["ips_found"].append(ip)
+[?2004l[?2004h> 
+[?2004l[?2004h>         self.save_state()
+[?2004l[?2004h> 
+[?2004l[?2004h>     def generate_report(self):
+[?2004l[?2004h>         report = {
+[?2004l[?2004h>             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+[?2004l[?2004h>             "scan_duration_seconds": 300,
+[?2004l[?2004h>             "files_monitored": list(self.state.keys()),
+[?2004l[?2004h>             "statistics": {
+[?2004l[?2004h>                 "total_lines_processed": sum(stats["lines_processed"] for stats in self.state.values()),
+[?2004l[?2004h>                 "total_errors": sum(stats["errors"] for stats in self.state.values()),
+[?2004l[?2004h>                 "total_warnings": sum(stats["warnings"] for stats in self.state.values()),
+[?2004l[?2004h>                 "total_auth_failures": sum(stats["auth_failures"] for stats in self.state.values()),
+[?2004l[?2004h>                 "unique_ips_found": len(set(ip for stats in self.state.values() for ip in stats["ips_found"]))
+[?2004l[?2004h>             },
+[?2004l[?2004h>             "file_details": {
+[?2004l[?2004h>                 file_path: {
+[?2004l[?2004h>                     "lines_processed": stats["lines_processed"],
+[?2004l[?2004h>                     "errors": stats["errors"],
+[?2004l[?2004h>                     "warnings": stats["warnings"],
+[?2004l[?2004h>                     "auth_failures": stats["auth_failures"],
+[?2004l[?2004h>                     "ips_found": stats["ips_found"]
+[?2004l[?2004h>                 }
+[?2004l[?2004h>                 for file_path, stats in self.state.items()
+[?2004l[?2004h>             },
+[?2004l[?2004h>             "alerts": [
+[?2004l[?2004h>                 {
+[?2004l[?2004h>                     "type": "high_error_rate",
+[?2004l[?2004h>                     "message": "Error rate exceeds 10% of total lines in any file",
+[?2004l[?2004h>                     "threshold_exceeded": any(stats["errors"] / stats["lines_processed"] > 0.1 for stats in self.state.values() if stats["lines_processed"] > 0)
+[?2004l[?2004h>                 },
+[?2004l[?2004h>                 {
+[?2004l[?2004h>                     "type": "auth_failure_spike",
+[?2004l[?2004h>                     "message": "More than 5 authentication failures found in any 5-minute period",
+[?2004l[?2004h>                     "threshold_exceeded": any(stats["auth_failures"] > 5 for stats in self.state.values())
+[?2004l[?2004h>                 }
+[?2004l[?2004h>             ]
+[?2004l[?2004h>         }
+[?2004l[?2004h> 
+[?2004l[?2004h>         with open("reports/log_summary.json", "w") as f:
+[?2004l[?2004h>             json.dump(report, f)
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == "__main__":
+[?2004l[?2004h>     event_handler = LogMonitorHandler()
+[?2004l[?2004h>     observer = Observer()
+[?2004l[?2004h>     observer.schedule(event_handler, "logs/webserver", recursive=True)
+[?2004l[?2004h>     observer.schedule(event_handler, "logs/database", recursive=True)
+[?2004l[?2004h>     observer.start()
+[?2004l[?2004h> 
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         while True:
+[?2004l[?2004h>             time.sleep(30)
+[?2004l[?2004h>             event_handler.generate_report()
+[?2004l[?2004h>     except KeyboardInterrupt:
+[?2004l[?2004h>         observer.stop()
+[?2004l[?2004h>         observer.join()
+[?2004l[?2004h>         event_handler.save_state()
+[?2004l[?2004h> ' > log_watcher.py
+[?2004l[?2004hroot@40b9706e0820:/app# chmod +x log-monitor.service
+[?2004l[?2004hroot@40b9706e0820:/app# ln -s /app/log-monitor.service /etc/systemd/system/log-monitor.service
+[?2004l[?2004hroot@40b9706e0820:/app# systemctl enable log-monitor.service
+[?2004lbash: systemctl: command not found
+[?2004hroot@40b9706e0820:/app# ps -ef | grep systemd
+[?2004lroot         155      63  0 08:04 pts/1    00:00:00 grep --color=auto [01;31m[Ksystemd[m[K
+[?2004hroot@40b9706e0820:/app# systemctl --version
+[?2004lbash: systemctl: command not found
+[?2004hroot@40b9706e0820:/app# echo 'Checking if systemd is running...'
+[?2004lChecking if systemd is running...
+[?2004hroot@40b9706e0820:/app# echo 'If systemd is not available, we will manually start the service.'
+[?2004lIf systemd is not available, we will manually start the service.
+[?2004hroot@40b9706e0820:/app# chmod +x log_watcher.py
+[?2004l[?2004hroot@40b9706e0820:/app# ./log_watcher.py &
+[?2004l[1] 200
+[?2004hroot@40b9706e0820:/app# ./log_watcher.py: line 1: import: command not found
+./log_watcher.py: line 2: import: command not found
+./log_watcher.py: line 3: import: command not found
+./log_watcher.py: line 4: import: command not found
+./log_watcher.py: line 5: from: command not found
+./log_watcher.py: line 6: from: command not found
+./log_watcher.py: line 8: syntax error near unexpected token `('
+./log_watcher.py: line 8: `class LogMonitorHandler(FileSystemEventHandler):'
+ls -la logs/webserver logs/database reports state
+[?2004llogs/database:
+total 12
+drwxr-xr-x. 2 root root 4096 Jan 13  2026 [0m[01;34m.[0m
+drwxr-xr-x. 4 root root 4096 Jan 13  2026 [01;34m..[0m
+-rw-r--r--. 1 root root  479 Jan 13  2026 db.log
+
+logs/webserver:
+total 12
+drwxr-xr-x. 2 root root 4096 Jan 13  2026 [01;34m.[0m
+drwxr-xr-x. 4 root root 4096 Jan 13  2026 [01;34m..[0m
+-rw-r--r--. 1 root root  827 Jan 13  2026 access.log
+
+reports:
+total 12
+drwxr-xr-x. 2 root root 4096 Nov  4 08:04 [01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 08:04 [01;34m..[0m
+
+state:
+total 12
+drwxr-xr-x. 2 root root 4096 Nov  4 08:04 [01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 08:04 [01;34m..[0m
+[1]+  Exit 2                  ./log_watcher.py
+[?2004hroot@40b9706e0820:/app# python3 -m pip install watchdog
+[?2004l[1;31merror[0m: [1mexternally-managed-environment[0m
+
+[31m×[0m This environment is externally managed
+[31m╰─>[0m To install Python packages system-wide, try apt install
+[31m   [0m python3-xyz, where xyz is the package you are trying to
+[31m   [0m install.
+[31m   [0m 
+[31m   [0m If you wish to install a non-Debian-packaged Python package,
+[31m   [0m create a virtual environment using python3 -m venv path/to/venv.
+[31m   [0m Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
+[31m   [0m sure you have python3-full installed.
+[31m   [0m 
+[31m   [0m If you wish to install a non-Debian packaged Python application,
+[31m   [0m it may be easiest to use pipx install xyz, which will manage a
+[31m   [0m virtual environment for you. Make sure you have pipx installed.
+[31m   [0m 
+[31m   [0m See /usr/share/doc/python3.12/README.venv for more information.
+
+[1;35mnote[0m: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+[1;36mhint[0m: See PEP 668 for the detailed specification.
+[?2004hroot@40b9706e0820:/app# python3 log_watcher.py &
+[?2004l[1] 239
+[?2004hroot@40b9706e0820:/app# Traceback (most recent call last):
+  File "/app/log_watcher.py", line 5, in <module>
+    from watchdog.observers import Observer
+ModuleNotFoundError: No module named 'watchdog'
+ls -la reports/log_summary.json
+[?2004lls: cannot access 'reports/log_summary.json': No such file or directory
+[1]+  Exit 1                  python3 log_watcher.py
+[?2004hroot@40b9706e0820:/app# apt update && apt install -y python3-watchdog
+[?2004l[33m0% [Working][0m            Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+[33m0% [Waiting for headers] [1 InRelease 5484 B/126 kB 4%][0m                                                       Get:2 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+[33m0% [2 InRelease 2588 B/256 kB 1%] [1 InRelease 14.2 kB/126 kB 11%][0m[33m                                                                  0% [2 InRelease 60.5 kB/256 kB 24%][0m[33m0% [2 InRelease 79.3 kB/256 kB 31%][0m                                   Get:3 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1552 kB]
+[33m0% [2 InRelease 134 kB/256 kB 53%] [3 Packages 2655 B/1552 kB 0%][0m[33m                                                                 0% [3 Packages 194 kB/1552 kB 12%][0m[33m0% [Waiting for headers] [3 Packages 276 kB/1552 kB 18%][0m                                                        Get:4 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+[33m0% [4 InRelease 2588 B/126 kB 2%] [3 Packages 554 kB/1552 kB 36%][0m[33m                                                                 0% [3 Packages 753 kB/1552 kB 48%][0m[33m0% [Waiting for headers] [3 Packages 1019 kB/1552 kB 66%][0m[33m                                                         0% [Waiting for headers][0m[33m0% [3 Packages store 0 B] [Waiting for headers] [Waiting for headers][0m                                                                     Get:5 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+[33m0% [3 Packages store 0 B] [5 InRelease 2588 B/126 kB 2%] [Waiting for headers][0m[33m                                                                              0% [5 InRelease 38.8 kB/126 kB 31%] [Waiting for headers][0m[33m                                                         0% [Waiting for headers][0m                        Get:6 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [55.6 kB]
+[33m0% [Waiting for headers] [6 Packages 7003 B/55.6 kB 13%][0m[33m                                                        0% [Waiting for headers] [Waiting for headers][0m                                              Get:7 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1422 kB]
+[33m0% [Waiting for headers] [7 Packages 10.6 kB/1422 kB 1%][0m[33m0% [6 Packages store 0 B] [Waiting for headers] [7 Packages 10.6 kB/1422 kB 1%][0m[33m                                                                               0% [Waiting for headers] [7 Packages 45.3 kB/1422 kB 3%][0m[33m19% [Waiting for headers] [7 Packages 257 kB/1422 kB 18%][0m[33m                                                         21% [Waiting for headers] [Waiting for headers][0m                                               Get:8 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2132 kB]
+[33m22% [Waiting for headers] [8 Packages 16.3 kB/2132 kB 1%][0m[33m22% [7 Packages store 0 B] [Waiting for headers] [8 Packages 16.3 kB/2132 kB 1%][0m[33m                                                                                22% [Waiting for headers] [8 Packages 167 kB/2132 kB 8%][0m                                                        Get:9 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+[33m22% [9 Packages 0 B/19.3 MB 0%] [8 Packages 167 kB/2132 kB 8%][0m[33m                                                              28% [9 Packages 214 kB/19.3 MB 1%][0m[33m28% [8 Packages store 0 B] [9 Packages 214 kB/19.3 MB 1%][0m[33m                                                         29% [9 Packages 356 kB/19.3 MB 2%][0m[33m37% [9 Packages 3759 kB/19.3 MB 19%][0m[33m66% [9 Packages 15.9 MB/19.3 MB 82%][0m[33m                                    74% [Waiting for headers][0m                         Get:10 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+[33m74% [10 Packages 90.1 kB/331 kB 27%][0m[33m74% [9 Packages store 0 B] [10 Packages 90.1 kB/331 kB 27%][0m[33m                                                           74% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:11 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+[33m74% [9 Packages store 0 B] [11 Packages 28.6 kB/117 kB 24%][0m[33m                                                           75% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:12 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+[33m75% [9 Packages store 0 B] [12 Packages 34.4 kB/1808 kB 2%][0m[33m                                                           79% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:13 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [61.7 kB]
+[33m79% [9 Packages store 0 B] [13 Packages 12.3 kB/61.7 kB 20%][0m[33m                                                            79% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:14 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2172 kB]
+[33m79% [9 Packages store 0 B] [14 Packages 1787 B/2172 kB 0%][0m[33m                                                          84% [9 Packages store 0 B][0m                          Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1741 kB]
+[33m84% [9 Packages store 0 B] [15 Packages 3897 B/1741 kB 0%][0m[33m                                                          88% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:16 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2240 kB]
+[33m88% [9 Packages store 0 B] [16 Packages 18.2 kB/2240 kB 1%][0m[33m                                                           94% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:17 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [49.0 kB]
+[33m94% [9 Packages store 0 B] [17 Packages 20.5 kB/49.0 kB 42%][0m[33m                                                            94% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:18 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [36.0 kB]
+[33m94% [9 Packages store 0 B] [18 Packages 4096 B/36.0 kB 11%][0m[33m                                                           94% [9 Packages store 0 B] [Waiting for headers][0m                                                Get:19 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [669 B]
+[33m94% [9 Packages store 0 B] [19 Packages 669 B/669 B 100%][0m[33m                                                         94% [9 Packages store 0 B][0m[33m                          94% [Working][0m[33m94% [10 Packages store 0 B][0m[33m                           95% [Working][0m[33m95% [11 Packages store 0 B][0m[33m                           96% [Working][0m[33m96% [12 Packages store 0 B][0m[33m                           96% [Working][0m[33m96% [13 Packages store 0 B][0m[33m                           97% [Working][0m[33m97% [14 Packages store 0 B][0m[33m                           97% [Working][0m[33m97% [15 Packages store 0 B][0m[33m                           98% [Working][0m[33m98% [16 Packages store 0 B][0m[33m                           98% [Working][0m[33m98% [17 Packages store 0 B][0m[33m                           99% [Working][0m[33m99% [18 Packages store 0 B][0m[33m                           99% [Working][0m[33m99% [19 Packages store 0 B][0m[33m                           100% [Working][0m              Fetched 33.7 MB in 4s (8775 kB/s)
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 5%Reading package lists... 5%Reading package lists... 58%Reading package lists... 58%Reading package lists... 59%Reading package lists... 59%Reading package lists... 60%Reading package lists... 60%Reading package lists... 65%Reading package lists... 65%Reading package lists... 73%Reading package lists... 73%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 86%Reading package lists... 86%Reading package lists... 92%Reading package lists... 92%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+41 packages can be upgraded. Run 'apt list --upgradable' to see them.
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 5%Reading package lists... 5%Reading package lists... 58%Reading package lists... 58%Reading package lists... 59%Reading package lists... 59%Reading package lists... 60%Reading package lists... 60%Reading package lists... 65%Reading package lists... 65%Reading package lists... 73%Reading package lists... 73%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 86%Reading package lists... 86%Reading package lists... 92%Reading package lists... 92%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following additional packages will be installed:
+  libyaml-0-2 python3-yaml
+The following NEW packages will be installed:
+  libyaml-0-2 python3-watchdog python3-yaml
+0 upgraded, 3 newly installed, 0 to remove and 41 not upgraded.
+Need to get 295 kB of archives.
+After this operation, 1613 kB of additional disk space will be used.
+[33m0% [Working][0m            Get:1 http://archive.ubuntu.com/ubuntu noble/main amd64 libyaml-0-2 amd64 0.2.5-1build1 [51.5 kB]
+[33m1% [1 libyaml-0-2 5502 B/51.5 kB 11%][0m[33m                                     21% [Working][0m             Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 python3-yaml amd64 6.0.1-2build2 [123 kB]
+[33m21% [2 python3-yaml 2604 B/123 kB 2%][0m[33m                                     61% [Waiting for headers][0m                         Get:3 http://archive.ubuntu.com/ubuntu noble/universe amd64 python3-watchdog all 3.0.0-1 [121 kB]
+[33m61% [3 python3-watchdog 2824 B/121 kB 2%][0m[33m                                         100% [Working][0m              Fetched 295 kB in 1s (465 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+
+7[0;39r8[1ASelecting previously unselected package libyaml-0-2:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 18976 files and directories currently installed.)
+Preparing to unpack .../libyaml-0-2_0.2.5-1build1_amd64.deb ...
+7[40;0f[42m[30mProgress: [  0%][49m[39m [..........................................................................................................................................] 87[40;0f[42m[30mProgress: [  8%][49m[39m [##########................................................................................................................................] 8Unpacking libyaml-0-2:amd64 (0.2.5-1build1) ...
+7[40;0f[42m[30mProgress: [ 15%][49m[39m [#####################.....................................................................................................................] 8Selecting previously unselected package python3-yaml.
+Preparing to unpack .../python3-yaml_6.0.1-2build2_amd64.deb ...
+7[40;0f[42m[30mProgress: [ 23%][49m[39m [###############################...........................................................................................................] 8Unpacking python3-yaml (6.0.1-2build2) ...
+7[40;0f[42m[30mProgress: [ 31%][49m[39m [##########################################................................................................................................] 8Selecting previously unselected package python3-watchdog.
+Preparing to unpack .../python3-watchdog_3.0.0-1_all.deb ...
+7[40;0f[42m[30mProgress: [ 38%][49m[39m [#####################################################.....................................................................................] 8Unpacking python3-watchdog (3.0.0-1) ...
+7[40;0f[42m[30mProgress: [ 46%][49m[39m [###############################################################...........................................................................] 8Setting up libyaml-0-2:amd64 (0.2.5-1build1) ...
+7[40;0f[42m[30mProgress: [ 54%][49m[39m [##########################################################################................................................................] 87[40;0f[42m[30mProgress: [ 62%][49m[39m [####################################################################################......................................................] 8Setting up python3-yaml (6.0.1-2build2) ...
+7[40;0f[42m[30mProgress: [ 69%][49m[39m [###############################################################################################...........................................] 87[40;0f[42m[30mProgress: [ 77%][49m[39m [##########################################################################################################................................] 8Setting up python3-watchdog (3.0.0-1) ...
+7[40;0f[42m[30mProgress: [ 85%][49m[39m [####################################################################################################################......................] 87[40;0f[42m[30mProgress: [ 92%][49m[39m [###############################################################################################################################...........] 8Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+
+7[0;40r8[1A[J[?2004hroot@40b9706e0820:/app# python3 log_watcher.py &
+[?2004l[1] 474
+[?2004hroot@40b9706e0820:/app# ls -la reports/log_summary.json
+[?2004lls: cannot access 'reports/log_summary.json': No such file or directory
+[?2004hroot@40b9706e0820:/app# ps -ef | grep log_watcher.py
+[?2004lroot         474      63  0 08:05 pts/1    00:00:00 python3 [01;31m[Klog_watcher.py[m[K
+root         506      63  0 08:06 pts/1    00:00:00 grep --color=auto [01;31m[Klog_watcher.py[m[K
+[?2004hroot@40b9706e0820:/app# cd reports && ls -la
+[?2004ltotal 16
+drwxr-xr-x. 2 root root 4096 Nov  4 08:06 [0m[01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 08:04 [01;34m..[0m
+-rw-r--r--. 1 root root  517 Nov  4 08:06 log_summary.json
+[?2004hroot@40b9706e0820:/app/reports# python3 log_watcher.py
+[?2004lpython3: can't open file '/app/reports/log_watcher.py': [Errno 2] No such file or directory
+[?2004hroot@40b9706e0820:/app/reports# cat reports/log_summary.json
+[?2004lcat: reports/log_summary.json: No such file or directory
+[?2004hroot@40b9706e0820:/app/reports# ps -ef | grep log_watcher.py
+[?2004lroot         474      63  0 08:05 pts/1    00:00:00 python3 [01;31m[Klog_watcher.py[m[K
+root         547      63  0 08:06 pts/1    00:00:00 grep --color=auto [01;31m[Klog_watcher.py[m[K
+[?2004hroot@40b9706e0820:/app/reports# sleep 300 && ls -la reports/log_summary.json
+[?2004lsleep 300 && ls -la reports/log_summary.json
+journalctl -u log-monitor.service
+cd /app && python3 log_watcher.py
+cd /app && python3 log_watcher.py
+cat /app/logs/webserver/access.log
+cat /app/logs/database/db.log
+cd /app && python3 log_watcher.py
+cat /app/logs/webserver/access.log
+cat /app/logs/database/db.log
+cd /app && python3 log_watcher.py
+cat /app/logs/webserver/access.log
+cat /app/logs/database/db.log
+cd /app && python3 log_watcher.py
+cat /app/logs/webserver/access.log
+cat /app/logs/database/db.log
+cd /app && python3 log_watcher.py
+cat /app/logs/webserver/access.log
+cat /app/logs/database/db.log
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+ls: cannot access 'reports/log_summary.json': No such file or directory
+[?2004hroot@40b9706e0820:/app/reports# sleep 300 && ls -la reports/log_summary.json
+[?2004lecho 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py
+echo 'import sys
+import os
+sys.path.append(os.path.abspath("/app"))' >> log_watcher.py
+echo 'print("Starting log_watcher.py...")' >> log_watcher.py
+echo 'print("Current working directory:", os.getcwd())' >> log_watcher.py
+echo 'print("Files in logs/webserver:", os.listdir("logs/webserver"))' >> log_watcher.py
+echo 'print("Files in logs/database:", os.listdir("logs/database"))' >> log_watcher.py
+cd /app && python3 log_watcher.py

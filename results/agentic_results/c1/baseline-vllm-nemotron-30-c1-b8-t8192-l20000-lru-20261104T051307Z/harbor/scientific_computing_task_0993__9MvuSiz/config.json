@@ -1,0 +1,37 @@
+{
+    "task": {
+        "path": "/data/datasets/nemotron-terminal/set30/scientific_computing_task_0993",
+        "source": "set30"
+    },
+    "trial_name": "scientific_computing_task_0993__9MvuSiz",
+    "trials_dir": "/data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor",
+    "agent": {
+        "name": "terminus-2",
+        "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+        "base_url": "http://host.docker.internal:8000/v1",
+        "model_api_format": "openai_chat_completions",
+        "kwargs": {
+            "model_info": {
+                "max_input_tokens": 20000,
+                "max_output_tokens": 2048,
+                "input_cost_per_token": 0,
+                "output_cost_per_token": 0
+            },
+            "llm_kwargs": {
+                "max_tokens": 2048,
+                "extra_body": {
+                    "chat_template_kwargs": {
+                        "enable_thinking": false
+                    }
+                }
+            },
+            "enable_summarize": false,
+            "proactive_summarization_threshold": 0
+        }
+    },
+    "environment": {
+        "type": "docker",
+        "force_build": true
+    },
+    "job_id": "7c3b7ba9-e40c-45eb-9772-bd0b885b86ee"
+}

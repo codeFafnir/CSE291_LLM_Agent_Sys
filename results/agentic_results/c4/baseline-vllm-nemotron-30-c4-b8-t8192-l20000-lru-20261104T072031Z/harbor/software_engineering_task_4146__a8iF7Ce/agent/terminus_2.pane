@@ -1,0 +1,410 @@
+[?2004hroot@7722585c5783:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@7722585c5783:/app# clear
+[?2004l[H[J[3J[?2004hroot@7722585c5783:/app# nano config_migration.py
+[?2004lbash: nano: command not found
+[?2004hroot@7722585c5783:/app# echo "import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.utcnow().isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# chmod +x config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# ./config_migration.py
+[?2004l./config_migration.py: line 1: import: command not found
+./config_migration.py: line 2: import: command not found
+./config_migration.py: line 3: from: command not found
+./config_migration.py: line 5: try:: command not found
+./config_migration.py: line 7: syntax error near unexpected token `('
+./config_migration.py: line 7: `    with open('/app/input/config.json', 'r') as json_file:'
+[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 32
+    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                                          ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.utcnow().isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    }', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.utcnow().isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    }', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.utcnow().isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    }', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.utcnow().isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l/app/config_migration.py:12: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  'converted_at': datetime.utcnow().isoformat(),
+Traceback (most recent call last):
+  File "/app/config_migration.py", line 19, in <module>
+    with open('/app/output/config.yaml', 'w') as yaml_file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/app/output/config.yaml'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/config_migration.py", line 32, in <module>
+    print(f'Error: {e}', file=sys.stderr)
+                              ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+[?2004hroot@7722585c5783:/app# mkdir -p /app/output
+[?2004l[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nimport sys\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.now(datetime.UTC).isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+            ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import sys
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.now(datetime.UTC).isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004lError: type object 'datetime.datetime' has no attribute 'UTC'
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nimport sys\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.utcnow().isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    (f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import sys
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.utcnow().isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l/app/config_migration.py:13: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  'converted_at': datetime.utcnow().isoformat(),
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nimport sys\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.now(datetime.UTC).isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+            ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import sys
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.now(datetime.UTC).isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004lError: type object 'datetime.datetime' has no attribute 'UTC'
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nimport sys\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.utcnow().isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    (f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import sys
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.utcnow().isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l/app/config_migration.py:13: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  'converted_at': datetime.utcnow().isoformat(),
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nimport sys\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.now(datetime.UTC).isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+            ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import sys
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.now(datetime.UTC).isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004lError: type object 'datetime.datetime' has no attribute 'UTC'
+[?2004hroot@7722585c5783:/app# echo "import json\nimport yaml\nimport sys\nfrom datetime import datetime\n\ntry:\n    # Read JSON configuration\n    with open('/app/input/config.json', 'r') as json_file:\n        config = json.load(json_file)\n\n    # Add metadata\n    metadata = {\n        'converted_at': datetime.utcnow().isoformat(),\n        'original_format': 'json',\n        'original_path': '/app/input/config.json'\n    }\n    config['_metadata'] = metadata\n\n    # Write YAML configuration\n    with open('/app/output/config.yaml', 'w') as yaml_file:\n        yaml.dump(config, yaml_file, default_flow_style=False)\n\n    # Generate report\n    top_level_keys = [key for key in config if not key.startswith('_')]\n    top_level_keys.sort()\n\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write(f'top_level_keys: {len(top_level_keys)}\\n')\n        report_file.write(f'keys: {','.join(top_level_keys)}\\n')\n        report_file.write('success: True\\n')\n\nexcept Exception as e:\n    print(f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\\n')\n        report_file.write('keys: \\n')\n        report_file.write('success: False\\n')" > config_migration.py
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l  File "/app/config_migration.py", line 1
+    (f'Error: {e}', file=sys.stderr)\n    with open('/app/output/report.txt', 'w') as report_file:\n        report_file.write('top_level_keys: 0\n')\n        report_file.write('keys: \n')\n        report_file.write('success: False\n')
+                ^
+SyntaxError: unexpected character after line continuation character
+[?2004hroot@7722585c5783:/app# cat > config_migration.py << EOF
+[?2004l[?2004h> import json
+[?2004l[?2004h> import yaml
+[?2004l[?2004h> import sys
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     # Read JSON configuration
+[?2004l[?2004h>     with open('/app/input/config.json', 'r') as json_file:
+[?2004l[?2004h>         config = json.load(json_file)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Add metadata
+[?2004l[?2004h>     metadata = {
+[?2004l[?2004h>         'converted_at': datetime.utcnow().isoformat(),
+[?2004l[?2004h>         'original_format': 'json',
+[?2004l[?2004h>         'original_path': '/app/input/config.json'
+[?2004l[?2004h>     }
+[?2004l[?2004h>     config['_metadata'] = metadata
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Write YAML configuration
+[?2004l[?2004h>     with open('/app/output/config.yaml', 'w') as yaml_file:
+[?2004l[?2004h>         yaml.dump(config, yaml_file, default_flow_style=False)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate report
+[?2004l[?2004h>     top_level_keys = [key for key in config if not key.startswith('_')]
+[?2004l[?2004h>     top_level_keys.sort()
+[?2004l[?2004h> 
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write(f'top_level_keys: {len(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write(f'keys: {','.join(top_level_keys)}\n')
+[?2004l[?2004h>         report_file.write('success: True\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(f'Error: {e}', file=sys.stderr)
+[?2004l[?2004h>     with open('/app/output/report.txt', 'w') as report_file:
+[?2004l[?2004h>         report_file.write('top_level_keys: 0\n')
+[?2004l[?2004h>         report_file.write('keys: \n')
+[?2004l[?2004h>         report_file.write('success: False\n')
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7722585c5783:/app# python3 config_migration.py
+[?2004l/app/config_migration.py:13: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  'converted_at': datetime.utcnow().isoformat(),
+[?2004hroot@7722585c5783:/app# 

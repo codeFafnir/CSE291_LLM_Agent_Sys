@@ -1,0 +1,61 @@
+{
+  "engine": "vllm",
+  "run_id": "baseline-vllm-nemotron-smoke-c1-b8-t8192-l20000-lru",
+  "config": {
+    "RUN_ID": "serve-vllm-l20000",
+    "MAX_MODEL_LEN": "20000",
+    "MAX_NUM_SEQS": "8",
+    "MAX_BATCHED_TOKENS": "8192",
+    "EVICTION_POLICY": "lru",
+    "PREEMPTION_POLICY": "fcfs",
+    "target": "Qwen/Qwen3-14B-AWQ",
+    "speculator": "RedHatAI/Qwen3-14B-speculator.eagle3",
+    "draft_tokens": "3",
+    "kv_dtype": "float16"
+  },
+  "wall_clock_s": 1356.6918613910675,
+  "requests_completed": 160.0,
+  "output_tokens": 36587.0,
+  "requests_per_s": 0.11793392777925707,
+  "output_tokens_per_s": 26.96780384787299,
+  "peak_gpu_mib": 19186.875,
+  "ttft_s": {
+    "mean": 0.3038277968764305,
+    "p50": 0.22244897959183674,
+    "p95": 0.6944444444444444,
+    "p99": 1.7000000000000028
+  },
+  "tpot_s": {
+    "mean": 0.019561569466847943,
+    "p50": 0.017894736842105265,
+    "p95": 0.025,
+    "p99": 0.047857142857142876
+  },
+  "e2e_s": {
+    "mean": 4.869193197786808,
+    "p50": 3.96484375,
+    "p95": 9.523809523809524,
+    "p99": 37.00000000000003
+  },
+  "spec": {
+    "mean_acceptance_length": 3.0863012545255537,
+    "draft_acceptance_rate": 0.695453269716531,
+    "accepted_per_position": [
+      0.8353961438073587,
+      0.7055653784625747,
+      0.5453397322556202
+    ]
+  },
+  "prefix_cache_hit_rate": 0.9634145760142624,
+  "preemptions": 0.0,
+  "prompt_tokens": {
+    "p99": 19822.222222222223,
+    "max_bucket_upper": 20000.0
+  },
+  "task_score": {
+    "trials": 5,
+    "solved": 1,
+    "mean_reward": 0.3333333333333333,
+    "context_length_errors": 2
+  }
+}

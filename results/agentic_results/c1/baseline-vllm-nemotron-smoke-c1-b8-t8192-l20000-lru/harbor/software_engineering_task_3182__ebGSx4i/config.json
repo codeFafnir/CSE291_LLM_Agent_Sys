@@ -1,0 +1,37 @@
+{
+    "task": {
+        "path": "/data/datasets/nemotron-terminal/smoke5/software_engineering_task_3182",
+        "source": "smoke5"
+    },
+    "trial_name": "software_engineering_task_3182__ebGSx4i",
+    "trials_dir": "/data/cse291-results/baseline-vllm-nemotron-smoke-c1-b8-t8192-l20000-lru/harbor",
+    "agent": {
+        "name": "terminus-2",
+        "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+        "base_url": "http://host.docker.internal:8000/v1",
+        "model_api_format": "openai_chat_completions",
+        "kwargs": {
+            "model_info": {
+                "max_input_tokens": 20000,
+                "max_output_tokens": 2048,
+                "input_cost_per_token": 0,
+                "output_cost_per_token": 0
+            },
+            "llm_kwargs": {
+                "max_tokens": 2048,
+                "extra_body": {
+                    "chat_template_kwargs": {
+                        "enable_thinking": false
+                    }
+                }
+            },
+            "enable_summarize": false,
+            "proactive_summarization_threshold": 0
+        }
+    },
+    "environment": {
+        "type": "docker",
+        "force_build": true
+    },
+    "job_id": "c7ece6ab-8f41-45ff-b2f9-3dac26239dc6"
+}

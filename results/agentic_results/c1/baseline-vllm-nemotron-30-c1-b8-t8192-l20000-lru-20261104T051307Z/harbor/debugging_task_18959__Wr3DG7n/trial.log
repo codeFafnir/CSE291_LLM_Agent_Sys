@@ -1,0 +1,24 @@
+Skipping image OS validation for hb__c6b2b551eb3bc42a81da73641c8413db: docker inspect returned 1
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Context length exceeded and summarization is OFF.
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/debugging_task_18959__Wr3DG7n/agent/trajectory.json
+Trial debugging_task_18959__Wr3DG7n failed: 
+Collecting main service artifacts

@@ -1,0 +1,26 @@
+[?2004hroot@e92ed51324a2:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@e92ed51324a2:/app# clear
+[?2004l[H[J[3J[?2004hroot@e92ed51324a2:/app# cat /app/requirements.txt
+[?2004lnumpy==1.24.3
+pandas>=1.5.0
+# This is a comment
+pytest==7.4.0
+requests>=2.31.0
+
+# Another comment[?2004hroot@e92ed51324a2:/app# cd /app
+[?2004l[?2004hroot@e92ed51324a2:/app# python3 -c "import sys, json; lines = [l.strip() for l in sys.stdin if l.strip() and not l.startswith('#')]; deps = [{'name': l.split('==')[0], 'version': l.split('==')[1], 'type': 'exact'} if '==' in l else {'name': l.split('>=')[0], 'version': l.split('>=')[1], 'type': 'minimum'} for l in lines]; with open('/app/build_config.json', 'w') as f: json.dump({'project_name': 'calculator', 'language': 'python', 'version': '1.0.0', 'dependencies': deps, 'test_command': 'python -m pytest tests/', 'build_steps': ['pip install -r requirements.txt', 'python -m pytest tests/']}, f, indent=2)" < /app/requirements.txt
+[?2004l  File "<string>", line 1
+    import sys, json; lines = [l.strip() for l in sys.stdin if l.strip() and not l.startswith('#')]; deps = [{'name': l.split('==')[0], 'version': l.split('==')[1], 'type': 'exact'} if '==' in l else {'name': l.split('>=')[0], 'version': l.split('>=')[1], 'type': 'minimum'} for l in lines]; with open('/app/build_config.json', 'w') as f: json.dump({'project_name': 'calculator', 'language': 'python', 'version': '1.0.0', 'dependencies': deps, 'test_command': 'python -m pytest tests/', 'build_steps': ['pip install -r requirements.txt', 'python -m pytest tests/']}, f, indent=2)
+                                                                                                                                                                                                                                                                                                    ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@e92ed51324a2:/app# echo "Project Name: calculator
+[?2004l[?2004h> Version: 1.0.0
+[?2004l[?2004h> Total Dependencies: $(cat /app/build_config.json | grep -c '"name":')
+[?2004l[?2004h> Exact Version Dependencies: $(cat /app/build_config.json | grep '"type": "exact"' | wc -l)
+[?2004l[?2004h> Minimum Version Dependencies: $(cat /app/build_config.json | grep '"type": "minimum"' | wc -l)" > /app/build_summary.txt
+[?2004lcat: /app/build_config.json: No such file or directory
+cat: /app/build_config.json: No such file or directory
+cat: /app/build_config.json: No such file or directory
+[?2004hroot@e92ed51324a2:/app# 

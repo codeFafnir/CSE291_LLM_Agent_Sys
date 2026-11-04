@@ -1,0 +1,132 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "456a988b-182e-4513-be61-d94a0e162c3d",
+    "timestamp": "2026-11-04T06:27:57.936892+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 8,
+            "passed": 7,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793773677818,
+            "stop": 1793773677936,
+            "duration": 118
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_python_script_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793773677839,
+                "stop": 1793773677839,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_cmake_file_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793773677839,
+                "stop": 1793773677840,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_json_output_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793773677840,
+                "stop": 1793773677840,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_python_script_executable",
+                "status": "passed",
+                "duration": 26,
+                "start": 1793773677841,
+                "stop": 1793773677867,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_json_content_correct",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793773677868,
+                "stop": 1793773677868,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_cmake_contains_target",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793773677868,
+                "stop": 1793773677869,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_error_handling",
+                "status": "passed",
+                "duration": 25,
+                "start": 1793773677869,
+                "stop": 1793773677894,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_directory_creation",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 41,
+                "start": 1793773677895,
+                "stop": 1793773677936,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_directory_creation():\n        \"\"\"Verify the script creates output directory if needed.\"\"\"\n        # Clean up if directory exists\n        if os.path.exists('/app/build/output'):\n            shutil.rmtree('/app/build/output')\n    \n        # Run script directly\n        result = subprocess.run(\n            ['python3', '/app/scripts/csv_to_json.py',\n             '--input', '/app/data/input.csv', '--output', '/app/build/output/data.json'],\n            capture_output=True,\n            text=True\n        )\n    \n>       assert result.returncode == 0, f\"Script failed: {result.stderr}\"\nE       AssertionError: Script failed: Error: [Errno 2] No such file or directory: '/app/build/output/data.json'\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['python3', '/app/scripts/csv_to_json.py', '--input', '/app/data/input.csv', '--output', '/app/b....json'], returncode=1, stdout='', stderr=\"Error: [Errno 2] No such file or directory: '/app/build/output/data.json'\\n\").returncode\n\n/tests/test_outputs.py:118: AssertionError",
+                "message": "AssertionError: Script failed: Error: [Errno 2] No such file or directory: '/app/build/output/data.json'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['python3', '/app/scripts/csv_to_json.py', '--input', '/app/data/input.csv', '--output', '/app/b....json'], returncode=1, stdout='', stderr=\"Error: [Errno 2] No such file or directory: '/app/build/output/data.json'\\n\").returncode"
+            }
+        ]
+    }
+}

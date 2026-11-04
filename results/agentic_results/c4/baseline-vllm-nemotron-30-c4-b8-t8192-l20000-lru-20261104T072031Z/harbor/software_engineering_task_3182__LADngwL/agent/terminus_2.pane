@@ -1,0 +1,30 @@
+[?2004hroot@ea66f719e734:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@ea66f719e734:/app# clear
+[?2004l[H[J[3J[?2004hroot@ea66f719e734:/app# cat Makefile
+[?2004l# Current broken Makefile
+PROJECT_NAME = myproject
+PYTHON = python3
+TEST_DIR = tests/
+
+all: install test lint
+
+install:
+    pip install -r requirements.txt
+    
+build:
+    $(PYTHON) -m py_compile src/*.py
+    
+run:
+    $(PYTHON) src/main.py
+    
+# Missing test target
+# Missing lint target
+# Missing clean target
+
+.PHONY: all install build run[?2004hroot@ea66f719e734:/app# nano Makefile
+[?2004lbash: nano: command not found
+[?2004hroot@ea66f719e734:/app# vim Makefile
+[?2004lbash: vim: command not found
+[?2004hroot@ea66f719e734:/app# 

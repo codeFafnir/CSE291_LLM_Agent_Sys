@@ -1,0 +1,99 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "0d02d551-67b6-47bb-b8f9-7d9e4feaf38f",
+    "timestamp": "2026-11-04T07:43:49.283716+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 3,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793778229248,
+            "stop": 1793778229283,
+            "duration": 35
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_files_exist",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793778229265,
+                "stop": 1793778229265,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_structure",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793778229266,
+                "stop": 1793778229266,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_no_sensitive_data_remaining",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 13,
+                "start": 1793778229266,
+                "stop": 1793778229279,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_no_sensitive_data_remaining():\n        \"\"\"Verify no passwords, API keys, or email addresses remain in sanitized log.\"\"\"\n        with open(\"/app/sanitized.log\", \"r\") as f:\n            content = f.read()\n    \n        # Check for password values (should be [REDACTED])\n        # Common password patterns that should be removed\n        password_patterns = [\n            r'password:\\s*[^\\s\\]]+',  # password: followed by non-space\n            r'\"password\":\\s*\"[^\"]+\"',  # JSON style\n            r\"'password':\\s*'[^']+'\",  # Single quote JSON\n            r'passwd:\\s*\\S+',          # passwd: format\n            r'pwd:\\s*\\S+',             # pwd: format\n        ]\n    \n        for pattern in password_patterns:\n            matches = re.findall(pattern, content, re.IGNORECASE)\n            # Only allow matches that contain [REDACTED]\n            for match in matches:\n>               assert '[REDACTED]' in match.lower(), f\"Password not redacted: {match}\"\nE               AssertionError: Password not redacted: password: [REDACTED\nE               assert '[REDACTED]' in 'password: [redacted'\nE                +  where 'password: [redacted' = <built-in method lower of str object at 0x7f9ecf133530>()\nE                +    where <built-in method lower of str object at 0x7f9ecf133530> = 'password: [REDACTED'.lower\n\n/tests/test_outputs.py:46: AssertionError",
+                "message": "AssertionError: Password not redacted: password: [REDACTED\nassert '[REDACTED]' in 'password: [redacted'\n +  where 'password: [redacted' = <built-in method lower of str object at 0x7f9ecf133530>()\n +    where <built-in method lower of str object at 0x7f9ecf133530> = 'password: [REDACTED'.lower"
+            },
+            {
+                "name": "test_outputs.py::test_line_count_preserved",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793778229279,
+                "stop": 1793778229279,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_accuracy",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793778229280,
+                "stop": 1793778229283,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_report_accuracy():\n        \"\"\"Verify report counts match actual sanitizations.\"\"\"\n        with open(\"/app/security_report.json\", \"r\") as f:\n            report = json.load(f)\n    \n        with open(\"/app/application.log\", \"r\") as f:\n            original = f.read()\n    \n        with open(\"/app/sanitized.log\", \"r\") as f:\n            sanitized = f.read()\n    \n        # Count passwords in original (case-insensitive)\n        password_matches = re.findall(r'password[=:\\s]+([^\\s\\]]+)', original, re.IGNORECASE)\n        password_matches += re.findall(r'\"password\":\\s*\"([^\"]+)\"', original, re.IGNORECASE)\n        password_matches += re.findall(r\"'password':\\s*'([^']+)'\", original, re.IGNORECASE)\n    \n        # Count API keys in original\n        aws_keys = re.findall(r'AKIA[0-9A-Z]{16}', original)\n    \n        # Count emails in original\n        emails = re.findall(r'\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b', original)\n    \n        # The report should have at least these counts (some might be filtered out)\n        assert report['passwords_redacted'] >= len(password_matches), \\\n            f\"Report shows {report['passwords_redacted']} passwords, but found {len(password_matches)} in original\"\n    \n        assert report['api_keys_redacted'] >= len(aws_keys), \\\n            f\"Report shows {report['api_keys_redacted']} API keys, but found {len(aws_keys)} in original\"\n    \n>       assert report['emails_redacted'] >= len(emails), \\\n            f\"Report shows {report['emails_redacted']} emails, but found {len(emails)} in original\"\nE       AssertionError: Report shows 4 emails, but found 6 in original\nE       assert 4 >= 6\nE        +  where 6 = len(['admin@example.com', 'jane.doe@company.com', 'bob.smith@test.org', 'support@domain.co.uk', 'info@organization.gov', 'user@server.local'])\n\n/tests/test_outputs.py:102: AssertionError",
+                "message": "AssertionError: Report shows 4 emails, but found 6 in original\nassert 4 >= 6\n +  where 6 = len(['admin@example.com', 'jane.doe@company.com', 'bob.smith@test.org', 'support@domain.co.uk', 'info@organization.gov', 'user@server.local'])"
+            }
+        ]
+    }
+}

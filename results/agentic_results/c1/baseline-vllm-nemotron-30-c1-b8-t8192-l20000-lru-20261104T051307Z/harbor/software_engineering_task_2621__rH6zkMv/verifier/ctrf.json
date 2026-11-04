@@ -1,0 +1,114 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "ab97bc5a-c7ad-4f12-a17c-6bedef0de8a4",
+    "timestamp": "2026-11-04T06:52:26.626162+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 3,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793775146563,
+            "stop": 1793775146626,
+            "duration": 63
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_files_exist",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793775146587,
+                "stop": 1793775146587,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_validation_json_structure",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 19,
+                "start": 1793775146588,
+                "stop": 1793775146607,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_validation_json_structure():\n        \"\"\"Verify validation.json has correct structure and valid JSON.\"\"\"\n        with open('/app/analysis/validation.json', 'r') as f:\n>           data = json.load(f)\n                   ^^^^^^^^^^^^\n\n/tests/test_outputs.py:24: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7fa11ff6c3b0>\ns = '{\\n  components: {\\n    app_main: {\\n      type: executable,\\n      dependencies: [network, utils, config]\\n    },\\n ...    total_components: 13,\\n    valid_components: 11,\\n    total_dependencies: 12,\\n    valid_dependencies: 9\\n  }\\n}\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)"
+            },
+            {
+                "name": "test_outputs.py::test_graph_dot_format",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793775146608,
+                "stop": 1793775146608,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_build_order_format",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793775146608,
+                "stop": 1793775146609,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_validation_accuracy",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793775146609,
+                "stop": 1793775146617,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_validation_accuracy():\n        \"\"\"Verify validation correctly identifies issues from known test cases.\"\"\"\n        # Read the input file to understand the test case\n        with open('/app/build.deps', 'r') as f:\n            input_content = f.read()\n    \n        # Read the validation output\n        with open('/app/analysis/validation.json', 'r') as f:\n>           validation = json.load(f)\n                         ^^^^^^^^^^^^\n\n/tests/test_outputs.py:100: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7fa11ff6c3b0>\ns = '{\\n  components: {\\n    app_main: {\\n      type: executable,\\n      dependencies: [network, utils, config]\\n    },\\n ...    total_components: 13,\\n    valid_components: 11,\\n    total_dependencies: 12,\\n    valid_dependencies: 9\\n  }\\n}\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)"
+            },
+            {
+                "name": "test_outputs.py::test_build_order_validity",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793775146617,
+                "stop": 1793775146625,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_build_order_validity():\n        \"\"\"Verify build order respects basic dependency rules.\"\"\"\n        with open('/app/analysis/build_order.txt', 'r') as f:\n            build_order = [line.strip() for line in f if line.strip()]\n    \n        with open('/app/analysis/validation.json', 'r') as f:\n>           validation = json.load(f)\n                         ^^^^^^^^^^^^\n\n/tests/test_outputs.py:138: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7fa11ff6c3b0>\ns = '{\\n  components: {\\n    app_main: {\\n      type: executable,\\n      dependencies: [network, utils, config]\\n    },\\n ...    total_components: 13,\\n    valid_components: 11,\\n    total_dependencies: 12,\\n    valid_dependencies: 9\\n  }\\n}\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)"
+            }
+        ]
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "id": "6f27728a-2a24-4a52-bdea-5297df4f2cf9",
+    "started_at": "2026-11-04T07:20:36.730381",
+    "updated_at": "2026-11-04T08:15:25.313383",
+    "finished_at": "2026-11-04T08:15:25.313383",
+    "n_total_trials": 30,
+    "stats": {
+        "n_completed_trials": 30,
+        "n_errored_trials": 14,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "terminus-2__Qwen/Qwen3-14B-AWQ__set30": {
+                "n_trials": 16,
+                "n_errors": 14,
+                "metrics": [
+                    {
+                        "mean": 0.06666666666666667
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "0.0": [
+                            "data_querying_task_0996__vVT8rUL",
+                            "data_querying_task_2692__SV9eugP",
+                            "debugging_task_12771__k7DN3km",
+                            "debugging_task_2216__DajrWHV",
+                            "debugging_task_2446__WJLUA5u",
+                            "file_operations_task_0585__W4Z3WQe",
+                            "scientific_computing_task_0993__TLHAV8B",
+                            "scientific_computing_task_1530__BWP6W9Y",
+                            "security_task_2831__v9CDaoY",
+                            "security_task_3201__swGqYU8",
+                            "software_engineering_task_0029__VFVV7M9",
+                            "software_engineering_task_13509__ehaTVjU",
+                            "software_engineering_task_15464__WcvbVMn",
+                            "software_engineering_task_2621__hbi4YFz"
+                        ],
+                        "1.0": [
+                            "data_science_task_3348__F5rTDk2",
+                            "software_engineering_task_4146__a8iF7Ce"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "ContextLengthExceededError": [
+                        "debugging_task_18959__JwTwHRv",
+                        "debugging_task_2000__mGX9GbU",
+                        "file_operations_task_4095__cwAdegW",
+                        "model_training_task_18693__6pzjmEe",
+                        "security_task_0784__yytCxrY",
+                        "security_task_11984__oPMwWEo",
+                        "software_engineering_task_1347__xRzR4Y3",
+                        "software_engineering_task_1519__GSgSg7G",
+                        "software_engineering_task_3182__LADngwL",
+                        "software_engineering_task_3229__nPFEJn6",
+                        "software_engineering_task_4571__Z7MEQ4h",
+                        "system_administration_task_12762__KEniQW8",
+                        "system_administration_task_2208__J3QPgdv"
+                    ],
+                    "RuntimeError": [
+                        "scientific_computing_task_2932__QN5KTpH"
+                    ]
+                }
+            }
+        },
+        "n_input_tokens": 5256231,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 194947,
+        "cost_usd": null
+    }
+}

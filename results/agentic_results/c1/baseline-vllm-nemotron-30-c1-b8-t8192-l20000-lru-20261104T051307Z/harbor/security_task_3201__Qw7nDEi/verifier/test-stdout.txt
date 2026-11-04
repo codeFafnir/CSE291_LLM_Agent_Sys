@@ -1,0 +1,129 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py .FF.F                                           [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_report_structure _____________________________
+
+    def test_report_structure():
+        """Verify the security report has correct structure and values."""
+        with open("/app/security_report.json", "r") as f:
+>           report = json.load(f)
+                     ^^^^^^^^^^^^
+
+/tests/test_outputs.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f4f80e4ba10>
+s = '{\n  "total_lines": 14 /app/sanitized.log,\n  "passwords_redacted": 1,\n  "api_keys_redacted": 0,\n  "emails_redacted": 5\n}\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 21 (char 22)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+_______________________ test_no_sensitive_data_remaining _______________________
+
+    def test_no_sensitive_data_remaining():
+        """Verify no passwords, API keys, or email addresses remain in sanitized log."""
+        with open("/app/sanitized.log", "r") as f:
+            content = f.read()
+    
+        # Check for password values (should be [REDACTED])
+        # Common password patterns that should be removed
+        password_patterns = [
+            r'password:\s*[^\s\]]+',  # password: followed by non-space
+            r'"password":\s*"[^"]+"',  # JSON style
+            r"'password':\s*'[^']+'",  # Single quote JSON
+            r'passwd:\s*\S+',          # passwd: format
+            r'pwd:\s*\S+',             # pwd: format
+        ]
+    
+        for pattern in password_patterns:
+            matches = re.findall(pattern, content, re.IGNORECASE)
+            # Only allow matches that contain [REDACTED]
+            for match in matches:
+>               assert '[REDACTED]' in match.lower(), f"Password not redacted: {match}"
+E               AssertionError: Password not redacted: password: mySecret123
+E               assert '[REDACTED]' in 'password: mysecret123'
+E                +  where 'password: mysecret123' = <built-in method lower of str object at 0x7f4f803ba7b0>()
+E                +    where <built-in method lower of str object at 0x7f4f803ba7b0> = 'password: mySecret123'.lower
+
+/tests/test_outputs.py:46: AssertionError
+_____________________________ test_report_accuracy _____________________________
+
+    def test_report_accuracy():
+        """Verify report counts match actual sanitizations."""
+        with open("/app/security_report.json", "r") as f:
+>           report = json.load(f)
+                     ^^^^^^^^^^^^
+
+/tests/test_outputs.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f4f80e4ba10>
+s = '{\n  "total_lines": 14 /app/sanitized.log,\n  "passwords_redacted": 1,\n  "api_keys_redacted": 0,\n  "emails_redacted": 5\n}\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 21 (char 22)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_files_exist
+PASSED ../tests/test_outputs.py::test_line_count_preserved
+FAILED ../tests/test_outputs.py::test_report_structure - json.decoder.JSONDec...
+FAILED ../tests/test_outputs.py::test_no_sensitive_data_remaining - Assertion...
+FAILED ../tests/test_outputs.py::test_report_accuracy - json.decoder.JSONDeco...
+========================= 3 failed, 2 passed in 0.04s ==========================
+Some tests failed.

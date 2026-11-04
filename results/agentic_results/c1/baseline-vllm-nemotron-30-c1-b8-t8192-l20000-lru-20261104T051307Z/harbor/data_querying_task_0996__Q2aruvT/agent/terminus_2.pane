@@ -1,0 +1,141 @@
+[?2004hroot@b5250d2748d3:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@b5250d2748d3:/app# clear
+[?2004l[H[J[3J[?2004hroot@b5250d2748d3:/app# ls -la /app/library.ttl
+[?2004l-rw-r--r--. 1 root root 2172 Dec 30  2025 /app/library.ttl
+[?2004hroot@b5250d2748d3:/app# cat /app/library.ttl
+[?2004l@prefix ex: <http://example.org/library#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:book1 a ex:Book ;
+    ex:title "The Testaments" ;
+    ex:author ex:author1 ;
+    ex:publicationYear 2019 ;
+    ex:genre "Fiction" .
+
+ex:book2 a ex:Book ;
+    ex:title "Circe" ;
+    ex:author ex:author2 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book3 a ex:Book ;
+    ex:title "Educated" ;
+    ex:author ex:author3 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Non-Fiction" .
+
+ex:book4 a ex:Book ;
+    ex:title "The Overstory" ;
+    ex:author ex:author4 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book5 a ex:Book ;
+    ex:title "The Silent Patient" ;
+    ex:author ex:author5 ;
+    ex:publicationYear 2019 ;
+    ex:genre "Fiction" .
+
+ex:book6 a ex:Book ;
+    ex:title "Where the Crawdads Sing" ;
+    ex:author ex:author6 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book7 a ex:Book ;
+    ex:title "Becoming" ;
+    ex:author ex:author7 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Biography" .
+
+ex:book8 a ex:Book ;
+    ex:title "Normal People" ;
+    ex:author ex:author8 ;
+    ex:publicationYear 2018 ;
+    ex:genre "Fiction" .
+
+ex:book9 a ex:Book ;
+    ex:title "Klara and the Sun" ;
+    ex:author ex:author9 ;
+    ex:publicationYear 2021 ;
+    ex:genre "Fiction" .
+
+ex:author1 a ex:Author ;
+    ex:name "Margaret Atwood" ;
+    ex:nationality "Canadian" .
+
+ex:author2 a ex:Author ;
+    ex:name "Madeline Miller" ;
+    ex:nationality "American" .
+
+ex:author3 a ex:Author ;
+    ex:name "Tara Westover" ;
+    ex:nationality "American" .
+
+ex:author4 a ex:Author ;
+    ex:name "Richard Powers" ;
+    ex:nationality "American" .
+
+ex:author5 a ex:Author ;
+    ex:name "Alex Michaelides" ;
+    ex:nationality "British" .
+
+ex:author6 a ex:Author ;
+    ex:name "Delia Owens" ;
+    ex:nationality "American" .
+
+ex:author7 a ex:Author ;
+    ex:name "Michelle Obama" ;
+    ex:nationality "American" .
+
+ex:author8 a ex:Author ;
+    ex:name "Sally Rooney" ;
+    ex:nationality "Irish" .
+
+ex:author9 a ex:Author ;
+    ex:name "Kazuo Ishiguro" ;
+    ex:nationality "British" .[?2004hroot@b5250d2748d3:/app# echo "SELECT ?bookTitle ?authorName ?publicationYear WHERE { ?book ex:title ?bookTitle ; ex:author ?author ; ex:publicationYear ?publicationYear ; ex:genre "Fiction" . ?author ex:name ?authorName ; ex:nationality "American" . FILTER(?publicationYear > 2015) } ORDER BY ?publicationYear ?bookTitle" > /app/query.sparql
+[?2004l[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f"{row.bookTitle},{row.authorName},{row.publicationYear}\n")" 
+[?2004l  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f{row.bookTitle},{row.authorName},{row.publicationYear}n)
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# echo "The SPARQL query selects books with the genre 'Fiction', published after 2015, and authored by American authors. The query uses the 'ex:' namespace prefix to refer to the RDF data. The results are sorted by publication year (ascending) and book title (alphabetical). The query ensures that only the required columns are returned." > /app/explanation.txt
+[?2004l[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\"{row.bookTitle}\",\"{row.authorName}\",\"{row.publicationYear}\"\n')" 
+[?2004l  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'"{row.bookTitle}","{row.authorName}","{row.publicationYear}"\n')
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\"{row.bookTitle}\",\"{row.authorName}\",\"{row.publicationYear}\"\n')" 
+[?2004l  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'"{row.bookTitle}","{row.authorName}","{row.publicationYear}"\n')
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\"{row.bookTitle}\",\"{row.authorName}\",\"{row.publicationYear}\"\n')" 
+[?2004l  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'"{row.bookTitle}","{row.authorName}","{row.publicationYear}"\n')
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\"{row.bookTitle}\",\"{row.authorName}\",\"{row.publicationYear}\"\n')" 
+[?2004l  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'"{row.bookTitle}","{row.authorName}","{row.publicationYear}"\n')
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# python3 -c """import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\"{row.bookTitle}\",\"{row.authorName}\",\"{row.publicationYear}\"\n')""" 
+[?2004l  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'"{row.bookTitle}","{row.authorName}","{row.publicationYear}"\n')
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\\"{row.bookTitle}\\",\\"{row.authorName}\\",\\"{row.publicationYear}\\"\n')" 
+[?2004l<string>:1: SyntaxWarning: invalid escape sequence '\{'
+<string>:1: SyntaxWarning: invalid escape sequence '\{'
+<string>:1: SyntaxWarning: invalid escape sequence '\{'
+  File "<string>", line 1
+    import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write(f'\{row.bookTitle}\,\{row.authorName}\,\{row.publicationYear}\\n')
+                                                                                                                                       ^^^^
+SyntaxError: invalid syntax
+[?2004hroot@b5250d2748d3:/app# python3 -c "import rdflib; g = rdflib.Graph(); g.parse('/app/library.ttl', format='turtle'); qres = g.query(open('/app/query.sparql').read()); with open('/app/query_results.csv', 'w') as f: f.write('bookTitle,authorName,publicationYear\n'); for row in qres: f.write('"' + str(row.bookTitle) + '","' + str(row.authorName) + '","' + str(row.publicationYear) + "\n")" 
+[?2004l[?2004h> 

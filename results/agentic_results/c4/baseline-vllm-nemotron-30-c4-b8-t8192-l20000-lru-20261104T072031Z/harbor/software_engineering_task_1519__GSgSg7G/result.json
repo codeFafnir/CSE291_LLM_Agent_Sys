@@ -1,0 +1,161 @@
+{
+    "id": "251a4d19-0a28-49f8-9b72-2c81f6198a1b",
+    "task_name": "software_engineering_task_1519",
+    "trial_name": "software_engineering_task_1519__GSgSg7G",
+    "trial_uri": "file:///data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G",
+    "task_id": {
+        "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_1519"
+    },
+    "source": "set30",
+    "task_checksum": "6470d84416633dece384e0394f51af191735e51a6380e5d49124af26824b260c",
+    "config": {
+        "task": {
+            "path": "/data/datasets/nemotron-terminal/set30/software_engineering_task_1519",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "set30"
+        },
+        "trial_name": "software_engineering_task_1519__GSgSg7G",
+        "trials_dir": "/data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "terminus-2",
+            "import_path": null,
+            "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+            "base_url": "http://host.docker.internal:8000/v1",
+            "model_api_key_name": null,
+            "model_api_format": "openai_chat_completions",
+            "skip_model_parsing": false,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "model_info": {
+                    "max_input_tokens": 20000,
+                    "max_output_tokens": 2048,
+                    "input_cost_per_token": 0,
+                    "output_cost_per_token": 0
+                },
+                "llm_kwargs": {
+                    "max_tokens": 2048,
+                    "extra_body": {
+                        "chat_template_kwargs": {
+                            "enable_thinking": false
+                        }
+                    }
+                },
+                "enable_summarize": false,
+                "proactive_summarization_threshold": 0
+            },
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": true,
+            "delete": true,
+            "stream": false,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "6f27728a-2a24-4a52-bdea-5297df4f2cf9",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "terminus-2",
+        "version": "2.0.0",
+        "model_info": {
+            "name": "Qwen/Qwen3-14B-AWQ",
+            "provider": "openai"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 106885,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 9925,
+        "cost_usd": null,
+        "model_usage": {
+            "Qwen/Qwen3-14B-AWQ": {
+                "n_input_tokens": 106885,
+                "n_cache_tokens": 0,
+                "n_output_tokens": 9925,
+                "cost_usd": null
+            }
+        },
+        "rollout_details": [],
+        "metadata": {
+            "n_episodes": 12,
+            "api_request_times_msec": [
+                7549.590110778809,
+                43826.8404006958,
+                33263.16285133362,
+                34151.46350860596,
+                28232.173442840576,
+                32249.727964401245,
+                37604.64382171631,
+                40144.43063735962,
+                38955.594062805176,
+                52327.71110534668,
+                27004.108667373657
+            ],
+            "summarization_count": 0
+        }
+    },
+    "verifier_result": null,
+    "verifier_environment_mode": "shared",
+    "exception_info": {
+        "exception_type": "ContextLengthExceededError",
+        "exception_message": "",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/llms/openai/openai.py\", line 985, in acompletion\n    headers, response = await self.make_openai_chat_completion_request(\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/logging_utils.py\", line 344, in async_wrapper\n    result: Final = await func(*args, **kwargs)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/llms/openai/openai.py\", line 515, in make_openai_chat_completion_request\n    raw_response = await openai_aclient.chat.completions.with_raw_response.create(**data, timeout=timeout)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/_legacy_response.py\", line 386, in wrapped\n    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/resources/chat/completions/completions.py\", line 2907, in create\n    return await self._post(\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/_base_client.py\", line 1992, in post\n    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/_base_client.py\", line 1777, in request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.BadRequestError: Error code: 400 - {'error': {'message': \"This model's maximum context length is 20000 tokens. However, your prompt contains at least 20001 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=20001)\", 'type': 'BadRequestError', 'param': 'input_tokens', 'code': 400}}\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/main.py\", line 687, in acompletion\n    response = await _resolve_dispatched_chat_response(init_response)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/main.py\", line 752, in _resolve_dispatched_chat_response\n    return await pending\n           ^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/llms/openai/openai.py\", line 1045, in acompletion\n    raise OpenAIError(\nlitellm.llms.openai.common_utils.OpenAIError: Error code: 400 - {'error': {'message': \"This model's maximum context length is 20000 tokens. However, your prompt contains at least 20001 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=20001)\", 'type': 'BadRequestError', 'param': 'input_tokens', 'code': 400}}\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py\", line 423, in call\n    raise e\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py\", line 389, in call\n    response = await litellm.acompletion(**completion_kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/chat_completions/dispatch.py\", line 102, in acompletion\n    return await _ADISPATCH.arun(\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/rust_bridge/dispatch.py\", line 114, in arun\n    return await python(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/utils.py\", line 2297, in wrapper_async\n    raise e\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/utils.py\", line 2112, in wrapper_async\n    result = await original_function(*args, **call_kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/main.py\", line 740, in acompletion\n    raise exception_type(\n          ^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/exception_mapping_utils.py\", line 2745, in exception_type\n    raise e  # it's already mapped\n    ^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/exception_mapping_utils.py\", line 2492, in exception_type\n    _map_openai_exception(\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/exception_mapping_utils.py\", line 319, in _map_openai_exception\n    raise ContextWindowExceededError(\nlitellm.exceptions.ContextWindowExceededError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 20000 tokens. However, your prompt contains at least 20001 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=20001)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 609, in run\n    await self._run()\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/single_step.py\", line 40, in _run\n    await self._run_agent()\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/single_step.py\", line 76, in _run_agent\n    await self._run_agent_phase(\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 769, in _run_agent_phase\n    await asyncio.wait_for(\n  File \"/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/asyncio/tasks.py\", line 520, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py\", line 1833, in run\n    await self._run_agent_loop(\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py\", line 1500, in _run_agent_loop\n    ) = await self._handle_llm_interaction(\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py\", line 1378, in _handle_llm_interaction\n    llm_response = await self._query_llm(\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 232, in async_wrapped\n    return await copy(fn, *args, **kwargs)  # type: ignore[type-var]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 126, in __call__\n    do = await self.iter(retry_state=retry_state)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 171, in iter\n    result = await action(retry_state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/_utils.py\", line 130, in inner\n    return call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/__init__.py\", line 462, in <lambda>\n    self._add_action_func(lambda rs: rs.outcome.result())\n                                     ^^^^^^^^^^^^^^^^^^^\n  File \"/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py\", line 449, in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 130, in __call__\n    result = await fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py\", line 1218, in _query_llm\n    llm_response = await chat.chat(\n                   ^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/chat.py\", line 89, in chat\n    llm_response: LLMResponse = await self._model.call(\n                                ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 232, in async_wrapped\n    return await copy(fn, *args, **kwargs)  # type: ignore[type-var]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 126, in __call__\n    do = await self.iter(retry_state=retry_state)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 171, in iter\n    result = await action(retry_state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/_utils.py\", line 130, in inner\n    return call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/__init__.py\", line 462, in <lambda>\n    self._add_action_func(lambda rs: rs.outcome.result())\n                                     ^^^^^^^^^^^^^^^^^^^\n  File \"/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py\", line 449, in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 130, in __call__\n    result = await fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py\", line 425, in call\n    self._handle_litellm_error(e)\n  File \"/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py\", line 654, in _handle_litellm_error\n    raise ContextLengthExceededError\nharbor.llms.base.ContextLengthExceededError\n",
+        "occurred_at": "2026-11-04T07:57:42.059316Z"
+    },
+    "started_at": "2026-11-04T07:49:07.391280Z",
+    "finished_at": "2026-11-04T07:57:53.250205Z",
+    "environment_setup": {
+        "started_at": "2026-11-04T07:49:07.394134Z",
+        "finished_at": "2026-11-04T07:49:09.738954Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-11-04T07:49:09.738979Z",
+        "finished_at": "2026-11-04T07:49:11.327866Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-11-04T07:49:11.328134Z",
+        "finished_at": "2026-11-04T07:57:42.000491Z"
+    },
+    "verifier": null,
+    "step_results": null
+}

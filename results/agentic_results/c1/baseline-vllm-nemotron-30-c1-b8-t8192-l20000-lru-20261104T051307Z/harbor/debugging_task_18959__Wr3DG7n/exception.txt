@@ -1,0 +1,146 @@
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/llms/openai/openai.py", line 985, in acompletion
+    headers, response = await self.make_openai_chat_completion_request(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/logging_utils.py", line 344, in async_wrapper
+    result: Final = await func(*args, **kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/llms/openai/openai.py", line 515, in make_openai_chat_completion_request
+    raw_response = await openai_aclient.chat.completions.with_raw_response.create(**data, timeout=timeout)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/_legacy_response.py", line 386, in wrapped
+    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/resources/chat/completions/completions.py", line 2907, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/_base_client.py", line 1992, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/openai/_base_client.py", line 1777, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': "This model's maximum context length is 20000 tokens. However, your prompt contains at least 20001 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=20001)", 'type': 'BadRequestError', 'param': 'input_tokens', 'code': 400}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/main.py", line 687, in acompletion
+    response = await _resolve_dispatched_chat_response(init_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/main.py", line 752, in _resolve_dispatched_chat_response
+    return await pending
+           ^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/llms/openai/openai.py", line 1045, in acompletion
+    raise OpenAIError(
+litellm.llms.openai.common_utils.OpenAIError: Error code: 400 - {'error': {'message': "This model's maximum context length is 20000 tokens. However, your prompt contains at least 20001 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=20001)", 'type': 'BadRequestError', 'param': 'input_tokens', 'code': 400}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py", line 423, in call
+    raise e
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py", line 389, in call
+    response = await litellm.acompletion(**completion_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/chat_completions/dispatch.py", line 102, in acompletion
+    return await _ADISPATCH.arun(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/rust_bridge/dispatch.py", line 114, in arun
+    return await python(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/utils.py", line 2297, in wrapper_async
+    raise e
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/utils.py", line 2112, in wrapper_async
+    result = await original_function(*args, **call_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/main.py", line 740, in acompletion
+    raise exception_type(
+          ^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 2745, in exception_type
+    raise e  # it's already mapped
+    ^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 2492, in exception_type
+    _map_openai_exception(
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 319, in _map_openai_exception
+    raise ContextWindowExceededError(
+litellm.exceptions.ContextWindowExceededError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 20000 tokens. However, your prompt contains at least 20001 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=20001)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py", line 609, in run
+    await self._run()
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/single_step.py", line 40, in _run
+    await self._run_agent()
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/single_step.py", line 76, in _run_agent
+    await self._run_agent_phase(
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py", line 769, in _run_agent_phase
+    await asyncio.wait_for(
+  File "/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py", line 1833, in run
+    await self._run_agent_loop(
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py", line 1500, in _run_agent_loop
+    ) = await self._handle_llm_interaction(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py", line 1378, in _handle_llm_interaction
+    llm_response = await self._query_llm(
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 232, in async_wrapped
+    return await copy(fn, *args, **kwargs)  # type: ignore[type-var]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 126, in __call__
+    do = await self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 171, in iter
+    result = await action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/_utils.py", line 130, in inner
+    return call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/__init__.py", line 462, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ^^^^^^^^^^^^^^^^^^^
+  File "/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 130, in __call__
+    result = await fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/terminus_2/terminus_2.py", line 1218, in _query_llm
+    llm_response = await chat.chat(
+                   ^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/chat.py", line 89, in chat
+    llm_response: LLMResponse = await self._model.call(
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 232, in async_wrapped
+    return await copy(fn, *args, **kwargs)  # type: ignore[type-var]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 126, in __call__
+    do = await self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 171, in iter
+    result = await action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/_utils.py", line 130, in inner
+    return call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/__init__.py", line 462, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ^^^^^^^^^^^^^^^^^^^
+  File "/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/data/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py", line 130, in __call__
+    result = await fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py", line 425, in call
+    self._handle_litellm_error(e)
+  File "/home/ec2-user/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/llms/lite_llm.py", line 654, in _handle_litellm_error
+    raise ContextLengthExceededError
+harbor.llms.base.ContextLengthExceededError

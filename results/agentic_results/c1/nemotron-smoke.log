@@ -1,0 +1,33 @@
+09:33:43 - LiteLLM:WARNING: utils.py:3567 - register_model: model=openai/Qwen/Qwen3-14B-AWQ has custom pricing but not in built-in cost map and no prefix/region variant matched; cache_creation_input_token_cost and cache_read_input_token_cost will default to 0 for this model (input/output cost tracking is unaffected). To track cache cost, add them to model_info
+  5/5 Mean: 0.200 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0:22:33 0:00:00
+smoke5 • terminus-2 • Qwen/Qwen3-14B-AWQ
+┏━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┓
+┃ Trials ┃ Exceptions ┃  Mean ┃
+┡━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━┩
+│      3 │          2 │ 0.200 │
+└────────┴────────────┴───────┘
+
+┏━━━━━━━━┳━━━━━━━┓
+┃ Reward ┃ Count ┃
+┡━━━━━━━━╇━━━━━━━┩
+│ 0.0    │     2 │
+│ 1.0    │     1 │
+└────────┴───────┘
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Exception                  ┃ Count ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ ContextLengthExceededError │     2 │
+└────────────────────────────┴───────┘
+
+Job Info
+Total runtime: 22m 33s
+Results written to 
+/data/cse291-results/baseline-vllm-nemotron-smoke-c1-b8-t8192-l20000-lru/harbor/
+result.json
+Inspect results by running `harbor view 
+/data/cse291-results/baseline-vllm-nemotron-smoke-c1-b8-t8192-l20000-lru`
+Share results by running `harbor upload 
+/data/cse291-results/baseline-vllm-nemotron-smoke-c1-b8-t8192-l20000-lru/harbor`
+
+wrote /data/cse291-results/baseline-vllm-nemotron-smoke-c1-b8-t8192-l20000-lru/summary.json

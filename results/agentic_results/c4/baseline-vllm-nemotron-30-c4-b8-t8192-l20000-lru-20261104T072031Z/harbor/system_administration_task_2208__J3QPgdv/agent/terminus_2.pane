@@ -1,0 +1,675 @@
+[?2004hroot@68d64fed3fe7:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@68d64fed3fe7:/app# clear
+[?2004l[H[J[3J[?2004hroot@68d64fed3fe7:/app# nano /app/service_health_monitor.py
+[?2004lbash: nano: command not found
+[?2004hroot@68d64fed3fe7:/app# echo "import json
+[?2004l[?2004h> import subprocess
+[?2004l(s[?2004h> from datetime import datetime, timedelta
+[?2004l[?2004h> import time
+[?2004l[?2004h> 
+[?2004l[?2004h> # Load service configuration
+[?2004l[?2004h> with open('/app/services.json') as f:
+[?2004l[?2004h>     services = json.load(f)
+[?2004l[?2004h> 
+[?2004la[?2004h> # Initialize restart tracking
+[?2004l[?2004h> time_now = datetime.now()
+[?2004l[?2004h> restart_count = {service['name']: 0 for service in services}
+[?2004l[?2004h> 
+[?2004l[?2004h> # Define health check function
+[?2004l[?2004h> def is_service_healthy(service):
+[?2004l[?2004h>     # Check dependencies
+[?2004l[?2004h>     for dependency in service.get('dependencies', []):
+[?2004l[?2004h>         dependency_service = next((s for s in services if s['name'] == dependency), None)
+[?2004l[?2004h>         if not dependency_service:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency service not found: {}'.format(dependency)
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check if dependency process is running
+[?2004l[?2004h>         process_check = subprocess.run(['pgrep', '-f', dependency_service['process']], capture_output=True, text=True)
+[?2004l[?2004h>         if process_check.returncode != 0:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency process not running: {}'.format(dependency)
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check health check of dependency if provided
+[?2004l[?2004h>         if 'health_check' in dependency_service:
+[?2004l[?2004h>             health_check = subprocess.run(dependency_service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>             if health_check.returncode != 0:
+[?2004l[?2004h>                 return False, 'dependency_failed', 'Dependency health check failed: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check if main process is running
+[?2004l[?2004h>     process_check = subprocess.run(['pgrep', '-f', service['process']], capture_output=True, text=True)
+[?2004l[?2004h>     process_running = process_check.returncode == 0
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check health check if provided
+[?2004l[?2004h>     health_check_passed = True
+[?2004l[?2004h>     health_check_reason = ''
+[?2004l[?2004h>     if 'health_check' in service:
+[?2004l[?2004h>         health_check = subprocess.run(service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>         health_check_passed = health_check.returncode == 0
+[?2004l[?2004h>         if not health_check_passed:
+[?2004l[?2004h>             health_check_reason = 'Health check failed: {}'.format(health_check.stderr.strip())
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Determine service status
+[?2004l[?2004h>     if not process_running:
+[?2004l[?2004h>         return False, 'unhealthy', 'Process not running'
+[?2004l[?2004h>     if not health_check_passed:
+[?2004l[?2004h>         return False, 'unhealthy', health_check_reason
+[?2004l[?2004h>     return True, 'healthy', ''
+[?2004l[?2004h> 
+[?2004l[?2004h> # Generate health report
+[?2004l[?2004h> def generate_health_report():
+[?2004l[?2004h>     report = {
+[?2004l[?2004h>         'timestamp': datetime.now().isoformat(),
+[?2004l[?2004h>         'services': {},
+[?2004l[?2004h>         'summary': {
+[?2004l[?2004h>             'total_services': 0,
+[?2004l[?2004h>             'healthy': 0,
+[?2004l[?2004h>             'unhealthy': 0,
+[?2004l[?2004h>             'disabled': 0,
+[?2004l[?2004h>             'dependency_failed': 0
+[?2004l[?2004h>         }
+[?2004l[?2004h>     }
+[?2004l[?2004h> 
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check if service is healthy
+[?2004l[?2004h>         is_healthy, status, reason = is_service_healthy(service)
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Track restarts in the last hour
+[?2004l[?2004h>         restarts_last_hour = restart_count[name]
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check if max restarts are exceeded
+[?2004l[?2004h>         if restarts_last_hour >= service['max_restarts_per_hour']:
+[?2004l[?2004h>             status = 'disabled'
+[?2004l[?2004h>             
+[?2004l[?2004h>         # Update report
+[?2004l[?2004h>         report['services'][name] = {
+[?2004l[?2004h>             'status': status,
+[?2004l[?2004h>             'process_running': process_running,
+[?2004l[?2004h>             'health_check_passed': health_check_passed,
+[?2004l[?2004h>             'dependencies_met': dependencies_met,
+[?2004l[?2004h>             'restarts_last_hour': restarts_last_hour,
+[?2004l[?2004h>             'last_check': datetime.now().isoformat()
+[?2004l[?2004h>         }
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Update summary
+[?2004l[?2004h>     for service in report['services'].values():
+[?2004l[?2004h>         report['summary'][service['status']] += 1
+[?2004l[?2004h>         report['summary']['total_services'] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Save report to file
+[?2004l[?2004h>     with open('/app/health_report.json', 'w') as f:
+[?2004l[?2004h>         json.dump(report, f, indent=4)
+[?2004l[?2004h> 
+[?2004l[?2004h>     return report
+[?2004l[?2004h> 
+[?2004l[?2004h> # Log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open('/app/restart_log.txt', 'a') as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@68d64fed3fe7:/app# 
+[?2004l[?2004hroot@68d64fed3fe7:/app# # Main execution
+[?2004l[?2004hroot@68d64fed3fe7:/app# if __name__ == '__main__':
+[?2004l[?2004h>     # Run health check for each service
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004lbash: syntax error near unexpected token `name'
+[?2004hroot@68d64fed3fe7:/app#         
+[?2004l[?2004hroot@68d64fed3fe7:/app#         # Check if service is healthy
+[?2004l[?2004hroot@68d64fed3fe7:/app#         is_healthy, status, reason = is_service_healthy(service)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@68d64fed3fe7:/app#         
+[?2004l[?2004hroot@68d64fed3fe7:/app#         # If service is unhealthy, attempt to restart
+[?2004l[?2004hroot@68d64fed3fe7:/app#         if not is_healthy:
+[?2004l[?2004h>             # Log restart
+[?2004l[?2004h>             log_restart(name, reason)
+[?2004lbash: syntax error near unexpected token `name,'
+[?2004hroot@68d64fed3fe7:/app#             
+[?2004l[?2004hroot@68d64fed3fe7:/app#             # Execute restart command
+[?2004l[?2004hroot@68d64fed3fe7:/app#             restart_process = subprocess.run(service['restart'], shell=True, capture_output=True, text=True)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@68d64fed3fe7:/app#             
+[?2004l[?2004hroot@68d64fed3fe7:/app#             # Update restart count
+[?2004l[?2004hroot@68d64fed3fe7:/app#             restart_count[name] += 1
+[?2004lbash: restart_count[name]: command not found
+[?2004hroot@68d64fed3fe7:/app#             
+[?2004l[?2004hroot@68d64fed3fe7:/app#             # Check if max restarts are exceeded
+[?2004l[?2004hroot@68d64fed3fe7:/app#             if restart_count[name] >= service['max_restarts_per_hour']:
+[?2004l[?2004h>                 print(f"Service {name} has been disabled due to exceeding max restarts.")
+[?2004lbash: syntax error near unexpected token `f"Service {name} has been disabled due to exceeding max restarts."'
+[?2004hroot@68d64fed3fe7:/app# 
+[?2004l[?2004hroot@68d64fed3fe7:/app#     # Generate health report
+[?2004l[?2004hroot@68d64fed3fe7:/app#     generate_health_report()" > /app/service_health_monitor.py
+[?2004l[?2004h> cat <<EOF > /app/service_health_monitor.py
+[?2004l[?2004h> import json
+[?2004l[?2004h> import subprocess
+[?2004l[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l [?2004h> # Load service configuration
+[?2004lervice is unheal[?2004h> with open('/app/services.json') as f:
+[?2004l[?2004h>     services = json.load(f)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Initialize restart tracking
+[?2004l[?2004h> restart_count = {service['name']: 0 for service in services}
+[?2004l[?2004h> 
+[?2004l[?2004h> # Define health check function
+[?2004l[?2004h> def is_service_healthy(service):
+[?2004l[?2004h>     # Check dependencies
+[?2004l[?2004h>     for dependency in service.get('dependencies', []):
+[?2004l[?2004h>         dependency_service = next((s for s in services if s['name'] == dependency), None)
+[?2004l[?2004h>         if not dependency_service:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency service not found: {}'.format(dependency)
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check if dependency process is running
+[?2004l[?2004h>         process_check = subprocess.run(['pgrep', '-f', dependency_service['process']], capture_output=True, text=True)
+[?2004l[?2004h>         if process_check.returncode != 0:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency process not running: {}'.format(dependency)
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check health check of dependency if provided
+[?2004l[?2004h>         if 'health_check' in dependency_service:
+[?2004l[?2004h>             health_check = subprocess.run(dependency_service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>             if health_check.returncode != 0:
+[?2004l[?2004h>                 return False, 'dependency_failed', 'Dependency health check failed: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check if main process is running
+[?2004l[?2004h>     process_check = subprocess.run(['pgrep', '-f', service['process']], capture_output=True, text=True)
+[?2004l[?2004h>     process_running = process_check.returncode == 0
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check health check if provided
+[?2004l[?2004h>     health_check_passed = True
+[?2004l[?2004h>     health_check_reason = ''
+[?2004l[?2004h>     if 'health_check' in service:
+[?2004l[?2004h>         health_check = subprocess.run(service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>         health_check_passed = health_check.returncode == 0
+[?2004l[?2004h>         if not health_check_passed:
+[?2004l[?2004h>             health_check_reason = 'Health check failed: {}'.format(health_check.stderr.strip())
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Determine service status
+[?2004l[?2004h>     if not process_running:
+[?2004l[?2004h>         return False, 'unhealthy', 'Process not running'
+[?2004l[?2004h>     if not health_check_passed:
+[?2004l[?2004h>         return False, 'unhealthy', health_check_reason
+[?2004l[?2004h>     return True, 'healthy', ''
+[?2004l[?2004h> 
+[?2004l[?2004h> # Generate health report
+[?2004l[?2004h> def generate_health_report():
+[?2004l[?2004h>     report = {
+[?2004l[?2004h>         'timestamp': datetime.now().isoformat(),
+[?2004l[?2004h>         'services': {},
+[?2004l[?2004h>         'summary': {
+[?2004l[?2004h>             'total_services': 0,
+[?2004l[?2004h>             'healthy': 0,
+[?2004l[?2004h>             'unhealthy': 0,
+[?2004l[?2004h>             'disabled': 0,
+[?2004l[?2004h>             'dependency_failed': 0
+[?2004l[?2004h>         }
+[?2004l[?2004h>     }
+[?2004l[?2004h> 
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check if service is healthy
+[?2004l[?2004h>         is_healthy, status, reason = is_service_healthy(service)
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Track restarts in the last hour
+[?2004l[?2004h>         restarts_last_hour = restart_count[name]
+[?2004l[?2004h>         
+[?2004l[?2004h>         # Check if max restarts are exceeded
+[?2004l[?2004h>         if restarts_last_hour >= service['max_restarts_per_hour']:
+[?2004l[?2004h>             status = 'disabled'
+[?2004l[?2004h>             
+[?2004l[?2004h>         # Update report
+[?2004l[?2004h>         report['services'][name] = {
+[?2004l[?2004h>             'status': status,
+[?2004l[?2004h>             'process_running': process_running,
+[?2004l[?2004h>             'health_check_passed': health_check_passed,
+[?2004l[?2004h>             'dependencies_met': True if all((s for s in services if s['name'] == dependency), None) else False,
+[?2004l[?2004h>             'restarts_last_hour': restarts_last_hour,
+[?2004l[?2004h>             'last_check': datetime.now().isoformat()
+[?2004l[?2004h>         }
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Update summary
+[?2004l[?2004h>     for service in report['services'].values():
+[?2004l[?2004h>         report['summary'][service['status']] += 1
+[?2004l[?2004h>         report['summary']['total_services'] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Save report to file
+[?2004l[?2004h>     with open('/app/health_report.json', 'w') as f:
+[?2004l[?2004h>         json.dump(report, f, indent=4)
+[?2004l[?2004h> 
+[?2004l[?2004h>     return report
+[?2004l[?2004h> 
+[?2004l[?2004h> # Log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open('/app/restart_log.txt', 'a') as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")
+[?2004lbash: syntax error near unexpected token `$'" > /app/service_health_monitor.py\ncat <<EOF > /app/service_health_monitor.py\nimport json\nimport subprocess\nfrom datetime import datetime\n\n# Load service configuration\nwith open(\'/app/services.json\') as f:\n    services = json.load(f)\n\n# Initialize restart tracking\nrestart_count = {service[\'name\']: 0 for service in services}\n\n# Define health check function\ndef is_service_healthy(service):\n    # Check dependencies\n    for dependency in service.get(\'dependencies\', []):\n        dependency_service = next((s for s in services if s[\'name\'] == dependency), None)\n        if not dependency_service:\n            return False, \'dependency_failed\', \'Dependency service not found: {}\'.format(dependency)\n        \n        # Check if dependency process is running\n        process_check = subprocess.run([\'pgrep\', \'-f\', dependency_service[\'process\']], capture_output=True, text=True)\n        if process_check.returncode != 0:\n            return False, \'dependency_failed\', \'Dependency process not running: {}\'.format(dependency)\n        \n        # Check health check of dependency if provided\n        if \'health_check\' in dependency_service:\n            health_check = subprocess.run(dependency_service[\'health_check\'], shell=True, capture_output=True, text=True)\n            if health_check.returncode != 0:\n                return False, \'dependency_failed\', \'Dependency health check failed: {}\'.format(dependency)\n\n    # Check if main process is running\n    process_check = subprocess.run([\'pgrep\', \'-f\', service[\'process\']], capture_output=True, text=True)\n    process_running = process_check.returncode == 0\n\n    # Check health check if provided\n    health_check_passed = True\n    health_check_reason = \'\'\n    if \'health_check\' in service:\n        health_check = subprocess.run(service[\'health_check\'], shell=True, capture_output=True, text=True)\n        health_check_passed = health_check.returncode == 0\n        if not health_check_passed:\n            health_check_reason = \'Health check failed: {}\'.format(health_check.stderr.strip())\n\n    # Determine service status\n    if not process_running:\n        return False, \'unhealthy\', \'Process not running\'\n    if not health_check_passed:\n        return False, \'unhealthy\', health_check_reason\n    return True, \'healthy\', \'\'\n\n# Generate health report\ndef generate_health_report():\n    report = {\n        \'timestamp\': datetime.now().isoformat(),\n        \'services\': {},\n        \'summary\': {\n            \'total_services\': 0,\n            \'healthy\': 0,\n            \'unhealthy\': 0,\n            \'disabled\': 0,\n            \'dependency_failed\': 0\n        }\n    }\n\n    for service in services:\n        name = service[\'name\']\n        \n        # Check if service is healthy\n        is_healthy, status, reason = is_service_healthy(service)\n        \n        # Track restarts in the last hour\n        restarts_last_hour = restart_count[name]\n        \n        # Check if max restarts are exceeded\n        if restarts_last_hour >= service[\'max_restarts_per_hour\']:\n            status = \'disabled\'\n            \n        # Update report\n        report[\'services\'][name] = {\n            \'status\': status,\n            \'process_running\': process_running,\n            \'health_check_passed\': health_check_passed,\n            \'dependencies_met\': True if all((s for s in services if s[\'name\'] == dependency), None) else False,\n            \'restarts_last_hour\': restarts_last_hour,\n            \'last_check\': datetime.now().isoformat()\n        }\n\n    # Update summary\n    for service in report[\'services\'].values():\n        report[\'summary\'][service[\'status\']] += 1\n        report[\'summary\'][\'total_services\'] += 1\n\n    # Save report to file\n    with open(\'/app/health_report.json\', \'w\') as f:\n        json.dump(report, f, indent=4)\n\n    return report\n\n# Log restarts\ndef log_restart(service_name, reason):\n    with open(\'/app/restart_log.txt\', \'a\') as f:\n        f.write(f"[{datetime.now''
+[?2004hroot@68d64fed3fe7:/app# 
+[?2004l[?2004hroot@68d64fed3fe7:/app# # Main execution
+[?2004l[?2004hroot@68d64fed3fe7:/app# if __name__ == '__main__':
+[?2004l[?2004h>     # Run health check for each service
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004lbash: syntax error near unexpected token `name'
+[?2004hroot@68d64fed3fe7:/app#         
+[?2004l[?2004hroot@68d64fed3fe7:/app#         # Check if service is healthy
+[?2004l[?2004hroot@68d64fed3fe7:/app#         is_healthy, status, reason = is_service_healthy(service)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@68d64fed3fe7:/app#         
+[?2004l[?2004hroot@68d64fed3fe7:/app#         # If service is unhealthy, attempt to restart
+[?2004l[?2004hroot@68d64fed3fe7:/app#         if not is_healthy:
+[?2004l[?2004h>             # Log restart
+[?2004l[?2004h>             log_restart(name, reason)
+[?2004lbash: syntax error near unexpected token `name,'
+[?2004hroot@68d64fed3fe7:/app#             
+[?2004l[?2004hroot@68d64fed3fe7:/app#             # Execute restart command
+[?2004l[?2004hroot@68d64fed3fe7:/app#             restart_process = subprocess.run(service['restart'], shell=True, capture_output=True, text=True)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@68d64fed3fe7:/app#             
+[?2004l[?2004hroot@68d64fed3fe7:/app#             # Update restart count
+[?2004l[?2004hroot@68d64fed3fe7:/app#             restart_count[name] += 1
+[?2004lbash: restart_count[name]: command not found
+[?2004hroot@68d64fed3fe7:/app#             
+[?2004l[?2004hroot@68d64fed3fe7:/app#             # Check if max restarts are exceeded
+[?2004l[?2004hroot@68d64fed3fe7:/app#             if restart_count[name] >= service['max_restarts_per_hour']:
+[?2004l[?2004h>                 print(f"Service {name} has been disabled due to exceeding max restarts.")
+[?2004lbash: syntax error near unexpected token `f"Service {name} has been disabled due to exceeding max restarts."'
+[?2004hroot@68d64fed3fe7:/app# 
+[?2004l[?2004hroot@68d64fed3fe7:/app#     # Generate health report
+[?2004l[?2004hroot@68d64fed3fe7:/app#     generate_health_report()
+[?2004l[?2004h> EOF
+[?2004lbash: syntax error near unexpected token `EOF'
+[?2004hroot@68d64fed3fe7:/app# echo "import json\nimport subprocess\nfrom datetime import datetime\n\n# Load service configuration\nwith open('/app/services.json') as f:\n    services = json.load(f)\n\n# Initialize restart tracking\nrestart_count = {service['name']: 0 for service in services}\n\n# Define health check function\ndef is_service_healthy(service):\n    # Check dependencies\n    for dependency in service.get('dependencies', []):\n        dependency_service = next((s for s in services if s['name'] == dependency), None)\n        if not dependency_service:\n            return False, 'dependency_failed', 'Dependency service not found: {}'.format(dependency)\n\n        # Check if dependency process is running\n        process_check = subprocess.run(['pgrep', '-f', dependency_service['process']], capture_output=True, text=True)\n        if process_check.returncode != 0:\n            return False, 'dependency_failed', 'Dependency process not running: {}'.format(dependency)\n\n        # Check health check of dependency if provided\n        if 'health_check' in dependency_service:\n            health_check = subprocess.run(dependency_service['health_check'], shell=True, capture_output=True, text=True)\n            if health_check.returncode != 0:\n                return False, 'dependency_failed', 'Dependency health check failed: {}'.format(dependency)\n\n    # Check if main process is running\n    process_check = subprocess.run(['pgrep', '-f', service['process']], capture_output=True, text=True)\n    process_running = process_check.returncode == 0\n\n    # Check health check if provided\n    health_check_passed = True\n    health_check_reason = ''\n    if 'health_check' in service:\n        health_check = subprocess.run(service['health_check'], shell=True, capture_output=True, text=True)\n        health_check_passed = health_check.returncode == 0\n        if not health_check_passed:\n            health_check_reason = 'Health check failed: {}'.format(health_check.stderr.strip())\n\n    # Determine service status\n    if not process_running:\n        return False, 'unhealthy', 'Process not running'\n    if not health_check_passed:\n        return False, 'unhealthy', health_check_reason\n    return True, 'healthy', ''\n\n# Generate health report\ndef generate_health_report():\n    report = {\n        'timestamp': datetime.now().isoformat(),\n        'services': {},\n        'summary': {\n            'total_services': 0,\n            'healthy': 0,\n            'unhealthy': 0,\n            'disabled': 0,\n            'dependency_failed': 0\n        }\n    }\n\n    for service in services:\n        name = service['name']\n\n        # Check if service is healthy\n        is_healthy, status, reason = is_service_healthy(service)\n\n        # Track restarts in the last hour\n        restarts_last_hour = restart_count[name]\n\n        # Check if max restarts are exceeded\n        if restarts_last_hour >= service['max_restarts_per_hour']:\n            status = 'disabled'\n\n        # Update report\n        report['services'][name] = {\n            'status': status,\n            'process_running': process_running,\n            'health_check_passed': health_check_passed,\n            'dependencies_met': True if all((s for s in services if s['name'] == dependency), None) else False,\n            'restarts_last_hour': restarts_last_hour,\n            'last_check': datetime.now().isoformat()\n        }\n\n    # Update summary\n    for service in report['services'].values():\n        report['summary'][service['status']] += 1\n        report['summary']['total_services'] += 1\n\n    # Save report to file\n    with open('/app/health_report.json', 'w') as f:\n        json.dump(report, f, indent=4)\n\n    return report\n\n# Log restarts\ndef log_restart(service_name, reason):\n    with open('/app/restart_log.txt', 'a') as f:\n        f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")\n\n# Main execution\nif __name__ == '__main__':\n    # Run health check for each service\n    for service in services:\n        name = service['name']\n\n        # Check if service is healthy\n        is_healthy, status, reason = is_service_healthy(service)\n\n        # If service is unhealthy, attempt to restart\n        if not is_healthy:\n            # Log restart\n            log_restart(name, reason)\n\n            # Execute restart command\n            restart_process = subprocess.run(service['restart'], shell=True, capture_output=True, text=True)\n\n            # Update restart count\n            restart_count[name] += 1\n\n            # Check if max restarts are exceeded\n            if restart_count[name] >= service['max_restarts_per_hour']:\n                print(f"Service {name} has been disabled due to exceeding max restarts.")\n\n    # Generate health report\n    generate_health_report()" > /app/service_health_monitor.py
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@68d64fed3fe7:/app# cat <<'EOF' > /app/service_health_monitor.py
+[?2004l
+
+        [?2004h> import json
+[?2004l[?2004h> import subprocess
+[?2004lt[?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004l [?2004h> # Load service configuration
+[?2004l[?2004h> with open('/app/services.json') as f:
+[?2004l,[?2004h>     services = json.load(f)
+[?2004l[?2004h> 
+[?2004lu[?2004h> # Initialize restart tracking
+[?2004l[?2004h> restart_count = {service['name']: 0 for service in services}
+[?2004l[?2004h> 
+[?2004lr[?2004h> # Define health check function
+[?2004l[?2004h> def is_service_healthy(service):
+[?2004l[?2004h>     # Check dependencies
+[?2004l[?2004h>     for dependency in service.get('dependencies', []):
+[?2004l[?2004h>         dependency_service = next((s for s in services if s['name'] == dependency), None)
+[?2004l[?2004h>         if not dependency_service:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency service not found: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l_[?2004h>         # Check if dependency process is running
+[?2004l[?2004h>         process_check = subprocess.run(['pgrep', '-f', dependency_service['process']], capture_output=True, text=True)
+[?2004l[?2004h>         if process_check.returncode != 0:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency process not running: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check health check of dependency if provided
+[?2004l[?2004h>         if 'health_check' in dependency_service:
+[?2004l[?2004h>             health_check = subprocess.run(dependency_service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>             if health_check.returncode != 0:
+[?2004l[?2004h>                 return False, 'dependency_failed', 'Dependency health check failed: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check if main process is running
+[?2004l[?2004h>     process_check = subprocess.run(['pgrep', '-f', service['process']], capture_output=True, text=True)
+[?2004l[?2004h>     process_running = process_check.returncode == 0
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check health check if provided
+[?2004l[?2004h>     health_check_passed = True
+[?2004l[?2004h>     health_check_reason = ''
+[?2004l[?2004h>     if 'health_check' in service:
+[?2004l[?2004h>         health_check = subprocess.run(service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>         health_check_passed = health_check.returncode == 0
+[?2004l[?2004h>         if not health_check_passed:
+[?2004l[?2004h>             health_check_reason = 'Health check failed: {}'.format(health_check.stderr.strip())
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Determine service status
+[?2004l[?2004h>     if not process_running:
+[?2004l[?2004h>         return False, 'unhealthy', 'Process not running'
+[?2004l[?2004h>     if not health_check_passed:
+[?2004l[?2004h>         return False, 'unhealthy', health_check_reason
+[?2004l[?2004h>     return True, 'healthy', ''
+[?2004l[?2004h> 
+[?2004l[?2004h> # Generate health report
+[?2004l[?2004h> def generate_health_report():
+[?2004l[?2004h>     report = {
+[?2004l[?2004h>         'timestamp': datetime.now().isoformat(),
+[?2004l[?2004h>         'services': {},
+[?2004l[?2004h>         'summary': {
+[?2004l[?2004h>             'total_services': 0,
+[?2004l[?2004h>             'healthy': 0,
+[?2004l[?2004h>             'unhealthy': 0,
+[?2004l[?2004h>             'disabled': 0,
+[?2004l[?2004h>             'dependency_failed': 0
+[?2004l[?2004h>         }
+[?2004l[?2004h>     }
+[?2004l[?2004h> 
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if service is healthy
+[?2004l[?2004h>         is_healthy, status, reason = is_service_healthy(service)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Track restarts in the last hour
+[?2004l[?2004h>         restarts_last_hour = restart_count[name]
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if max restarts are exceeded
+[?2004l[?2004h>         if restarts_last_hour >= service['max_restarts_per_hour']:
+[?2004l[?2004h>             status = 'disabled'
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Update report
+[?2004l[?2004h>         report['services'][name] = {
+[?2004l[?2004h>             'status': status,
+[?2004l[?2004h>             'process_running': process_running,
+[?2004l[?2004h>             'health_check_passed': health_check_passed,
+[?2004l[?2004h>             'dependencies_met': True if all((s for s in services if s['name'] == dependency), None) else False,
+[?2004l[?2004h>             'restarts_last_hour': restarts_last_hour,
+[?2004l[?2004h>             'last_check': datetime.now().isoformat()
+[?2004l[?2004h>         }
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Update summary
+[?2004l[?2004h>     for service in report['services'].values():
+[?2004l[?2004h>         report['summary'][service['status']] += 1
+[?2004l[?2004h>         report['summary']['total_services'] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Save report to file
+[?2004l[?2004h>     with open('/app/health_report.json', 'w') as f:
+[?2004l[?2004h>         json.dump(report, f, indent=4)
+[?2004l[?2004h> 
+[?2004l[?2004h>     return report
+[?2004l[?2004h> 
+[?2004l[?2004h> # Log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open('/app/restart_log.txt', 'a') as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")
+[?2004l[?2004h> 
+[?2004l[?2004h> # Main execution
+[?2004l[?2004h> if __name__ == '__main__':
+[?2004l[?2004h>     # Run health check for each service
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if service is healthy
+[?2004l[?2004h>         is_healthy, status, reason = is_service_healthy(service)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # If service is unhealthy, attempt to restart
+[?2004l[?2004h>         if not is_healthy:
+[?2004l[?2004h>             # Log restart
+[?2004l[?2004h>             log_restart(name, reason)
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Execute restart command
+[?2004l[?2004h>             restart_process = subprocess.run(service['restart'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Update restart count
+[?2004l[?2004h>             restart_count[name] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Check if max restarts are exceeded
+[?2004l[?2004h>             if restart_count[name] >= service['max_restarts_per_hour']:
+[?2004l[?2004h>                 print(f"Service {name} has been disabled due to exceeding max restarts.")
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate health report
+[?2004l[?2004h>     generate_health_report()
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@68d64fed3fe7:/app# echo "[
+[?2004l[?2004h>   {
+[?2004l[?2004h>     "name": "database_service",
+[?2004l[?2004h>     "process": "mysqld",
+[?2004l[?2004h>     "health_check": "mysql -u root -p password -e 'SELECT 1'",
+[?2004l[?2004h>     "restart": "systemctl restart mysql",
+[?2004l[?2004h>     "max_restarts_per_hour": 3,
+[?2004l[?2004h>     "dependencies": []
+[?2004l[?2004h>   },
+[?2004l[?2004h>   {
+[?2004l[?2004h>     "name": "web_server",
+[?2004l[?2004h>     "process": "nginx",
+[?2004l[?2004h>     "health_check": "curl -s http://localhost",
+[?2004l[?2004h>     "restart": "systemctl restart nginx",
+[?2004l[?2004h>     "max_restarts_per_hour": 3,
+[?2004l[?2004h>     "dependencies": ["database_service"]
+[?2004l[?2004h>   }
+[?2004l[?2004h> ]" > /app/services.json
+[?2004l[?2004hroot@68d64fed3fe7:/app# python3 /app/service_health_monitor.py
+[?2004lTraceback (most recent call last):
+  File "/app/service_health_monitor.py", line 7, in <module>
+    services = json.load(f)
+               ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 3 column 5 (char 10)
+[?2004hroot@68d64fed3fe7:/app# echo "[
+[?2004l[?2004h>   {
+[?2004l[?2004h>     "name": "database_service",
+[?2004l[?2004h>     "process": "mysqld",
+[?2004l[?2004h>     "health_check": "mysql -u root -p password -e 'SELECT 1'",
+[?2004l[?2004h>     "restart": "systemctl restart mysql",
+[?2004l[?2004h>     "max_restarts_per_hour": 3,
+[?2004l[?2004h>     "dependencies": []
+[?2004l[?2004h>   },
+[?2004l[?2004h>   {
+[?2004l[?2004h>     "name": "web_server",
+[?2004l[?2004h>     "process": "nginx",
+[?2004l[?2004h>     "health_check": "curl -s http://localhost",
+[?2004l[?2004h>     "restart": "systemctl restart nginx",
+[?2004l[?2004h>     "max_restarts_per_hour": 3,
+[?2004l[?2004h>     "dependencies": ["database_service"]
+[?2004l[?2004h>   }
+[?2004l[?2004h> ]" > /app/services.json
+[?2004l[?2004hroot@68d64fed3fe7:/app# python3 /app/service_health_monitor.py
+[?2004lTraceback (most recent call last):
+  File "/app/service_health_monitor.py", line 7, in <module>
+    services = json.load(f)
+               ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 3 column 5 (char 10)
+[?2004hroot@68d64fed3fe7:/app# echo "[\n  {\n    \"name\": \"database_service\",\n    \"process\": \"mysqld\",\n    \"health_check\": \"mysql -u root -p password -e 'SELECT 1'\",\n    \"restart\": \"systemctl restart mysql\",\n    \"max_restarts_per_hour\": 3,\n    \"dependencies\": []\n  },\n  {\n    \"name\": \"web_server\",\n    \"process\": \"nginx\",\n    \"health_check\": \"curl -s http://localhost\",\n    \"restart\": \"systemctl restart nginx\",\n    \"max_restarts_per_hour\": 3,\n    \"dependencies\": [\"database_service\"]\n  }\n]" > /app/services.json
+[?2004l[?2004hroot@68d64fed3fe7:/app# python3 /app/service_health_monitor.py
+[?2004lTraceback (most recent call last):
+  File "/app/service_health_monitor.py", line 7, in <module>
+    services = json.load(f)
+               ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 2 (char 1)
+[?2004hroot@68d64fed3fe7:/app# echo '[
+[?2004l[?2004h>   {
+[?2004l[?2004h>     "name": "database_service",
+[?2004l[?2004h>     "process": "mysqld",
+[?2004l[?2004h>     "health_check": "mysql -u root -p password -e 'SELECT 1'",
+[?2004l[?2004h>     "restart": "systemctl restart mysql",
+[?2004l[?2004h>     "max_restarts_per_hour": 3,
+[?2004l[?2004h>     "dependencies": []
+[?2004l[?2004h>   },
+[?2004l[?2004h>   {
+[?2004l[?2004h>     "name": "web_server",
+[?2004l[?2004h>     "process": "nginx",
+[?2004l[?2004h>     "health_check": "curl -s http://localhost",
+[?2004l[?2004h>     "restart": "systemctl restart nginx",
+[?2004l[?2004h>     "max_restarts_per_hour": 3,
+[?2004l[?2004h>     "dependencies": ["database_service"]
+[?2004l[?2004h>   }
+[?2004l[?2004h> ]' > /app/services.json
+[?2004l[?2004hroot@68d64fed3fe7:/app# python3 /app/service_health_monitor.py
+[?2004lTraceback (most recent call last):
+  File "/app/service_health_monitor.py", line 129, in <module>
+    generate_health_report()
+  File "/app/service_health_monitor.py", line 81, in generate_health_report
+    'process_running': process_running,
+                       ^^^^^^^^^^^^^^^
+NameError: name 'process_running' is not defined
+[?2004hroot@68d64fed3fe7:/app# cat <<'EOF' > /app/service_health_monitor.py
+[?2004l[?2004h> import json
+[?2004ly
+        is[?2004h> import subprocess
+[?2004l [?2004h> from datetime import datetime
+[?2004l[?2004h> 
+[?2004lh[?2004h> # Load service configuration
+[?2004led = is_service_he[?2004h> with open('/app/services.json') as f:
+[?2004lalthy(service)
+
+        # If service i[?2004h>     services = json.load(f)
+[?2004l[?2004h> 
+[?2004la[?2004h> # Initialize restart tracking
+[?2004l[?2004h> restart_count = {service['name']: 0 for service in services}
+[?2004l[?2004h> 
+[?2004ln[?2004h> # Define health check function
+[?2004l[?2004h> def is_service_healthy(service):
+[?2004l[?2004h>     # Check dependencies
+[?2004l[?2004h>     for dependency in service.get('dependencies', []):
+[?2004l[?2004h>         dependency_service = next((s for s in services if s['name'] == dependency), None)
+[?2004l[?2004h>         if not dependency_service:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency service not found: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if dependency process is running
+[?2004l[?2004h>         process_check = subprocess.run(['pgrep', '-f', dependency_service['process']], capture_output=True, text=True)
+[?2004l[?2004h>         if process_check.returncode != 0:
+[?2004l[?2004h>             return False, 'dependency_failed', 'Dependency process not running: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check health check of dependency if provided
+[?2004l[?2004h>         if 'health_check' in dependency_service:
+[?2004l[?2004h>             health_check = subprocess.run(dependency_service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>             if health_check.returncode != 0:
+[?2004l[?2004h>                 return False, 'dependency_failed', 'Dependency health check failed: {}'.format(dependency)
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check if main process is running
+[?2004l[?2004h>     process_check = subprocess.run(['pgrep', '-f', service['process']], capture_output=True, text=True)
+[?2004l[?2004h>     process_running = process_check.returncode == 0
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Check health check if provided
+[?2004l[?2004h>     health_check_passed = True
+[?2004l[?2004h>     health_check_reason = ''
+[?2004l[?2004h>     if 'health_check' in service:
+[?2004l[?2004h>         health_check = subprocess.run(service['health_check'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h>         health_check_passed = health_check.returncode == 0
+[?2004l[?2004h>         if not health_check_passed:
+[?2004l[?2004h>             health_check_reason = 'Health check failed: {}'.format(health_check.stderr.strip())
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Determine service status
+[?2004l[?2004h>     if not process_running:
+[?2004l[?2004h>         return False, 'unhealthy', 'Process not running'
+[?2004l[?2004h>     if not health_check_passed:
+[?2004l[?2004h>         return False, 'unhealthy', health_check_reason
+[?2004l[?2004h>     return True, 'healthy', '', process_running, health_check_passed
+[?2004l[?2004h> 
+[?2004l[?2004h> # Generate health report
+[?2004l[?2004h> def generate_health_report():
+[?2004l[?2004h>     report = {
+[?2004l[?2004h>         'timestamp': datetime.now().isoformat(),
+[?2004l[?2004h>         'services': {},
+[?2004l[?2004h>         'summary': {
+[?2004l[?2004h>             'total_services': 0,
+[?2004l[?2004h>             'healthy': 0,
+[?2004l[?2004h>             'unhealthy': 0,
+[?2004l[?2004h>             'disabled': 0,
+[?2004l[?2004h>             'dependency_failed': 0
+[?2004l[?2004h>         }
+[?2004l[?2004h>     }
+[?2004l[?2004h> 
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if service is healthy
+[?2004l[?2004h>         is_healthy, status, reason, process_running, health_check_passed = is_service_healthy(service)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Track restarts in the last hour
+[?2004l[?2004h>         restarts_last_hour = restart_count[name]
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if max restarts are exceeded
+[?2004l[?2004h>         if restarts_last_hour >= service['max_restarts_per_hour']:
+[?2004l[?2004h>             status = 'disabled'
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Update report
+[?2004l[?2004h>         report['services'][name] = {
+[?2004l[?2004h>             'status': status,
+[?2004l[?2004h>             'process_running': process_running,
+[?2004l[?2004h>             'health_check_passed': health_check_passed,
+[?2004l[?2004h>             'dependencies_met': True if all((s for s in services if s['name'] == dependency), None) else False,
+[?2004l[?2004h>             'restarts_last_hour': restarts_last_hour,
+[?2004l[?2004h>             'last_check': datetime.now().isoformat()
+[?2004l[?2004h>         }
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Update summary
+[?2004l[?2004h>     for service in report['services'].values():
+[?2004l[?2004h>         report['summary'][service['status']] += 1
+[?2004l[?2004h>         report['summary']['total_services'] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Save report to file
+[?2004l[?2004h>     with open('/app/health_report.json', 'w') as f:
+[?2004l[?2004h>         json.dump(report, f, indent=4)
+[?2004l[?2004h> 
+[?2004l[?2004h>     return report
+[?2004l[?2004h> 
+[?2004l[?2004h> # Log restarts
+[?2004l[?2004h> def log_restart(service_name, reason):
+[?2004l[?2004h>     with open('/app/restart_log.txt', 'a') as f:
+[?2004l[?2004h>         f.write(f"[{datetime.now().isoformat()}Z] RESTART: {service_name} (reason: {reason})\n")
+[?2004l[?2004h> 
+[?2004l[?2004h> # Main execution
+[?2004l[?2004h> if __name__ == '__main__':
+[?2004l[?2004h>     # Run health check for each service
+[?2004l[?2004h>     for service in services:
+[?2004l[?2004h>         name = service['name']
+[?2004l[?2004h> 
+[?2004l[?2004h>         # Check if service is healthy
+[?2004l[?2004h>         is_healthy, status, reason, process_running, health_check_passed = is_service_healthy(service)
+[?2004l[?2004h> 
+[?2004l[?2004h>         # If service is unhealthy, attempt to restart
+[?2004l[?2004h>         if not is_healthy:
+[?2004l[?2004h>             # Log restart
+[?2004l[?2004h>             log_restart(name, reason)
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Execute restart command
+[?2004l[?2004h>             restart_process = subprocess.run(service['restart'], shell=True, capture_output=True, text=True)
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Update restart count
+[?2004l[?2004h>             restart_count[name] += 1
+[?2004l[?2004h> 
+[?2004l[?2004h>             # Check if max restarts are exceeded
+[?2004l[?2004h>             if restart_count[name] >= service['max_restarts_per_hour']:
+[?2004l[?2004h>                 print(f"Service {name} has been disabled due to exceeding max restarts.")
+[?2004l[?2004h> 
+[?2004l[?2004h>     # Generate health report
+[?2004l[?2004h>     generate_health_report()
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@68d64fed3fe7:/app# python3 /app/service_health_monitor.py
+[?2004lTraceback (most recent call last):
+  File "/app/service_health_monitor.py", line 111, in <module>
+    is_healthy, status, reason, process_running, health_check_passed = is_service_healthy(service)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 5, got 3)
+[?2004hroot@68d64fed3fe7:/app# 

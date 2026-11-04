@@ -1,0 +1,96 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "8e445e48-f682-49b2-b928-205a1c014c1a",
+    "timestamp": "2026-11-04T05:46:22.669562+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 4,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793771182294,
+            "stop": 1793771182669,
+            "duration": 375
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793771182319,
+                "stop": 1793771182320,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_format",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 13,
+                "start": 1793771182320,
+                "stop": 1793771182333,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_format():\n        \"\"\"Verify output has correct format.\"\"\"\n        with open('/app/output.txt', 'r') as f:\n            lines = f.readlines()\n    \n        assert len(lines) == 4, f\"Expected 4 lines in output, got {len(lines)}\"\n    \n        # Check each line has content\n        for i, line in enumerate(lines):\n            assert line.strip(), f\"Line {i+1} is empty\"\n    \n        # Verify structure\n>       assert \"Error:\" in lines[0] or \"Traceback\" in lines[0] or \"ImportError\" in lines[0], \"First line should contain error message\"\nE       AssertionError: First line should contain error message\nE       assert ('Error:' in 'Original error message (first 5 lines only):\\n' or 'Traceback' in 'Original error message (first 5 lines only):\\n' or 'ImportError' in 'Original error message (first 5 lines only):\\n')\n\n/tests/test_outputs.py:22: AssertionError",
+                "message": "AssertionError: First line should contain error message\nassert ('Error:' in 'Original error message (first 5 lines only):\\n' or 'Traceback' in 'Original error message (first 5 lines only):\\n' or 'ImportError' in 'Original error message (first 5 lines only):\\n')"
+            },
+            {
+                "name": "test_outputs.py::test_script_runs",
+                "status": "passed",
+                "duration": 304,
+                "start": 1793771182333,
+                "stop": 1793771182637,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_requirements_changed",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793771182637,
+                "stop": 1793771182638,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_version_compatibility",
+                "status": "passed",
+                "duration": 31,
+                "start": 1793771182638,
+                "stop": 1793771182669,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

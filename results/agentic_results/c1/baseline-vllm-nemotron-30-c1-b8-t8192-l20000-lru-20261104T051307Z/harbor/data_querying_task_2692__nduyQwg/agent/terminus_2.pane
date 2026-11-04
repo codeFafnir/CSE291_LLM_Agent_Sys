@@ -1,0 +1,6 @@
+[?2004hroot@6c713828c6ee:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@6c713828c6ee:/app# clear
+[?2004l[H[J[3J[?2004hroot@6c713828c6ee:/app# echo "@prefix ex: <http://example.org/> .\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n\n# Select books with the 'Classic' genre\nSELECT ?title ?authorName\nWHERE {\n  ?book rdf:type ex:Book .\n  ?book dc:title ?title .\n  ?book dc:creator ?author .\n  ?author dc:title ?authorName .\n  ?book dc:subject "Classic" .\n}\nORDER BY ?title" > /app/classic_books_query.sparql
+[?2004l[?2004hroot@6c713828c6ee:/app# 

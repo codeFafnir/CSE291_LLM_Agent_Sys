@@ -1,0 +1,189 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pytest
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pytest in /usr/local/lib/python3.12/dist-packages (9.2.0)
+Requirement already satisfied: iniconfig>=2 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.3.1)
+Requirement already satisfied: packaging>=24 in /usr/local/lib/python3.12/dist-packages (from pytest) (26.3)
+Requirement already satisfied: pluggy<2,>=1.6 in /usr/local/lib/python3.12/dist-packages (from pytest) (1.7.0)
+Requirement already satisfied: pygments>=2.15 in /usr/local/lib/python3.12/dist-packages (from pytest) (2.21.0)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 9 items
+
+../tests/test_outputs.py .F...FF.F                                       [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_metadata_file_exists ___________________________
+
+    def test_metadata_file_exists():
+        """Verify metadata file was created."""
+        metadata_path = '/app/output/service_metadata.json'
+        assert os.path.exists(metadata_path), f"Metadata file not found at {metadata_path}"
+    
+        # Verify it's valid JSON
+        with open(metadata_path, 'r') as f:
+>           metadata = json.load(f)
+                       ^^^^^^^^^^^^
+
+/tests/test_outputs.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f80752a4830>
+s = '{\n  services: [\n\n  {\n    service_name: frontend,\n    log_date: 20240116,\n    total_entries: 6,\n    entry_distr...OR: 0\n    },\n    earliest_timestamp: 2024-01-15T08:15:05Z,\n    latest_timestamp: 2024-01-15T08:25:42Z\n  }\n\n}\n\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+___________________________ test_metadata_structure ____________________________
+
+    def test_metadata_structure():
+        """Verify metadata file has correct structure."""
+        with open('/app/output/service_metadata.json', 'r') as f:
+>           metadata = json.load(f)
+                       ^^^^^^^^^^^^
+
+/tests/test_outputs.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f80752a4830>
+s = '{\n  services: [\n\n  {\n    service_name: frontend,\n    log_date: 20240116,\n    total_entries: 6,\n    entry_distr...OR: 0\n    },\n    earliest_timestamp: 2024-01-15T08:15:05Z,\n    latest_timestamp: 2024-01-15T08:25:42Z\n  }\n\n}\n\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+________________________ test_reconstructed_log_format _________________________
+
+    def test_reconstructed_log_format():
+        """Verify reconstructed logs have correct format."""
+        # Check one reconstructed log file
+        reconstructed_files = [f for f in os.listdir('/app/output/reconstructed')
+                              if f.endswith('_summary.log')]
+    
+        if not reconstructed_files:
+            pytest.fail("No reconstructed log files found")
+    
+        sample_file = os.path.join('/app/output/reconstructed', reconstructed_files[0])
+        with open(sample_file, 'r') as f:
+            lines = f.readlines()
+    
+        # Check for summary header
+        assert len(lines) > 0, "Reconstructed log is empty"
+>       assert "SERVICE SUMMARY" in lines[0] or "Consolidated log" in lines[0], "Missing summary header"
+E       AssertionError: Missing summary header
+E       assert ('SERVICE SUMMARY' in '[INFO] 2024-01-15T08:05:12Z API service initialized\n' or 'Consolidated log' in '[INFO] 2024-01-15T08:05:12Z API service initialized\n')
+
+/tests/test_outputs.py:93: AssertionError
+___________________________ test_complete_processing ___________________________
+
+    def test_complete_processing():
+        """Verify all input files were processed."""
+        # Count input log files
+        input_count = 0
+        for root, dirs, files in os.walk('/app/logs'):
+            for file in files:
+                if file.endswith('.log'):
+                    input_count += 1
+    
+        # Check metadata reflects all files
+        with open('/app/output/service_metadata.json', 'r') as f:
+>           metadata = json.load(f)
+                       ^^^^^^^^^^^^
+
+/tests/test_outputs.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/json/__init__.py:293: in load
+    return loads(fp.read(),
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f80752a4830>
+s = '{\n  services: [\n\n  {\n    service_name: frontend,\n    log_date: 20240116,\n    total_entries: 6,\n    entry_distr...OR: 0\n    },\n    earliest_timestamp: 2024-01-15T08:15:05Z,\n    latest_timestamp: 2024-01-15T08:25:42Z\n  }\n\n}\n\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_directories_exist
+PASSED ../tests/test_outputs.py::test_corruption_report_exists
+PASSED ../tests/test_outputs.py::test_analysis_summary_exists
+PASSED ../tests/test_outputs.py::test_reconstructed_logs_created
+PASSED ../tests/test_outputs.py::test_corruption_report_content
+FAILED ../tests/test_outputs.py::test_metadata_file_exists - json.decoder.JSO...
+FAILED ../tests/test_outputs.py::test_metadata_structure - json.decoder.JSOND...
+FAILED ../tests/test_outputs.py::test_reconstructed_log_format - AssertionErr...
+FAILED ../tests/test_outputs.py::test_complete_processing - json.decoder.JSON...
+========================= 4 failed, 5 passed in 0.06s ==========================
+Some tests failed.

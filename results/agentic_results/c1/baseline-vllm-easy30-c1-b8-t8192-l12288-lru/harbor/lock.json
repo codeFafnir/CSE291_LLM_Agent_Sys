@@ -1,0 +1,1739 @@
+{
+    "schema_version": 3,
+    "created_at": "2026-11-02T10:00:26.111771Z",
+    "harbor": {
+        "version": "0.25.0",
+        "is_editable": false
+    },
+    "n_concurrent_trials": 1,
+    "retry": {
+        "max_retries": 0,
+        "exclude_exceptions": [
+            "RewardFileEmptyError",
+            "ApiUsageLimitError",
+            "VerifierTimeoutError",
+            "AgentTimeoutError",
+            "VerifierOutputParseError",
+            "AgentAuthenticationError",
+            "AgentSafetyRefusalError",
+            "RewardFileNotFoundError",
+            "UnsupportedModelParametersError",
+            "ModelNotFoundError"
+        ],
+        "wait_multiplier": 1.0,
+        "min_wait_sec": 1.0,
+        "max_wait_sec": 60.0
+    },
+    "trials": [
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-01441351c3407abfc21c48a38e28828e1b504e0c",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:126184c0c9f4c58680c35e78cd3768f83e03feddb80508fe581fc35a5338195d",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-01441351c3407abfc21c48a38e28828e1b504e0c"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-030b2e03525d68d74cb749959aac2d7f3fc0effa",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:62fd4b8b618de01ee24551cb44fec21462fff2bc3f6fa43e82c9198feda7812c",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-030b2e03525d68d74cb749959aac2d7f3fc0effa"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-0ec945d0510cdebf92cdd8999f94610772689f14",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:78591ef2d50a0354a44b8eed8e5985701708921bc0b9b954a5d4e635be629d11",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-0ec945d0510cdebf92cdd8999f94610772689f14"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-17ae386d1e185ba742eea4668ca77642e22b54c4",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:93638d31b544697d44f44ca792ef1e6869c9bf941b486cc011d6684dda4c8d3c",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-17ae386d1e185ba742eea4668ca77642e22b54c4"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-2c84be80b65d022c262956cd26fc79d8bb2f7010",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:71cdaec1fee50f2b0d44da436a173390024b50523ae56ad4461d335e81959303",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-2c84be80b65d022c262956cd26fc79d8bb2f7010"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-36456cb151894964ba1683ce7da5c35ada789970",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:f062cf9290079a046114ef5e9f10aee2d4624b812e318204786fac6da09e0da2",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-36456cb151894964ba1683ce7da5c35ada789970"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-436341a4a522dc83eb8bddd1164b764c8dd6bc45",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:a506bf284d2495e76f4499e0978445703ee4b235d0df8c665278c9582cb67f1a",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-436341a4a522dc83eb8bddd1164b764c8dd6bc45"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-457a3a9627fb9a0800d0aecf1d4713fb634a9011",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:21f930fab28a01911df47ee54b7ea8baf55941a41bece8c51e5f51127173b874",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-457a3a9627fb9a0800d0aecf1d4713fb634a9011"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-4b680b996061044e93ef5977a081661665d3360a",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:bb5552713db99e09ae758ac37c6831ab462c7998fb0a9212b07026292c6f92ff",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-4b680b996061044e93ef5977a081661665d3360a"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-50580f6e98eeb36f53f27222f7f4fdfea0b21e8d",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:6d672406d5e36aa3fc566a9c951f6c61cfff09c570bf61d90d124487ddb1d7fa",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-50580f6e98eeb36f53f27222f7f4fdfea0b21e8d"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-54e73c2f5466ef5daec3fb30922b9ac654e4ed25",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:075d977500b5f45403da1794cc1330521aaf4e45007b492d8ecc0365780f7f22",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-54e73c2f5466ef5daec3fb30922b9ac654e4ed25"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-61c39637f2f3809e1b5dad05f0c57c799dce1587",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:f58531e4e8a52308c3ca84ef764b3e17f6ea7cfdd0c01ea95005c9eed56dc8e8",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-61c39637f2f3809e1b5dad05f0c57c799dce1587"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-6682232b5c8a9d08c0e9f15bd90d41bff3875adc",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:c17c64b8349cef9815e71aaa7a12149c934118fbaa635751d76d8bfde77a9cb1",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-6682232b5c8a9d08c0e9f15bd90d41bff3875adc"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-7e91f5ef7e5712b1a3d7d5066ad6607e9debc21c",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:cb0ac5b5d9bb84b4f0aa752eb04c6a5e047e91635f4397ae54e1fe58d15c77b1",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-7e91f5ef7e5712b1a3d7d5066ad6607e9debc21c"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-8659668177f1feb65963db7a967347a79c5f9c40",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:e45aee85763936fdf15ac561790a2f9f6692d9fa26e983c226c19cabeb4e6758",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-8659668177f1feb65963db7a967347a79c5f9c40"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-8d5ea98e50cf616847f4e5a2df300395d1f719e9",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:268a14b4d5250b42fbc597c1b32a20c2a7ef2b790c4d30c3b11cf3f17e6c6de7",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-8d5ea98e50cf616847f4e5a2df300395d1f719e9"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-999529a05b202b0fd29c6fca5039a4c47a3766bb",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:72019a345ccd24ddf0808fdbc02ea37af8ea7796b41c010542323f4e96518f38",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-999529a05b202b0fd29c6fca5039a4c47a3766bb"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-a76302c11174ca081f656c63a000ffa746e350af",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:f59579b186f981596a503d84e96f091120ff49385b1016faa72b706b7faff34b",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-a76302c11174ca081f656c63a000ffa746e350af"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-abd80417728b16c6502067914d27989ee575f0ee",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:20cb05202cbcaf2478d1680ef031992fe91654fd7be354e1b91c00f496d851b2",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-abd80417728b16c6502067914d27989ee575f0ee"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-be7b9114cc9545e68fb0ee7bc63d7ec53d1a00ad",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:b379270b6357922c11e29253260a7c8632b3c1153ac388d7541e53cccab481e0",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-be7b9114cc9545e68fb0ee7bc63d7ec53d1a00ad"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-bff6b7552370b55ff76d474860eead4ab5de785a-v1151a6325649aaf997cd541ebe533b53fddf1b07",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:7fc34b5dfd5f036ea6c6fe801772081da34bf3e94c9a7dbb66f2972fb62215b6",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-bff6b7552370b55ff76d474860eead4ab5de785a-v1151a6325649aaf997cd541ebe533b53fddf1b07"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-e1df74cbc1a1d1889428b3333a3b2405c4651993",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:3385668adb16d34480972c06bf6d412387df4e22098c599d137fcd36b5bc9ad9",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-e1df74cbc1a1d1889428b3333a3b2405c4651993"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-e3c27e1817d68248043bd09d63cc31f3344a6f2c",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:c429c9adbe9c2f0cd9a0bca1ff54f788fb67b9f91b86596df0ffe488f170a787",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-e3c27e1817d68248043bd09d63cc31f3344a6f2c"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-e4728e388120b311c4ed469e4f942e0347a2689b-v264a82e2f4818e30f5a25e4da53b27ba119f62b5",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:7089df72987e087c7e729b89654203336aeddc7d545094de6b896c16a673a397",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-e4728e388120b311c4ed469e4f942e0347a2689b-v264a82e2f4818e30f5a25e4da53b27ba119f62b5"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-e52fa8d6ed1d23e36f2a86e5d3efe9aa057a1b0d",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:cd08c62de8e01f8d15f1c192e813dffd4a6244f918d85eeb160cc2ae77e2b8af",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-e52fa8d6ed1d23e36f2a86e5d3efe9aa057a1b0d"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-e6c0da61324a0c04026ffd1c031436ee2be9503a",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:4017672c7699f232b2b7b43244568982a693ec31c4fc98765b84b04beac7ea8b",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-e6c0da61324a0c04026ffd1c031436ee2be9503a"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-edb324c3d9ec3b107bf947f00e38af99d05b3e16",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:0d2b048b5d661fdd6060cf404b2eb42bdc232f13212d851e43c0d132ab5f8c25",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-edb324c3d9ec3b107bf947f00e38af99d05b3e16"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-f6cc8c263dc00329786fa516049c60d4779c4a07",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:16c964d1731ef4abaf8b4b0e9e0fff2a3e8d9cca7aa2f924d6944a4a0b864f74",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-f6cc8c263dc00329786fa516049c60d4779c4a07"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-fd18df1dd4e4360f8932bc4b894bd8b40d654e7c",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:5d2a753a56a50d7cf566843b780aa8aa2cb665dd13419348bba5167224ca4378",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-fd18df1dd4e4360f8932bc4b894bd8b40d654e7c"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        },
+        {
+            "schema_version": 2,
+            "task": {
+                "name": "instance_future-architect__vuls-fe8d252c51114e922e6836055ef86a15f79ad042",
+                "version": "1.0.0",
+                "type": "local",
+                "digest": "sha256:7255d936a3d5ae3630e90e074a87573210780e1cdde477b1d3a63c8690f49a8f",
+                "source": "tasks",
+                "path": "/data/SWE-bench_Pro-os/v2/tasks/instance_future-architect__vuls-fe8d252c51114e922e6836055ef86a15f79ad042"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "terminus-2",
+                "model_name": "openai/Qwen/Qwen3-14B-AWQ",
+                "base_url": "http://host.docker.internal:8000/v1",
+                "model_api_format": "openai_chat_completions",
+                "skip_model_parsing": false,
+                "skills": [],
+                "resume_trajectory": false,
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "model_info": {
+                        "max_input_tokens": 12288,
+                        "max_output_tokens": 2048,
+                        "input_cost_per_token": 0,
+                        "output_cost_per_token": 0
+                    },
+                    "llm_kwargs": {
+                        "max_tokens": 2048,
+                        "extra_body": {
+                            "chat_template_kwargs": {
+                                "enable_thinking": false
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "bridge_inputs": {},
+            "skills": [],
+            "environment": {
+                "type": "docker",
+                "force_build": false,
+                "delete": true,
+                "stream": false,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {},
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false,
+                "environment_mode": "shared"
+            }
+        }
+    ]
+}

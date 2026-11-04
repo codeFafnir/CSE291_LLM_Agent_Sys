@@ -1,0 +1,89 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py ..F.F                                           [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_no_sensitive_data_remaining _______________________
+
+    def test_no_sensitive_data_remaining():
+        """Verify no passwords, API keys, or email addresses remain in sanitized log."""
+        with open("/app/sanitized.log", "r") as f:
+            content = f.read()
+    
+        # Check for password values (should be [REDACTED])
+        # Common password patterns that should be removed
+        password_patterns = [
+            r'password:\s*[^\s\]]+',  # password: followed by non-space
+            r'"password":\s*"[^"]+"',  # JSON style
+            r"'password':\s*'[^']+'",  # Single quote JSON
+            r'passwd:\s*\S+',          # passwd: format
+            r'pwd:\s*\S+',             # pwd: format
+        ]
+    
+        for pattern in password_patterns:
+            matches = re.findall(pattern, content, re.IGNORECASE)
+            # Only allow matches that contain [REDACTED]
+            for match in matches:
+>               assert '[REDACTED]' in match.lower(), f"Password not redacted: {match}"
+E               AssertionError: Password not redacted: password: [REDACTED
+E               assert '[REDACTED]' in 'password: [redacted'
+E                +  where 'password: [redacted' = <built-in method lower of str object at 0x7f9ecf133530>()
+E                +    where <built-in method lower of str object at 0x7f9ecf133530> = 'password: [REDACTED'.lower
+
+/tests/test_outputs.py:46: AssertionError
+_____________________________ test_report_accuracy _____________________________
+
+    def test_report_accuracy():
+        """Verify report counts match actual sanitizations."""
+        with open("/app/security_report.json", "r") as f:
+            report = json.load(f)
+    
+        with open("/app/application.log", "r") as f:
+            original = f.read()
+    
+        with open("/app/sanitized.log", "r") as f:
+            sanitized = f.read()
+    
+        # Count passwords in original (case-insensitive)
+        password_matches = re.findall(r'password[=:\s]+([^\s\]]+)', original, re.IGNORECASE)
+        password_matches += re.findall(r'"password":\s*"([^"]+)"', original, re.IGNORECASE)
+        password_matches += re.findall(r"'password':\s*'([^']+)'", original, re.IGNORECASE)
+    
+        # Count API keys in original
+        aws_keys = re.findall(r'AKIA[0-9A-Z]{16}', original)
+    
+        # Count emails in original
+        emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', original)
+    
+        # The report should have at least these counts (some might be filtered out)
+        assert report['passwords_redacted'] >= len(password_matches), \
+            f"Report shows {report['passwords_redacted']} passwords, but found {len(password_matches)} in original"
+    
+        assert report['api_keys_redacted'] >= len(aws_keys), \
+            f"Report shows {report['api_keys_redacted']} API keys, but found {len(aws_keys)} in original"
+    
+>       assert report['emails_redacted'] >= len(emails), \
+            f"Report shows {report['emails_redacted']} emails, but found {len(emails)} in original"
+E       AssertionError: Report shows 4 emails, but found 6 in original
+E       assert 4 >= 6
+E        +  where 6 = len(['admin@example.com', 'jane.doe@company.com', 'bob.smith@test.org', 'support@domain.co.uk', 'info@organization.gov', 'user@server.local'])
+
+/tests/test_outputs.py:102: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_files_exist
+PASSED ../tests/test_outputs.py::test_report_structure
+PASSED ../tests/test_outputs.py::test_line_count_preserved
+FAILED ../tests/test_outputs.py::test_no_sensitive_data_remaining - Assertion...
+FAILED ../tests/test_outputs.py::test_report_accuracy - AssertionError: Repor...
+========================= 2 failed, 3 passed in 0.03s ==========================
+Some tests failed.

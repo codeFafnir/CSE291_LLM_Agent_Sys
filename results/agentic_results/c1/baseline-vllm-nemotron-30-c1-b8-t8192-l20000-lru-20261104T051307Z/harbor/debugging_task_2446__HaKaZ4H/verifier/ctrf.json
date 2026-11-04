@@ -1,0 +1,99 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "0542b839-c703-43b0-9a82-b43d55815d77",
+    "timestamp": "2026-11-04T05:47:37.167161+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 3,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793771257112,
+            "stop": 1793771257167,
+            "duration": 55
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793771257129,
+                "stop": 1793771257129,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_valid_json",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793771257129,
+                "stop": 1793771257130,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_structure",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 13,
+                "start": 1793771257130,
+                "stop": 1793771257143,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_structure():\n        \"\"\"Verify output has correct structure and values.\"\"\"\n        with open('/app/output.json', 'r') as f:\n            output = json.load(f)\n    \n        # Check required keys exist\n        required_keys = ['total_records', 'valid_count', 'invalid_count', 'average_value', 'status']\n        for key in required_keys:\n            assert key in output, f\"Missing required key: {key}\"\n    \n        # Check types\n        assert isinstance(output['total_records'], int), \"total_records must be integer\"\n        assert isinstance(output['valid_count'], int), \"valid_count must be integer\"\n        assert isinstance(output['invalid_count'], int), \"invalid_count must be integer\"\n        assert isinstance(output['average_value'], (int, float)), \"average_value must be number\"\n        assert isinstance(output['status'], str), \"status must be string\"\n    \n        # Check logical consistency\n>       assert output['total_records'] == output['valid_count'] + output['invalid_count'], \\\n            \"total_records should equal valid_count + invalid_count\"\nE       AssertionError: total_records should equal valid_count + invalid_count\nE       assert 10 == (8 + 3)\n\n/tests/test_outputs.py:36: AssertionError",
+                "message": "AssertionError: total_records should equal valid_count + invalid_count\nassert 10 == (8 + 3)"
+            },
+            {
+                "name": "test_outputs.py::test_script_runs_without_errors",
+                "status": "passed",
+                "duration": 20,
+                "start": 1793771257143,
+                "stop": 1793771257163,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_correctness",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793771257163,
+                "stop": 1793771257166,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_correctness():\n        \"\"\"Verify output contains correct calculations.\"\"\"\n        # Read input data\n        with open('/app/config.json', 'r') as f:\n            config = json.load(f)\n    \n        # Read output\n        with open('/app/output.json', 'r') as f:\n            output = json.load(f)\n    \n        # Calculate expected values\n        records = config.get('records', [])\n        total_records = len(records)\n    \n        valid_records = []\n        invalid_count = 0\n    \n        for record in records:\n            if isinstance(record, dict):\n                has_id = 'id' in record and isinstance(record['id'], (int, float))\n                has_value = 'value' in record and isinstance(record['value'], (int, float))\n                if has_id and has_value:\n                    valid_records.append(record)\n                else:\n                    invalid_count += 1\n            else:\n                invalid_count += 1\n    \n        valid_count = len(valid_records)\n    \n        # Calculate average if there are valid records\n        if valid_count > 0:\n            total_value = sum(float(record['value']) for record in valid_records)\n            average_value = round(total_value / valid_count, 2)\n        else:\n            average_value = 0.0\n    \n        # Check values match\n        assert output['total_records'] == total_records, \\\n            f\"total_records mismatch: expected {total_records}, got {output['total_records']}\"\n    \n>       assert output['valid_count'] == valid_count, \\\n            f\"valid_count mismatch: expected {valid_count}, got {output['valid_count']}\"\nE       AssertionError: valid_count mismatch: expected 6, got 8\nE       assert 8 == 6\n\n/tests/test_outputs.py:102: AssertionError",
+                "message": "AssertionError: valid_count mismatch: expected 6, got 8\nassert 8 == 6"
+            }
+        ]
+    }
+}

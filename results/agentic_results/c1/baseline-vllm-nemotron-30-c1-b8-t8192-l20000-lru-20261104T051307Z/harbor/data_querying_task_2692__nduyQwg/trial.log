@@ -1,0 +1,5 @@
+Skipping image OS validation for hb__8ad9faba9ec895f935e48882e253edbc: docker inspect returned 1
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/data_querying_task_2692__nduyQwg/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/data_querying_task_2692__nduyQwg/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c1-b8-t8192-l20000-lru-20261104T051307Z/harbor/data_querying_task_2692__nduyQwg/agent/trajectory.json
+Collecting main service artifacts

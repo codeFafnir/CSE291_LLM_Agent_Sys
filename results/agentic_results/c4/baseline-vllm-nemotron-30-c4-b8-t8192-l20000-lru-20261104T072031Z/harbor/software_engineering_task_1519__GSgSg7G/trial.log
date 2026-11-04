@@ -1,0 +1,16 @@
+Skipping image OS validation for hb__0165d282bdd99f42bb15c1b175b5259b: docker inspect returned 1
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Context length exceeded and summarization is OFF.
+Trajectory dumped to /data/cse291-results/baseline-vllm-nemotron-30-c4-b8-t8192-l20000-lru-20261104T072031Z/harbor/software_engineering_task_1519__GSgSg7G/agent/trajectory.json
+Trial software_engineering_task_1519__GSgSg7G failed: 
+Collecting main service artifacts

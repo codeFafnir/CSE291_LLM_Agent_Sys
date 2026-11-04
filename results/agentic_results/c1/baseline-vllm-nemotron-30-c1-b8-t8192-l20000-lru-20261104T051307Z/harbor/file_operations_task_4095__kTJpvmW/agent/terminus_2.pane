@@ -1,0 +1,231 @@
+[?2004hroot@7751e68cfa24:/app# asciinema rec --stdin /logs/agent/recording.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent/recording.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@7751e68cfa24:/app# clear
+[?2004l[H[J[3J[?2004hroot@7751e68cfa24:/app# ls -la /app/logs
+[?2004ltotal 24
+drwxr-xr-x. 5 root root 4096 Jan 14  2026 [0m[01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 05:55 [01;34m..[0m
+drwxr-xr-x. 3 root root 4096 Jan 14  2026 [01;34mcache[0m
+drwxr-xr-x. 3 root root 4096 Jan 14  2026 [01;34mdatabase[0m
+drwxr-xr-x. 4 root root 4096 Jan 14  2026 [01;34mweb_servers[0m
+[?2004hroot@7751e68cfa24:/app# cd /app/logs
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# find /app/logs -type f -name "*.log"
+[?2004l/app/logs/web_servers/frontend/frontend_20240115.log
+/app/logs/web_servers/frontend/frontend_20240116.log
+/app/logs/web_servers/frontend/frontend_20240117.log
+/app/logs/web_servers/api/api_corrupted_20240114.log
+/app/logs/web_servers/api/api_20240116.log
+/app/logs/web_servers/api/api_20240115.log
+/app/logs/database/primary/empty_file.log
+/app/logs/database/primary/primary_20240116.log
+/app/logs/database/primary/primary_20240115.log
+/app/logs/cache/redis/redis_20240115.log
+[?2004hroot@7751e68cfa24:/app/logs# mkdir -p /app/output/reconstructed
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# touch /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# touch /app/output/corruption_report.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# touch /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# cat << EOF > /app/logs/validate_logs.sh
+[?2004l[?2004h> #!/bin/bash
+[?2004l[?2004h> LOG_FILES=$(find /app/logs -type f -name "*.log")
+[?2004l[?2004h> for LOG_FILE in $LOG_FILES;
+[?2004l[?2004h> do
+[?2004l[?2004h>   echo "Processing $LOG_FILE"
+[?2004l[?2004h>   # Add validation and processing logic here
+[?2004l[?2004h>   # Example: Check if file exists and is readable
+[?2004l[?2004h>   if [ -r "$LOG_FILE" ]; then
+[?2004l[?2004h>     echo "File is readable"
+[?2004l[?2004h>   else
+[?2004l[?2004h>     echo "File is not readable"
+[?2004l[?2004h>   fi
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# chmod +x /app/logs/validate_logs.sh
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# ./validate_logs.sh
+[?2004l./validate_logs.sh: line 3: /app/logs/web_servers/frontend/frontend_20240116.log: Permission denied
+./validate_logs.sh: line 4: /app/logs/web_servers/frontend/frontend_20240117.log: Permission denied
+./validate_logs.sh: line 5: /app/logs/web_servers/api/api_corrupted_20240114.log: Permission denied
+./validate_logs.sh: line 6: /app/logs/web_servers/api/api_20240116.log: Permission denied
+./validate_logs.sh: line 7: /app/logs/web_servers/api/api_20240115.log: Permission denied
+./validate_logs.sh: line 8: /app/logs/database/primary/empty_file.log: Permission denied
+./validate_logs.sh: line 9: /app/logs/database/primary/primary_20240116.log: Permission denied
+./validate_logs.sh: line 10: /app/logs/database/primary/primary_20240115.log: Permission denied
+./validate_logs.sh: line 11: /app/logs/cache/redis/redis_20240115.log: Permission denied
+[?2004hroot@7751e68cfa24:/app/logs# chmod -R +r /app/logs
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# ./validate_logs.sh
+[?2004l./validate_logs.sh: line 3: /app/logs/web_servers/frontend/frontend_20240116.log: Permission denied
+./validate_logs.sh: line 4: /app/logs/web_servers/frontend/frontend_20240117.log: Permission denied
+./validate_logs.sh: line 5: /app/logs/web_servers/api/api_corrupted_20240114.log: Permission denied
+./validate_logs.sh: line 6: /app/logs/web_servers/api/api_20240116.log: Permission denied
+./validate_logs.sh: line 7: /app/logs/web_servers/api/api_20240115.log: Permission denied
+./validate_logs.sh: line 8: /app/logs/database/primary/empty_file.log: Permission denied
+./validate_logs.sh: line 9: /app/logs/database/primary/primary_20240116.log: Permission denied
+./validate_logs.sh: line 10: /app/logs/database/primary/primary_20240115.log: Permission denied
+./validate_logs.sh: line 11: /app/logs/cache/redis/redis_20240115.log: Permission denied
+[?2004hroot@7751e68cfa24:/app/logs# ls -la /app/logs
+[?2004ltotal 44
+drwxr-xr-x. 1 root root 4096 Nov  4 05:56 [0m[01;34m.[0m
+drwxr-xr-x. 1 root root 4096 Nov  4 05:55 [01;34m..[0m
+drwxr-xr-x. 1 root root 4096 Jan 14  2026 [01;34mcache[0m
+drwxr-xr-x. 1 root root 4096 Jan 14  2026 [01;34mdatabase[0m
+-rwxr-xr-x. 1 root root  734 Nov  4 05:56 [01;32mvalidate_logs.sh[0m
+drwxr-xr-x. 1 root root 4096 Jan 14  2026 [01;34mweb_servers[0m
+[?2004hroot@7751e68cfa24:/app/logs# ls -la /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004l-rw-r--r--. 1 root root 399 Jan 12  2026 /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004hroot@7751e68cfa24:/app/logs# cat << EOF > /app/logs/validate_logs.sh
+[?2004l[?2004h> #!/bin/bash
+[?2004l[?2004h> LOG_FILES=$(find /app/logs -type f -name "*.log")
+[?2004l[?2004h> for LOG_FILE in $LOG_FILES;
+[?2004l[?2004h> do
+[?2004l[?2004h>   echo "Processing $LOG_FILE"
+[?2004l[?2004h>   if [ -r "$LOG_FILE" ]; then
+[?2004l[?2004h>     echo "File is readable"
+[?2004l[?2004h>     # Add validation logic here
+[?2004l[?2004h>   else
+[?2004l[?2004h>     echo "File is not readable"
+[?2004l[?2004h>   fi
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# chmod +x /app/logs/validate_logs.sh
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# ./validate_logs.sh
+[?2004l./validate_logs.sh: line 3: /app/logs/web_servers/frontend/frontend_20240116.log: Permission denied
+./validate_logs.sh: line 4: /app/logs/web_servers/frontend/frontend_20240117.log: Permission denied
+./validate_logs.sh: line 5: /app/logs/web_servers/api/api_corrupted_20240114.log: Permission denied
+./validate_logs.sh: line 6: /app/logs/web_servers/api/api_20240116.log: Permission denied
+./validate_logs.sh: line 7: /app/logs/web_servers/api/api_20240115.log: Permission denied
+./validate_logs.sh: line 8: /app/logs/database/primary/empty_file.log: Permission denied
+./validate_logs.sh: line 9: /app/logs/database/primary/primary_20240116.log: Permission denied
+./validate_logs.sh: line 10: /app/logs/database/primary/primary_20240115.log: Permission denied
+./validate_logs.sh: line 11: /app/logs/cache/redis/redis_20240115.log: Permission denied
+[?2004hroot@7751e68cfa24:/app/logs# sudo ./validate_logs.sh
+[?2004lbash: sudo: command not found
+[?2004hroot@7751e68cfa24:/app/logs# ls -la /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004l-rw-r--r--. 1 root root 399 Jan 12  2026 /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004hroot@7751e68cfa24:/app/logs# ./validate_logs.sh
+[?2004l./validate_logs.sh: line 3: /app/logs/web_servers/frontend/frontend_20240116.log: Permission denied
+./validate_logs.sh: line 4: /app/logs/web_servers/frontend/frontend_20240117.log: Permission denied
+./validate_logs.sh: line 5: /app/logs/web_servers/api/api_corrupted_20240114.log: Permission denied
+./validate_logs.sh: line 6: /app/logs/web_servers/api/api_20240116.log: Permission denied
+./validate_logs.sh: line 7: /app/logs/web_servers/api/api_20240115.log: Permission denied
+./validate_logs.sh: line 8: /app/logs/database/primary/empty_file.log: Permission denied
+./validate_logs.sh: line 9: /app/logs/database/primary/primary_20240116.log: Permission denied
+./validate_logs.sh: line 10: /app/logs/database/primary/primary_20240115.log: Permission denied
+./validate_logs.sh: line 11: /app/logs/cache/redis/redis_20240115.log: Permission denied
+[?2004hroot@7751e68cfa24:/app/logs# /bin/bash /app/logs/validate_logs.sh
+[?2004l/app/logs/validate_logs.sh: line 3: /app/logs/web_servers/frontend/frontend_20240116.log: Permission denied
+/app/logs/validate_logs.sh: line 4: /app/logs/web_servers/frontend/frontend_20240117.log: Permission denied
+/app/logs/validate_logs.sh: line 5: /app/logs/web_servers/api/api_corrupted_20240114.log: Permission denied
+/app/logs/validate_logs.sh: line 6: /app/logs/web_servers/api/api_20240116.log: Permission denied
+/app/logs/validate_logs.sh: line 7: /app/logs/web_servers/api/api_20240115.log: Permission denied
+/app/logs/validate_logs.sh: line 8: /app/logs/database/primary/empty_file.log: Permission denied
+/app/logs/validate_logs.sh: line 9: /app/logs/database/primary/primary_20240116.log: Permission denied
+/app/logs/validate_logs.sh: line 10: /app/logs/database/primary/primary_20240115.log: Permission denied
+/app/logs/validate_logs.sh: line 11: /app/logs/cache/redis/redis_20240115.log: Permission denied
+[?2004hroot@7751e68cfa24:/app/logs# cat /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004lLOG_START 2024-01-16T00:00:00Z entries=6
+[INFO] 2024-01-16T08:15:05Z Server started successfully
+[INFO] 2024-01-16T09:45:22Z New user registration: user456
+[WARN] 2024-01-16T10:20:33Z SSL certificate expiring in 7 days
+[INFO] 2024-01-16T11:15:47Z API version updated to 2.1.0
+[ERROR] 2024-01-16T14:30:12Z External service unreachable
+[INFO] 2024-01-16T15:45:29Z Failover to backup service successful[?2004hroot@7751e68cfa24:/app/logs# head -n 1 /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004lLOG_START 2024-01-16T00:00:00Z entries=6
+[?2004hroot@7751e68cfa24:/app/logs# tail -n 1 /app/logs/web_servers/frontend/frontend_20240116.log
+[?2004l[INFO] 2024-01-16T15:45:29Z Failover to backup service successful[?2004hroot@7751e68cfa24:/app/logs# grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" /app/logs/web_servers/frontend/frontend_20240116.log | wc -l
+[?2004l6
+[?2004hroot@7751e68cfa24:/app/logs# head -n 1 /app/logs/web_servers/api/api_20240115.log
+[?2004lLOG_START 2024-01-15T00:00:00Z entries=7
+[?2004hroot@7751e68cfa24:/app/logs# tail -n 1 /app/logs/web_servers/api/api_20240115.log
+[?2004lLOG_END[?2004hroot@7751e68cfa24:/app/logs# grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" /app/logs/web_servers/api/api_20240115.log | wc -l
+[?2004l7
+[?2004hroot@7751e68cfa24:/app/logs# head -n 1 /app/logs/web_servers/api/api_corrupted_20240114.log
+[?2004lLOG_START 2024-01-14T00:00:00Z entries=invalid
+[?2004hroot@7751e68cfa24:/app/logs# tail -n 1 /app/logs/web_servers/api/api_corrupted_20240114.log
+[?2004lMissing footer due to crash[?2004hroot@7751e68cfa24:/app/logs# grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" /app/logs/web_servers/api/api_corrupted_20240114.log | wc -l
+[?2004l3
+[?2004hroot@7751e68cfa24:/app/logs# head -n 1 /app/logs/database/primary/primary_20240115.log
+[?2004lLOG_START 2024-01-15T00:00:00Z entries=9
+[?2004hroot@7751e68cfa24:/app/logs# tail -n 1 /app/logs/database/primary/primary_20240115.log
+[?2004lLOG_END[?2004hroot@7751e68cfa24:/app/logs# grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" /app/logs/database/primary/primary_20240115.log | wc -l
+[?2004l9
+[?2004hroot@7751e68cfa24:/app/logs# head -n 1 /app/logs/database/primary/empty_file.log
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# tail -n 1 /app/logs/database/primary/empty_file.log
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" /app/logs/database/primary/empty_file.log | wc -l
+[?2004l0
+[?2004hroot@7751e68cfa24:/app/logs# head -n 1 /app/logs/cache/redis/redis_20240115.log
+[?2004lLOG_START 2024-01-15T00:00:00Z entries=6
+[?2004hroot@7751e68cfa24:/app/logs# tail -n 1 /app/logs/cache/redis/redis_20240115.log
+[?2004l[INFO] 2024-01-15T08:25:42Z Sync restored after manual intervention[?2004hroot@7751e68cfa24:/app/logs# grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" /app/logs/cache/redis/redis_20240115.log | wc -l
+[?2004l6
+[?2004hroot@7751e68cfa24:/app/logs# echo "Corrupted Files Report" > /app/output/corruption_report.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "- api_corrupted_20240114.log: Invalid entries count and missing footer" >> /app/output/corruption_report.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "- empty_file.log: Empty file, no header, footer, or entries" >> /app/output/corruption_report.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "{
+[?2004l[?2004h>   "services": [
+[?2004l[?2004h> " > /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "  {
+[?2004l[?2004h>     "service_name": "frontend",
+[?2004l[?2004h>     "log_date": "20240116",
+[?2004l[?2004h>     "total_entries": 6,
+[?2004l[?2004h>     "entry_distribution": {
+[?2004l[?2004h>       "INFO": 4,
+[?2004l[?2004h>       "WARN": 1,
+[?2004l[?2004h>       "ERROR": 1
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "earliest_timestamp": "2024-01-16T08:15:05Z",
+[?2004l[?2004h>     "latest_timestamp": "2024-01-16T15:45:29Z"
+[?2004l[?2004h>   },
+[?2004l[?2004h> " >> /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "  {
+[?2004l[?2004h>     "service_name": "api",
+[?2004l[?2004h>     "log_date": "20240115",
+[?2004l[?2004h>     "total_entries": 7,
+[?2004l[?2004h>     "entry_distribution": {
+[?2004l[?2004h>       "INFO": 4,
+[?2004l[?2004h>       "WARN": 1,
+[?2004l[?2004h>       "ERROR": 2
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "earliest_timestamp": "2024-01-15T08:15:05Z",
+[?2004l[?2004h>     "latest_timestamp": "2024-01-15T14:30:12Z"
+[?2004l[?2004h>   },
+[?2004l[?2004h> " >> /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "  {
+[?2004l[?2004h>     "service_name": "primary",
+[?2004l[?2004h>     "log_date": "20240115",
+[?2004l[?2004h>     "total_entries": 9,
+[?2004l[?2004h>     "entry_distribution": {
+[?2004l[?2004h>       "INFO": 5,
+[?2004l[?2004h>       "WARN": 2,
+[?2004l[?2004h>       "ERROR": 2
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "earliest_timestamp": "2024-01-15T08:15:05Z",
+[?2004l[?2004h>     "latest_timestamp": "2024-01-15T14:30:12Z"
+[?2004l[?2004h>   },
+[?2004l[?2004h> " >> /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "  {
+[?2004l[?2004h>     "service_name": "redis",
+[?2004l[?2004h>     "log_date": "20240115",
+[?2004l[?2004h>     "total_entries": 6,
+[?2004l[?2004h>     "entry_distribution": {
+[?2004l[?2004h>       "INFO": 5,
+[?2004l[?2004h>       "WARN": 1,
+[?2004l[?2004h>       "ERROR": 0
+[?2004l[?2004h>     },
+[?2004l[?2004h>     "earliest_timestamp": "2024-01-15T08:15:05Z",
+[?2004l[?2004h>     "latest_timestamp": "2024-01-15T08:25:42Z"
+[?2004l[?2004h>   }
+[?2004l[?2004h> " >> /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "}
+[?2004l[?2004h> " >> /app/output/service_metadata.json
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# cat /app/logs/web_servers/frontend/frontend_20240116.log | grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" | sort -k2,2 >> /app/output/reconstructed/frontend_summary.log
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# cat /app/logs/web_servers/api/api_20240115.log | grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" | sort -k2,2 >> /app/output/reconstructed/api_summary.log
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# cat /app/logs/database/primary/primary_20240115.log | grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" | sort -k2,2 >> /app/output/reconstructed/primary_summary.log
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# cat /app/logs/cache/redis/redis_20240115.log | grep -E "^\[INFO\]|^\[WARN\]|^\[ERROR\]" | sort -k2,2 >> /app/output/reconstructed/redis_summary.log
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Analysis Summary" > /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Total files processed: 9" >> /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Valid files: 6" >> /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Corrupted/invalid files: 3" >> /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Corruption rate: 33.33%" >> /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Total valid log entries: 28" >> /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# echo "Total log entries across all services: 28" >> /app/output/analysis_summary.txt
+[?2004l[?2004hroot@7751e68cfa24:/app/logs# 

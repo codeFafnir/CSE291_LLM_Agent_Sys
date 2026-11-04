@@ -1,0 +1,199 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pyyaml
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pyyaml in /usr/local/lib/python3.12/dist-packages (6.0.3)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 6 items
+
+../tests/test_outputs.py ..FFF.                                          [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_validation_json_correct _________________________
+
+    def test_validation_json_correct():
+        """Verify validation.json correctly identifies allowed/disallowed imports."""
+        with open('/app/output/validation.json', 'r') as f:
+            validation = json.load(f)
+    
+        # Check structure
+        assert 'valid_files' in validation
+        assert 'invalid_files' in validation
+        assert 'validation_passed' in validation
+    
+        # Types
+        assert isinstance(validation['valid_files'], list)
+        assert isinstance(validation['invalid_files'], dict)
+        assert isinstance(validation['validation_passed'], bool)
+    
+        # Load allowed modules
+        with open('/app/allowed_modules.txt', 'r') as f:
+            allowed_modules = {line.strip() for line in f if line.strip()}
+    
+        # Load all source files to verify
+        source_dir = '/app/sources/'
+        for filename in os.listdir(source_dir):
+            filepath = os.path.join(source_dir, filename)
+    
+            # Parse file based on extension
+            if filename.endswith('.json'):
+                with open(filepath, 'r') as f:
+                    data = json.load(f)
+                    imports = set(data.get('imports', []))
+            elif filename.endswith('.yaml'):
+                with open(filepath, 'r') as f:
+                    data = yaml.safe_load(f)
+                    imports = set(data.get('imports', []))
+            elif filename.endswith('.txt'):
+                with open(filepath, 'r') as f:
+                    content = f.read()
+                    imports_line = None
+                    for line in content.split('\n'):
+                        if line.startswith('IMPORTS:'):
+                            imports_line = line
+                            break
+                    if imports_line:
+                        imports_str = imports_line.split(':', 1)[1].strip()
+                        imports = set(m.strip() for m in imports_str.split(',') if m.strip())
+                    else:
+                        imports = set()
+    
+            # Check if validation matches expectations
+            disallowed_imports = imports - allowed_modules
+    
+            if disallowed_imports:
+                # File should be in invalid_files
+                assert filename in validation['invalid_files'], \
+                    f"File {filename} has disallowed imports but not in invalid_files"
+                reported_disallowed = set(validation['invalid_files'][filename])
+                assert disallowed_imports == reported_disallowed, \
+                    f"Mismatch in disallowed imports for {filename}"
+            else:
+                # File should be in valid_files
+>               assert filename in validation['valid_files'], \
+                    f"File {filename} has all allowed imports but not in valid_files"
+E               AssertionError: File utils.txt has all allowed imports but not in valid_files
+E               assert 'utils.txt' in ['circular2.yaml', 'module2.yaml', 'circular1.json', 'math.yaml', 'module1.json']
+
+/tests/test_outputs.py:101: AssertionError
+____________________________ test_build_order_valid ____________________________
+
+    def test_build_order_valid():
+        """Verify build_order.txt represents valid build order considering dependencies."""
+        # Load graph
+        with open('/app/output/graph.json', 'r') as f:
+            graph_data = json.load(f)
+    
+        graph = graph_data['graph']
+    
+        # Load build order
+        with open('/app/output/build_order.txt', 'r') as f:
+            content = f.read()
+    
+        # Parse build order lines (skip comments and empty lines)
+        build_order = []
+        in_circular_section = False
+        circular_files = []
+    
+        for line in content.split('\n'):
+            line = line.strip()
+            if not line or line.startswith('#'):
+                if 'Circular dependencies' in line:
+                    in_circular_section = True
+                continue
+    
+            if in_circular_section:
+                circular_files.append(line)
+            else:
+                build_order.append(line)
+    
+        all_files = set(build_order + circular_files)
+    
+        # Verify all files from graph are in build order
+>       assert set(graph.keys()).issubset(all_files), \
+            "Not all files from graph are in build order"
+E       AssertionError: Not all files from graph are in build order
+E       assert False
+E        +  where False = <built-in method issubset of set object at 0x7f062a54cac0>({'file1.json', 'file2.yaml', 'file3.txt'})
+E        +    where <built-in method issubset of set object at 0x7f062a54cac0> = {'circular1.json', 'circular2.yaml', 'logging.json', 'module1.json', 'module2.yaml', 'utils.txt'}.issubset
+E        +      where {'circular1.json', 'circular2.yaml', 'logging.json', 'module1.json', 'module2.yaml', 'utils.txt'} = set(dict_keys(['circular2.yaml', 'module2.yaml', 'utils.txt', 'logging.json', 'circular1.json', 'module1.json']))
+E        +        where dict_keys(['circular2.yaml', 'module2.yaml', 'utils.txt', 'logging.json', 'circular1.json', 'module1.json']) = <built-in method keys of dict object at 0x7f062a7bdfc0>()
+E        +          where <built-in method keys of dict object at 0x7f062a7bdfc0> = {'circular2.yaml': ['circular1'], 'module2.yaml': ['module1', 'logging'], 'utils.txt': [''], 'logging.json': ['forbidden_external'], ...}.keys
+
+/tests/test_outputs.py:141: AssertionError
+______________________ test_makefile_dependencies_correct ______________________
+
+    def test_makefile_dependencies_correct():
+        """Verify Makefile.snippet has correct dependency chains."""
+        # Load graph
+        with open('/app/output/graph.json', 'r') as f:
+            graph_data = json.load(f)
+    
+        graph = graph_data['graph']
+    
+        # Parse Makefile
+        with open('/app/output/Makefile.snippet', 'r') as f:
+            makefile = f.read()
+    
+        lines = makefile.split('\n')
+    
+        # Extract targets and their dependencies
+        targets = {}
+        current_target = None
+    
+        for line in lines:
+            line = line.strip()
+    
+            if not line or line.startswith('@echo'):
+                continue
+    
+            # Check if it's a target line (ends with :)
+            if ':' in line and not line.startswith('\t'):
+                parts = line.split(':')
+                target = parts[0].strip()
+                deps = [d.strip() for d in parts[1].split()] if len(parts) > 1 else []
+                targets[target] = deps
+                current_target = target
+    
+        # Check compile_all target exists and includes all files
+        assert 'compile_all' in targets, "Missing compile_all target"
+    
+        # Verify each target's dependencies match the graph
+        for target, deps in targets.items():
+            if target == 'compile_all':
+                continue
+    
+            # Get expected dependencies from graph (only those that are also targets)
+            expected_deps = set(graph.get(target, [])) & set(targets.keys())
+    
+            # Compare (order doesn't matter in Makefile)
+>           assert set(deps) == expected_deps, \
+                f"Makefile dependencies for {target} don't match graph: expected {expected_deps}, got {set(deps)}"
+E           AssertionError: Makefile dependencies for circular2.yaml don't match graph: expected set(), got {'circular1'}
+E           assert {'circular1'} == set()
+E             
+E             Extra items in the left set:
+E             'circular1'
+E             Use -v to get more diff
+
+/tests/test_outputs.py:207: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_files_exist
+PASSED ../tests/test_outputs.py::test_graph_json_structure
+PASSED ../tests/test_outputs.py::test_end_to_end_processing
+FAILED ../tests/test_outputs.py::test_validation_json_correct - AssertionErro...
+FAILED ../tests/test_outputs.py::test_build_order_valid - AssertionError: Not...
+FAILED ../tests/test_outputs.py::test_makefile_dependencies_correct - Asserti...
+========================= 3 failed, 3 passed in 0.06s ==========================
+Some tests failed.

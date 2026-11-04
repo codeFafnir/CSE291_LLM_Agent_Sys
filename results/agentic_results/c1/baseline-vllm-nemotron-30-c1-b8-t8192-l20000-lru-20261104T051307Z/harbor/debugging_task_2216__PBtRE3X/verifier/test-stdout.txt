@@ -1,0 +1,55 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: pyyaml>=6.0
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pyyaml>=6.0 in /usr/local/lib/python3.12/dist-packages (6.0.3)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py .F...                                           [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_output_format ______________________________
+
+    def test_output_format():
+        """Verify output has correct format."""
+        with open('/app/output.txt', 'r') as f:
+            lines = f.readlines()
+    
+        assert len(lines) == 4, f"Expected 4 lines in output, got {len(lines)}"
+    
+        # Check each line has content
+        for i, line in enumerate(lines):
+            assert line.strip(), f"Line {i+1} is empty"
+    
+        # Verify structure
+>       assert "Error:" in lines[0] or "Traceback" in lines[0] or "ImportError" in lines[0], "First line should contain error message"
+E       AssertionError: First line should contain error message
+E       assert ('Error:' in 'Original error message (first 5 lines only):\n' or 'Traceback' in 'Original error message (first 5 lines only):\n' or 'ImportError' in 'Original error message (first 5 lines only):\n')
+
+/tests/test_outputs.py:22: AssertionError
+=============================== warnings summary ===============================
+test_outputs.py::test_version_compatibility
+  /tests/test_outputs.py:57: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_exists
+PASSED ../tests/test_outputs.py::test_script_runs
+PASSED ../tests/test_outputs.py::test_requirements_changed
+PASSED ../tests/test_outputs.py::test_version_compatibility
+FAILED ../tests/test_outputs.py::test_output_format - AssertionError: First l...
+==================== 1 failed, 4 passed, 1 warning in 0.37s ====================
+Some tests failed.

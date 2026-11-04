@@ -1,0 +1,105 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: rdflib
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Collecting rdflib
+  Using cached rdflib-7.6.0-py3-none-any.whl.metadata (12 kB)
+Collecting pyparsing<4,>=2.1.0 (from rdflib)
+  Using cached pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+Using cached rdflib-7.6.0-py3-none-any.whl (615 kB)
+Using cached pyparsing-3.3.3-py3-none-any.whl (126 kB)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Installing collected packages: pyparsing, rdflib
+Successfully installed pyparsing-3.3.3 rdflib-7.6.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 5 items
+
+../tests/test_outputs.py ..F..                                           [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_query_results_correct __________________________
+
+    def test_query_results_correct():
+        """Verify the SPARQL query returns correct results."""
+        # Load the RDF data
+        g = rdflib.Graph()
+        g.parse('/app/library.ttl', format='turtle')
+    
+        # Define expected namespace (from the data)
+        ex = rdflib.Namespace("http://example.org/library#")
+    
+        # Execute a verification query to check expected results
+        query = """
+        PREFIX ex: <http://example.org/library#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    
+        SELECT ?title ?author ?year WHERE {
+          ?book a ex:Book ;
+                ex:title ?title ;
+                ex:author ?author ;
+                ex:publicationYear ?year ;
+                ex:genre ?genre .
+    
+          ?author ex:nationality ?nationality .
+    
+          FILTER(?year > 2015)
+          FILTER(?genre = "Fiction")
+          FILTER(?nationality = "American")
+        }
+        ORDER BY ?year ?title
+        """
+    
+        results = list(g.query(query))
+    
+        # Load agent's results
+        agent_results = []
+        with open('/app/query_results.csv', 'r') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                agent_results.append((row['bookTitle'], row['authorName'], int(row['publicationYear'])))
+    
+        # Convert query results to same format
+        expected_results = []
+        for row in results:
+            title = str(row[0])
+            author = str(row[1])
+            year = int(row[2])
+            expected_results.append((title, author, year))
+    
+        # Sort both for comparison
+        agent_results.sort(key=lambda x: (x[2], x[0]))
+        expected_results.sort(key=lambda x: (x[2], x[0]))
+    
+>       assert agent_results == expected_results, \
+            f"Results don't match. Expected {len(expected_results)} rows, got {len(agent_results)}"
+E       AssertionError: Results don't match. Expected 3 rows, got 3
+E       assert [('Circe', 'M...Owens', 2018)] == [('Circe', 'h...thor6', 2018)]
+E         
+E         At index 0 diff: ('Circe', 'Madeline Miller', 2018) != ('Circe', 'http://example.org/library#author2', 2018)
+E         Use -v to get more diff
+
+/tests/test_outputs.py:74: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.12/dist-packages/_pytest/compat.py:249
+  /usr/local/lib/python3.12/dist-packages/_pytest/compat.py:249: UserWarning: Code: _mock_name is not defined in namespace XSD
+    return getattr(object, name, default)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_output_files_exist
+PASSED ../tests/test_outputs.py::test_csv_format_correct
+PASSED ../tests/test_outputs.py::test_explanation_exists
+PASSED ../tests/test_outputs.py::test_csv_sorted_correctly
+FAILED ../tests/test_outputs.py::test_query_results_correct - AssertionError:...
+==================== 1 failed, 4 passed, 1 warning in 0.16s ====================
+Some tests failed.

@@ -1,0 +1,153 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "0c4a0610-2dfa-48c6-844f-037913ee6205",
+    "timestamp": "2026-11-04T05:58:55.153073+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 5,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793771935088,
+            "stop": 1793771935152,
+            "duration": 64
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_directories_exist",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793771935108,
+                "stop": 1793771935109,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_metadata_file_exists",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 20,
+                "start": 1793771935109,
+                "stop": 1793771935129,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_metadata_file_exists():\n        \"\"\"Verify metadata file was created.\"\"\"\n        metadata_path = '/app/output/service_metadata.json'\n        assert os.path.exists(metadata_path), f\"Metadata file not found at {metadata_path}\"\n    \n        # Verify it's valid JSON\n        with open(metadata_path, 'r') as f:\n>           metadata = json.load(f)\n                       ^^^^^^^^^^^^\n\n/tests/test_outputs.py:20: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f80752a4830>\ns = '{\\n  services: [\\n\\n  {\\n    service_name: frontend,\\n    log_date: 20240116,\\n    total_entries: 6,\\n    entry_distr...OR: 0\\n    },\\n    earliest_timestamp: 2024-01-15T08:15:05Z,\\n    latest_timestamp: 2024-01-15T08:25:42Z\\n  }\\n\\n}\\n\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)"
+            },
+            {
+                "name": "test_outputs.py::test_corruption_report_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793771935129,
+                "stop": 1793771935129,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_analysis_summary_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793771935130,
+                "stop": 1793771935130,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_reconstructed_logs_created",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793771935130,
+                "stop": 1793771935131,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_metadata_structure",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 9,
+                "start": 1793771935131,
+                "stop": 1793771935140,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_metadata_structure():\n        \"\"\"Verify metadata file has correct structure.\"\"\"\n        with open('/app/output/service_metadata.json', 'r') as f:\n>           metadata = json.load(f)\n                       ^^^^^^^^^^^^\n\n/tests/test_outputs.py:65: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f80752a4830>\ns = '{\\n  services: [\\n\\n  {\\n    service_name: frontend,\\n    log_date: 20240116,\\n    total_entries: 6,\\n    entry_distr...OR: 0\\n    },\\n    earliest_timestamp: 2024-01-15T08:15:05Z,\\n    latest_timestamp: 2024-01-15T08:25:42Z\\n  }\\n\\n}\\n\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)"
+            },
+            {
+                "name": "test_outputs.py::test_reconstructed_log_format",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793771935140,
+                "stop": 1793771935143,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_reconstructed_log_format():\n        \"\"\"Verify reconstructed logs have correct format.\"\"\"\n        # Check one reconstructed log file\n        reconstructed_files = [f for f in os.listdir('/app/output/reconstructed')\n                              if f.endswith('_summary.log')]\n    \n        if not reconstructed_files:\n            pytest.fail(\"No reconstructed log files found\")\n    \n        sample_file = os.path.join('/app/output/reconstructed', reconstructed_files[0])\n        with open(sample_file, 'r') as f:\n            lines = f.readlines()\n    \n        # Check for summary header\n        assert len(lines) > 0, \"Reconstructed log is empty\"\n>       assert \"SERVICE SUMMARY\" in lines[0] or \"Consolidated log\" in lines[0], \"Missing summary header\"\nE       AssertionError: Missing summary header\nE       assert ('SERVICE SUMMARY' in '[INFO] 2024-01-15T08:05:12Z API service initialized\\n' or 'Consolidated log' in '[INFO] 2024-01-15T08:05:12Z API service initialized\\n')\n\n/tests/test_outputs.py:93: AssertionError",
+                "message": "AssertionError: Missing summary header\nassert ('SERVICE SUMMARY' in '[INFO] 2024-01-15T08:05:12Z API service initialized\\n' or 'Consolidated log' in '[INFO] 2024-01-15T08:05:12Z API service initialized\\n')"
+            },
+            {
+                "name": "test_outputs.py::test_corruption_report_content",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793771935143,
+                "stop": 1793771935144,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_complete_processing",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 8,
+                "start": 1793771935144,
+                "stop": 1793771935152,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_complete_processing():\n        \"\"\"Verify all input files were processed.\"\"\"\n        # Count input log files\n        input_count = 0\n        for root, dirs, files in os.walk('/app/logs'):\n            for file in files:\n                if file.endswith('.log'):\n                    input_count += 1\n    \n        # Check metadata reflects all files\n        with open('/app/output/service_metadata.json', 'r') as f:\n>           metadata = json.load(f)\n                       ^^^^^^^^^^^^\n\n/tests/test_outputs.py:133: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f80752a4830>\ns = '{\\n  services: [\\n\\n  {\\n    service_name: frontend,\\n    log_date: 20240116,\\n    total_entries: 6,\\n    entry_distr...OR: 0\\n    },\\n    earliest_timestamp: 2024-01-15T08:15:05Z,\\n    latest_timestamp: 2024-01-15T08:25:42Z\\n  }\\n\\n}\\n\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n>           obj, end = self.scan_once(s, idx)\n                       ^^^^^^^^^^^^^^^^^^^^^^\nE           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)\n\n/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)"
+            }
+        ]
+    }
+}

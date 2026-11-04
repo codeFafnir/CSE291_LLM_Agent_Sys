@@ -1,0 +1,351 @@
+Installing pytest...
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Installing test dependencies from /tests/test_requirements.txt...
+  Installing: numpy
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (2.5.4)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+  Installing: pandas
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (3.1.0)
+Requirement already satisfied: numpy>=2.0.2 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.5.4)
+Requirement already satisfied: python-dateutil>=2.9.0 in /usr/local/lib/python3.12/dist-packages (from pandas) (4.0.0)
+Requirement already satisfied: tzdata in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.9.0->pandas) (2026.6)
+WARNING: Skipping /usr/lib/python3.12/dist-packages/asciinema-2.4.0.dist-info due to invalid metadata entry 'name'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Test dependencies installed.
+Running pytest...
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tests
+plugins: json-ctrf-0.6.1
+collected 4 items
+
+../tests/test_outputs.py FFFF                                            [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_output_exists ______________________________
+
+    def test_output_exists():
+        """Verify output files were created."""
+>       assert os.path.exists('/app/output/results.json'), "results.json not found"
+E       AssertionError: results.json not found
+E       assert False
+E        +  where False = <function exists at 0x7fa2e146b560>('/app/output/results.json')
+E        +    where <function exists at 0x7fa2e146b560> = <module 'posixpath' (frozen)>.exists
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:67: AssertionError
+_____________________________ test_json_structure ______________________________
+
+    def test_json_structure():
+        """Verify JSON structure matches specification."""
+>       with open('/app/output/results.json', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/output/results.json'
+
+/tests/test_outputs.py:72: FileNotFoundError
+__________________________ test_numerical_correctness __________________________
+
+    def test_numerical_correctness():
+        """Verify numerical calculations are correct."""
+        params = read_input()
+        ref = reference_simulation(params)
+    
+>       with open('/app/output/results.json', 'r') as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/output/results.json'
+
+/tests/test_outputs.py:109: FileNotFoundError
+_______________________________ test_csv_format ________________________________
+
+    def test_csv_format():
+        """Verify CSV file format and content."""
+        params = read_input()
+        ref = reference_simulation(params)
+    
+        # Read CSV
+>       df = pd.read_csv('/app/output/trajectory.csv')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:1866: in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:423: in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:2721: in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py:2988: in _make_engine
+    self.handles = get_handle(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path_or_buf = '/app/output/trajectory.csv', mode = 'rb', encoding = 'utf-8'
+compression = None, memory_map = False, is_text = False, errors = 'strict'
+storage_options = None
+
+    def get_handle(
+        path_or_buf: FilePath | BaseBuffer,
+        mode: str,
+        *,
+        encoding: str | None = None,
+        compression: CompressionOptions | None = None,
+        memory_map: bool = False,
+        is_text: bool = True,
+        errors: str | None = None,
+        storage_options: StorageOptions | None = None,
+    ) -> IOHandles[str] | IOHandles[bytes]:
+        """
+        Get file handle for given path/buffer and mode.
+    
+        Parameters
+        ----------
+        path_or_buf : str or file handle
+            File path or object.
+        mode : str
+            Mode to open path_or_buf with.
+        encoding : str or None
+            Encoding to use.
+        compression : str or dict, default 'infer'
+            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'
+            is path-like, then detect compression from the following extensions: '.gz',
+            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'
+            (otherwise no compression).
+            Set to ``None`` for no compression.
+            Can also be a dict with key ``'method'`` set
+            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}
+            and other key-value pairs are forwarded to
+            ``zipfile.ZipFile``, ``gzip.GzipFile``,
+            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or
+            ``tarfile.TarFile``, respectively.
+            As an example, the following could be passed for faster compression and to
+            create a reproducible gzip archive:
+            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.
+    
+               May be a dict with key 'method' as compression mode
+               and other keys as compression options if compression
+               mode is 'zip'.
+    
+               Passing compression options as keys in dict is
+               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.
+    
+        memory_map : bool, default False
+            See parsers._parser_params for more information. Only used by read_csv.
+        is_text : bool, default True
+            Whether the type of the content passed to the file/buffer is string or
+            bytes. This is not the same as `"b" not in mode`. If a string content is
+            passed to a binary file/buffer, a wrapper is inserted.
+        errors : str, default 'strict'
+            Specifies how encoding and decoding errors are to be handled.
+            See the errors argument for :func:`open` for a full list
+            of options.
+        storage_options: StorageOptions = None
+            Passed to _get_filepath_or_buffer
+    
+        Returns the dataclass IOHandles
+        """
+        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior
+        encoding = encoding or "utf-8"
+    
+        errors = errors or "strict"
+    
+        # read_csv does not know whether the buffer is opened in binary/text mode
+        if _is_binary_mode(path_or_buf, mode) and "b" not in mode:
+            mode += "b"
+    
+        # validate encoding and errors
+        codecs.lookup(encoding)
+        if isinstance(errors, str):
+            codecs.lookup_error(errors)
+    
+        # open URLs
+        ioargs = _get_filepath_or_buffer(
+            path_or_buf,
+            encoding=encoding,
+            compression=compression,
+            mode=mode,
+            storage_options=storage_options,
+        )
+    
+        handle = ioargs.filepath_or_buffer
+        handles: list[BaseBuffer] = []
+        completed = False
+    
+        try:
+            # memory mapping needs to be the first step
+            # only used for read_csv
+            handle, memory_map, handles = _maybe_memory_map(handle, memory_map)
+    
+            is_path = isinstance(handle, str)
+            compression_args = dict(ioargs.compression)
+            compression = compression_args.pop("method")
+    
+            # Only for write methods
+            if "r" not in mode and is_path:
+                check_parent_directory(str(handle))
+    
+            if compression:
+                if compression != "zstd":
+                    # compression libraries do not like an explicit text-mode
+                    ioargs.mode = ioargs.mode.replace("t", "")
+                elif compression == "zstd" and "b" not in ioargs.mode:
+                    # python-zstandard defaults to text mode, but we always expect
+                    # compression libraries to use binary mode.
+                    ioargs.mode += "b"
+    
+                # GZ Compression
+                if compression == "gzip":
+                    if isinstance(handle, str):
+                        handle = gzip.GzipFile(
+                            filename=handle,
+                            mode=ioargs.mode,
+                            **compression_args,
+                        )
+                    else:
+                        handle = gzip.GzipFile(
+                            # No overload variant of "GzipFile" matches argument types
+                            # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                            fileobj=handle,  # type: ignore[call-overload]
+                            mode=ioargs.mode,
+                            **compression_args,
+                        )
+    
+                # BZ Compression
+                elif compression == "bz2":
+                    import bz2
+    
+                    # Overload of "BZ2File" to handle pickle protocol 5
+                    # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                    handle = bz2.BZ2File(  # type: ignore[call-overload]
+                        handle,
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+    
+                # ZIP Compression
+                elif compression == "zip":
+                    # error: Argument 1 to "_BytesZipFile" has incompatible type
+                    # "Union[str, BaseBuffer]"; expected "Union[Union[str, PathLike[str]],
+                    # ReadBuffer[bytes], WriteBuffer[bytes]]"
+                    handle = _BytesZipFile(
+                        handle,  # type: ignore[arg-type]
+                        ioargs.mode,
+                        **compression_args,
+                    )
+                    if handle.buffer.mode == "r":
+                        handles.append(handle)
+                        zip_names = handle.buffer.namelist()
+                        if len(zip_names) == 1:
+                            # Read the entire zip entry into memory rather than
+                            # returning a streaming ZipExtFile via .open(). On
+                            # Python <3.12, ZipExtFile has poor buffering that
+                            # causes O(n²) performance with pickle.load() and
+                            # other consumers that issue many small reads
+                            # (GH#59279). Can be reverted to .open() once the
+                            # minimum Python version is 3.12.
+                            handle = BytesIO(handle.buffer.read(zip_names.pop()))
+                        elif not zip_names:
+                            raise ValueError(f"Zero files found in ZIP file {path_or_buf}")
+                        else:
+                            raise ValueError(
+                                "Multiple files found in ZIP file. "
+                                f"Only one file per ZIP: {zip_names}"
+                            )
+    
+                # TAR Encoding
+                elif compression == "tar":
+                    compression_args.setdefault("mode", ioargs.mode)
+                    if isinstance(handle, str):
+                        handle = _BytesTarFile(name=handle, **compression_args)
+                    else:
+                        # error: Argument "fileobj" to "_BytesTarFile" has incompatible
+                        # type "BaseBuffer"; expected "Union[ReadBuffer[bytes],
+                        # WriteBuffer[bytes], None]"
+                        handle = _BytesTarFile(
+                            fileobj=handle,  # type: ignore[arg-type]
+                            **compression_args,
+                        )
+                    assert isinstance(handle, _BytesTarFile)
+                    if "r" in handle.buffer.mode:
+                        handles.append(handle)
+                        files = handle.buffer.getnames()
+                        if len(files) == 1:
+                            file = handle.buffer.extractfile(files[0])
+                            assert file is not None
+                            handle = file
+                        elif not files:
+                            raise ValueError(
+                                f"Zero files found in TAR archive {path_or_buf}"
+                            )
+                        else:
+                            raise ValueError(
+                                "Multiple files found in TAR archive. "
+                                f"Only one file per TAR archive: {files}"
+                            )
+    
+                # XZ Compression
+                elif compression == "xz":
+                    # error: Argument 1 to "LZMAFile" has incompatible type
+                    # "Union[str, BaseBuffer]"; expected "Optional[Union[Union[str,
+                    # bytes, PathLike[str], PathLike[bytes]], IO[bytes]], None]"
+                    import lzma
+    
+                    handle = lzma.LZMAFile(
+                        handle,  # type: ignore[arg-type]
+                        ioargs.mode,
+                        **compression_args,
+                    )
+    
+                # Zstd Compression
+                elif compression == "zstd":
+                    zstd = import_optional_dependency("zstandard")
+                    if "r" in ioargs.mode:
+                        open_args = {"dctx": zstd.ZstdDecompressor(**compression_args)}
+                    else:
+                        open_args = {"cctx": zstd.ZstdCompressor(**compression_args)}
+                    handle = zstd.open(
+                        handle,
+                        mode=ioargs.mode,
+                        **open_args,
+                    )
+    
+                # Unrecognized Compression
+                else:
+                    msg = f"Unrecognized compression type: {compression}"
+                    raise ValueError(msg)
+    
+                assert not isinstance(handle, str)
+                handles.append(handle)
+    
+            elif isinstance(handle, str):
+                # Check whether the filename is to be opened in binary mode.
+                # Binary mode does not support 'encoding' and 'newline'.
+                if ioargs.encoding and "b" not in ioargs.mode:
+                    # Encoding
+                    handle = open(
+                        handle,
+                        ioargs.mode,
+                        encoding=ioargs.encoding,
+                        errors=errors,
+                        newline="",
+                    )
+                else:
+                    # Binary mode
+>                   handle = open(handle, ioargs.mode)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/app/output/trajectory.csv'
+
+/usr/local/lib/python3.12/dist-packages/pandas/io/common.py:948: FileNotFoundError
+=========================== short test summary info ============================
+FAILED ../tests/test_outputs.py::test_output_exists - AssertionError: results...
+FAILED ../tests/test_outputs.py::test_json_structure - FileNotFoundError: [Er...
+FAILED ../tests/test_outputs.py::test_numerical_correctness - FileNotFoundErr...
+FAILED ../tests/test_outputs.py::test_csv_format - FileNotFoundError: [Errno ...
+============================== 4 failed in 0.58s ===============================
+Some tests failed.

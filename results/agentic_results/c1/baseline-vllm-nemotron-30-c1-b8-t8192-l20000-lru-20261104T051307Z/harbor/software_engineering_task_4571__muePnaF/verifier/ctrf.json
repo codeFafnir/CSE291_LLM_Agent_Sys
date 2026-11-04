@@ -1,0 +1,165 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "8ac9aa50-7775-4df5-826d-d73c12ce8636",
+    "timestamp": "2026-11-04T07:12:34.799583+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 10,
+            "passed": 6,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793776354739,
+            "stop": 1793776354799,
+            "duration": 60
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793776354767,
+                "stop": 1793776354767,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_yaml_parsable",
+                "status": "passed",
+                "duration": 2,
+                "start": 1793776354767,
+                "stop": 1793776354769,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_no_duplicate_keys",
+                "status": "passed",
+                "duration": 0,
+                "start": 1793776354769,
+                "stop": 1793776354769,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_keys_have_underscores_not_dots",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 15,
+                "start": 1793776354770,
+                "stop": 1793776354785,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_keys_have_underscores_not_dots():\n        \"\"\"Verify keys with dots have been converted to underscores.\"\"\"\n        with open('/app/fixed_config.yaml', 'r') as f:\n            content = f.read()\n    \n        # Check that no keys contain dots (except in values)\n        lines = content.split('\\n')\n        for line_num, line in enumerate(lines, 1):\n            line = line.strip()\n            if line and not line.startswith('#'):\n                # Split on colon to get key part\n                if ':' in line:\n                    key = line.split(':')[0].strip()\n                    # Key should not contain dots\n                    if '.' in key:\n                        # Check if it's in a comment or string value\n                        if not (key.startswith('#') or key.startswith('\"')):\n>                           pytest.fail(f\"Key '{key}' contains dot at line {line_num}\")\n                            ^^^^^^\nE                           NameError: name 'pytest' is not defined\n\n/tests/test_outputs.py:65: NameError",
+                "message": "NameError: name 'pytest' is not defined"
+            },
+            {
+                "name": "test_outputs.py::test_active_lines_uncommented",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776354785,
+                "stop": 1793776354786,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_tests_is_true",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776354786,
+                "stop": 1793776354787,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_compiler_flags_key_exists",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 4,
+                "start": 1793776354787,
+                "stop": 1793776354791,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_compiler_flags_key_exists():\n        \"\"\"Verify compiler_flags key exists with underscore.\"\"\"\n        with open('/app/fixed_config.yaml', 'r') as f:\n            data = yaml.safe_load(f)\n    \n        assert 'build' in data, \"Missing 'build' section\"\n>       assert 'compiler_flags' in data['build'], f\"Missing 'compiler_flags' key. Found keys: {list(data['build'].keys())}\"\nE       AssertionError: Missing 'compiler_flags' key. Found keys: ['source_dir', 'output_dir', 'compiler.flags', 'tests']\nE       assert 'compiler_flags' in {'source_dir': 'src', 'output_dir': 'dist', 'compiler.flags': '-O2 -Wall', 'tests': True}\n\n/tests/test_outputs.py:94: AssertionError",
+                "message": "AssertionError: Missing 'compiler_flags' key. Found keys: ['source_dir', 'output_dir', 'compiler.flags', 'tests']\nassert 'compiler_flags' in {'source_dir': 'src', 'output_dir': 'dist', 'compiler.flags': '-O2 -Wall', 'tests': True}"
+            },
+            {
+                "name": "test_outputs.py::test_deployment_target_key_exists",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 4,
+                "start": 1793776354791,
+                "stop": 1793776354795,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_deployment_target_key_exists():\n        \"\"\"Verify deployment_target key exists with underscore.\"\"\"\n        with open('/app/fixed_config.yaml', 'r') as f:\n            data = yaml.safe_load(f)\n    \n        assert 'deployment' in data, \"Missing 'deployment' section\"\n>       assert 'target' in data['deployment'], f\"Missing 'target' key in deployment. Found keys: {list(data['deployment'].keys())}\"\nE       AssertionError: Missing 'target' key in deployment. Found keys: ['deployment_target', 'deployment_region']\nE       assert 'target' in {'deployment_target': 'production', 'deployment_region': 'us-east-1'}\n\n/tests/test_outputs.py:102: AssertionError",
+                "message": "AssertionError: Missing 'target' key in deployment. Found keys: ['deployment_target', 'deployment_region']\nassert 'target' in {'deployment_target': 'production', 'deployment_region': 'us-east-1'}"
+            },
+            {
+                "name": "test_outputs.py::test_line_count",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 3,
+                "start": 1793776354795,
+                "stop": 1793776354798,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_line_count():\n        \"\"\"Verify the file has exactly 12 non-empty, non-comment lines.\"\"\"\n        with open('/app/fixed_config.yaml', 'r') as f:\n            lines = f.readlines()\n    \n        non_empty_lines = 0\n        for line in lines:\n            stripped = line.strip()\n            if stripped and not stripped.startswith('#'):\n                non_empty_lines += 1\n    \n>       assert non_empty_lines == 12, f\"Expected 12 non-empty lines, found {non_empty_lines}\"\nE       AssertionError: Expected 12 non-empty lines, found 17\nE       assert 17 == 12\n\n/tests/test_outputs.py:115: AssertionError",
+                "message": "AssertionError: Expected 12 non-empty lines, found 17\nassert 17 == 12"
+            },
+            {
+                "name": "test_outputs.py::test_proper_indentation",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793776354798,
+                "stop": 1793776354799,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            }
+        ]
+    }
+}

@@ -1,0 +1,60 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "1.0.0",
+    "reportId": "41c55c9e-1dd0-4998-9ecb-f51cddca05f7",
+    "timestamp": "2026-11-04T07:35:05.361556+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.2.0"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "flaky": 0,
+            "suites": 1,
+            "start": 1793777705326,
+            "stop": 1793777705361,
+            "duration": 35
+        },
+        "environment": {
+            "osPlatform": "linux",
+            "osRelease": "6.12.113-138.209.amzn2023.x86_64",
+            "osVersion": "#1 SMP PREEMPT_DYNAMIC Tue Oct 20 21:57:40 UTC 2026"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_output_exists",
+                "status": "passed",
+                "duration": 1,
+                "start": 1793777705342,
+                "stop": 1793777705343,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_output_correct",
+                "status": "failed",
+                "rawStatus": "call_failed",
+                "duration": 18,
+                "start": 1793777705343,
+                "stop": 1793777705361,
+                "suite": [
+                    "test_outputs.py"
+                ],
+                "retries": 0,
+                "filePath": "test_outputs.py",
+                "trace": "def test_output_correct():\n        \"\"\"Verify output content is correct.\"\"\"\n        # Read and validate the output\n        with open('/app/summary.json', 'r') as f:\n>           data = json.load(f)\n                   ^^^^^^^^^^^^\n\n/tests/test_outputs.py:13: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/lib/python3.12/json/__init__.py:293: in load\n    return loads(fp.read(),\n/usr/lib/python3.12/json/__init__.py:346: in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n/usr/lib/python3.12/json/decoder.py:337: in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <json.decoder.JSONDecoder object at 0x7f8cba558470>\ns = '{\"total_requests\": $(cat /app/statistics.txt | awk {print }), \"total_bytes\": $(cat /app/statistics.txt | awk {print }...ver_errors\": $(cat /app/statistics.txt | awk {print }), \"most_common_ip\": $(cat /app/statistics.txt | awk {print })}\\n'\nidx = 0\n\n    def raw_decode(self, s, idx=0):\n        \"\"\"Decode a JSON document from ``s`` (a ``str`` beginning with\n        a JSON document) and return a 2-tuple of the Python\n        representation and the index in ``s`` where the document ended.\n    \n        This can be used to decode a JSON document from a string that may\n        have extraneous data at the end.\n    \n        \"\"\"\n        try:\n            obj, end = self.scan_once(s, idx)\n        except StopIteration as err:\n>           raise JSONDecodeError(\"Expecting value\", s, err.value) from None\nE           json.decoder.JSONDecodeError: Expecting value: line 1 column 20 (char 19)\n\n/usr/lib/python3.12/json/decoder.py:355: JSONDecodeError",
+                "message": "json.decoder.JSONDecodeError: Expecting value: line 1 column 20 (char 19)"
+            }
+        ]
+    }
+}

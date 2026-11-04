@@ -1,0 +1,48 @@
+{
+    "id": "c7ece6ab-8f41-45ff-b2f9-3dac26239dc6",
+    "started_at": "2026-11-03T09:33:43.020748",
+    "updated_at": "2026-11-03T09:56:16.499728",
+    "finished_at": "2026-11-03T09:56:16.499728",
+    "n_total_trials": 5,
+    "stats": {
+        "n_completed_trials": 5,
+        "n_errored_trials": 2,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "terminus-2__Qwen/Qwen3-14B-AWQ__smoke5": {
+                "n_trials": 3,
+                "n_errors": 2,
+                "metrics": [
+                    {
+                        "mean": 0.2
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "0.0": [
+                            "scientific_computing_task_0993__K5KEX4i",
+                            "software_engineering_task_3182__ebGSx4i"
+                        ],
+                        "1.0": [
+                            "software_engineering_task_1519__Dn7c7JK"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "ContextLengthExceededError": [
+                        "software_engineering_task_13509__6RHcPBp",
+                        "software_engineering_task_2621__ccHdC4C"
+                    ]
+                }
+            }
+        },
+        "n_input_tokens": 1658289,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 36562,
+        "cost_usd": null
+    }
+}
