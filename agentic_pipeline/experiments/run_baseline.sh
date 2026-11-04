@@ -11,7 +11,7 @@
 # Needs bench deps (prometheus_client, pydantic, nvidia-ml-py) in the active env and harbor on PATH.
 set -euo pipefail
 
-usage() { echo "usage: $0 <vllm|sglang> <smoke|easy30|nemotron-smoke|nemotron-1>" >&2; exit 2; }
+usage() { echo "usage: $0 <vllm|sglang> <smoke|easy30|nemotron-smoke|nemotron-1|nemotron-30>" >&2; exit 2; }
 [[ $# -eq 2 ]] || usage
 ENGINE="$1"
 JOB="$2"
@@ -43,6 +43,12 @@ case "${JOB}" in
     TASKS_DIR=/data/datasets/nemotron-terminal/smoke5
     IDS_FILE=/data/datasets/nemotron-terminal/smoke5_ids.txt
     mapfile -t IDS < <(head -n "$([[ "${JOB}" == "nemotron-1" ]] && echo 1 || echo 5)" "${IDS_FILE}")
+    JOB_ARGS=(--force-build --ak enable_summarize=false --ak proactive_summarization_threshold=0) ;;
+  nemotron-30)
+    # 20 easy + 10 medium Nemotron-Terminal tasks (select_nemotron_smoke.py), same settings as nemotron-smoke.
+    TASKS_DIR=/data/datasets/nemotron-terminal/set30
+    IDS_FILE=/data/datasets/nemotron-terminal/set30_ids.txt
+    mapfile -t IDS < "${IDS_FILE}"
     JOB_ARGS=(--force-build --ak enable_summarize=false --ak proactive_summarization_threshold=0) ;;
   *) usage ;;
 esac
