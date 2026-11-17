@@ -6,10 +6,7 @@
 	url = git@github.com:codeFafnir/sglang.git
 [submodule "third_party/vllm-metal"]
 	path = third_party/vllm-metal
-	url = https://github.com/vllm-project/vllm-metal.git
+	url = https://github.com/Ashindustry007/vllm-metal.git
 [submodule "third_party/mlx-lm"]
 	path = third_party/mlx-lm
-	url = https://github.com/ml-explore/mlx-lm.git
-[submodule "third_party/mlx"]
-	path = third_party/mlx
-	url = https://github.com/ml-explore/mlx.git
+	url = https://github.com/Ashindustry007/mlx-lm.git

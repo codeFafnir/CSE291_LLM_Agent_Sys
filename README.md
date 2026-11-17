@@ -22,16 +22,17 @@ comes from Homebrew with its own Python; see MAC_TRACK.md.
 `third_party/` pins each engine's source as a git submodule for reading and patching. Benchmarks run the
 installed packages, at the same versions.
 
-| Submodule | Pin | Installed as |
-|---|---|---|
-| `vllm`, `sglang` | team forks, pinned commits | NVIDIA engine environment |
-| `vllm-metal` | v0.32.0 | Homebrew `vllm-metal` |
-| `mlx-lm` | v0.32.2 | `uv sync` |
-| `mlx` (array library and its Metal backend, `mlx-metal`) | v0.32.4 | `uv sync` |
+| Submodule | Fork | Pin | Installed as |
+|---|---|---|---|
+| `vllm`, `sglang` | `codeFafnir` | v0.32.0, v0.5.22 | NVIDIA engine environment |
+| `vllm-metal` | `Ashindustry007` | v0.32.0 | Homebrew `vllm-metal` |
+| `mlx-lm` | `Ashindustry007` | v0.32.2 | `uv sync` |
+
+Inside each submodule, `origin` is the fork and `upstream` is the original project.
 
 ```bash
-git submodule update --init third_party/vllm-metal third_party/mlx-lm third_party/mlx   # public, HTTPS
-git submodule update --init third_party/vllm third_party/sglang                         # forks, SSH access
+git submodule update --init third_party/vllm-metal third_party/mlx-lm   # HTTPS
+git submodule update --init third_party/vllm third_party/sglang         # SSH access
 ```
 
 ## Data

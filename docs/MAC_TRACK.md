@@ -19,8 +19,25 @@ so the two tracks' harness code and metrics line up.
 brew tap vllm-project/vllm-metal https://github.com/vllm-project/vllm-metal
 brew install vllm-project/vllm-metal/vllm-metal      # gives the `vllm` command
 uv sync                                               # harness environment
-git submodule update --init third_party/vllm-metal third_party/mlx-lm third_party/mlx   # engine sources
+git submodule update --init third_party/vllm-metal third_party/mlx-lm   # engine sources (forks)
 ```
+
+## Where to change what
+
+vllm-metal is a vLLM platform plugin. vLLM's scheduler decides which requests run each step; vllm-metal runs
+the model on Metal and holds the speculative-decoding proposers. Scheduler changes go in the team `vllm` fork,
+which is the same version (0.32.0) as the vLLM inside the Homebrew environment.
+
+| Change | vllm-metal path | mlx-lm path |
+|---|---|---|
+| Request scheduling | `third_party/vllm`: `vllm/v1/core/sched/scheduler.py` | `third_party/mlx-lm`: `BatchGenerator` in `mlx_lm/generate.py`, `mlx_lm/server.py` |
+| Speculative decoding | `third_party/vllm-metal`: `vllm_metal/v1/spec_decode.py`, `proposer.py`, `*_proposer.py`. Spec-token budget per step: vLLM scheduler | `third_party/mlx-lm`: `speculative_generate_step` in `mlx_lm/generate.py` |
+
+mlx-lm turns batching off while a draft model is loaded (`is_batchable = draft_model is None` in `server.py`).
+vllm-metal imports mlx-lm only for model loading and layers.
+
+Running vllm-metal from source needs full Xcode (macOS SDK 26.2+), even for Python-only edits: its source setup
+(`third_party/vllm-metal/install.sh`) builds the native Metal artifacts. See `docs/CONTRIBUTING.md` in that repo.
 
 ## Before every benchmark run
 
