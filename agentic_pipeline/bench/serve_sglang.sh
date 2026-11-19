@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Baseline SGLang server: Qwen3-14B-AWQ plus the EAGLE3 head, fp16 KV, radix cache on, no offload.
 # Run from env-sglang, after experiments/prepare_sglang_draft.sh. Needs RUN_ID, MAX_MODEL_LEN, MAX_NUM_SEQS, MAX_BATCHED_TOKENS,
-# EVICTION_POLICY (lru lfu slru priority tlru agent) and PREEMPTION_POLICY (length or priority).
+# EVICTION_POLICY (lru lfu slru priority tlru agent) and PREEMPTION_POLICY (length, priority or continuum).
 # tlru also needs TLRU_THRESHOLD and TLRU_NEXT_PROMPT, both in tokens.
 # agent (cse291-agent-evict branch) also needs AGENT_IDLE_S and AGENT_SHARED_HITS.
+# continuum (cse291-continuum branch) also needs CONTINUUM_TTL_S, the KV pin time in seconds.
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/serve_env.sh"
@@ -21,6 +22,10 @@ if [[ "${EVICTION_POLICY}" == "agent" ]]; then
 fi
 if [[ "${PREEMPTION_POLICY}" == "priority" ]]; then
   extra_args+=(--enable-priority-scheduling)
+fi
+if [[ "${PREEMPTION_POLICY}" == "continuum" ]]; then
+  require_env CONTINUUM_TTL_S
+  extra_args+=(--schedule-policy continuum --continuum-ttl-s "${CONTINUUM_TTL_S}")
 fi
 
 # NO_SPECULATOR=1 drops the EAGLE3 head to measure its memory cost.

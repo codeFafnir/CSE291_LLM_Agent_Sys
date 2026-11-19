@@ -41,6 +41,9 @@ VLLM_SERIES: tuple[str, ...] = (
     "vllm:request_prefill_time_seconds",
     "vllm:request_decode_time_seconds",
     "vllm:inter_token_latency_seconds",
+    "vllm:continuum_pins",
+    "vllm:continuum_unpins",
+    "vllm:continuum_pinned_blocks",
 )
 
 SGLANG_SERIES: tuple[str, ...] = (
@@ -58,11 +61,17 @@ SGLANG_SERIES: tuple[str, ...] = (
     "sglang:num_queue_reqs",
     "sglang:num_retracted_requests_total",
     "sglang:queue_time_seconds",
+    "sglang:continuum_pins_total",
+    "sglang:continuum_unpins_total",
+    "sglang:continuum_program_matches_total",
+    "sglang:continuum_pinned_programs",
+    "sglang:continuum_pinned_tokens",
 )
 
 SERIES_BY_ENGINE: dict[Engine, tuple[str, ...]] = {"vllm": VLLM_SERIES, "sglang": SGLANG_SERIES}
 # Labels that split one metric into distinct series. Everything else is summed away.
-KEPT_LABELS: tuple[str, ...] = ("le", "position")
+# "reason" splits continuum unpins into ttl, next_turn and pressure.
+KEPT_LABELS: tuple[str, ...] = ("le", "position", "reason")
 
 
 def series_key(name: str, labels: dict[str, str]) -> str:

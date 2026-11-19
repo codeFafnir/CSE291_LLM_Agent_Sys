@@ -158,3 +158,14 @@ On the recorded 30-task runs, concurrency 1 kept the prefix across tool waits (r
 ## SGLang
 
 `run_baseline.sh sglang <job>` targets port 30000 and reads request records from the server's `sglang-request-metrics` directory instead of the OTEL collector. Start it with `bench/serve_sglang.sh` and the same knobs. The 30-task comparison above was not repeated on SGLang.
+
+### Continuum on SGLang
+
+The SGLang fork's `cse291-continuum` branch ports Continuum (arXiv 2511.02230) with the same rules as the vLLM fork: a finished turn's KV stays pinned for a fixed TTL, and the waiting queue runs pinned programs first, then programs in order of first arrival. Harbor sends no session id, so SGLang assigns a request to the program whose last prompt it extends. `bootstrap_ec2.sh` still clones `cse291-agent-evict`. To use Continuum, switch `third_party/sglang` to `cse291-continuum` and rebuild `/data/envs/sglang`. Then start the server with:
+
+```bash
+export PREEMPTION_POLICY=continuum CONTINUUM_TTL_S=2
+bash bench/serve_sglang.sh
+```
+
+`server_metrics.jsonl` records `sglang:continuum_pins_total`, `sglang:continuum_unpins_total{reason=ttl|next_turn|pressure}`, `sglang:continuum_program_matches_total`, and the pinned-program and pinned-token gauges. A match count near (turns − tasks) means program inference worked.
