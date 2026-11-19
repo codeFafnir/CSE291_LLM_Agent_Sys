@@ -54,7 +54,7 @@ case "${JOB}" in
 esac
 
 UTC_START="$(date -u +%Y%m%dT%H%M%SZ)"
-RUN_ID="baseline-${ENGINE}-${JOB}-c${CONCURRENCY}-b${MAX_NUM_SEQS}-t${MAX_BATCHED_TOKENS}-l${MAX_MODEL_LEN}-${EVICTION_POLICY}${RUN_TAG:+-${RUN_TAG}}-${UTC_START}"
+RUN_ID="baseline-${ENGINE}-${JOB}-c${CONCURRENCY}-b${MAX_NUM_SEQS}-t${MAX_BATCHED_TOKENS}-l${MAX_MODEL_LEN}-${EVICTION_POLICY}-p${PREEMPTION_POLICY}${RUN_TAG:+-${RUN_TAG}}-${UTC_START}"
 RUN_DIR="${RESULTS_ROOT}/${RUN_ID}"
 SERVE_DIR="${RESULTS_ROOT}/${SERVE_RUN_ID}"
 mkdir -p "${RUN_DIR}"
@@ -102,6 +102,7 @@ OPENAI_API_KEY=not-needed harbor run -p "${TASKS_DIR}" \
   --base-url "http://${BASE_HOST}:${PORT}/v1" \
   --ak "model_info=${MODEL_INFO}" \
   --ak "llm_kwargs=${LLM_KWARGS}" \
+  --ak 'session_id_headers=["X-Session-ID"]' \
   "${JOB_ARGS[@]}" \
   --jobs-dir "${RUN_DIR}" --job-name harbor
 

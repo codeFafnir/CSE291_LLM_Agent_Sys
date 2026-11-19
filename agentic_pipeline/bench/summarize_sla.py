@@ -76,6 +76,11 @@ class Summary(BaseModel):
     spec: SpecStats
     prefix_cache_hit_rate: float | None
     preemptions: float
+    continuum_pins: float | None = None
+    continuum_unpins_ttl: float | None = None
+    continuum_unpins_next_turn: float | None = None
+    continuum_unpins_pressure: float | None = None
+    peak_continuum_pinned_blocks: float | None = None
     prompt_tokens: PromptTokens
     task_score: TaskScore | None
 
@@ -218,6 +223,11 @@ def summarize_run(engine: Engine, run_dir: Path) -> Summary:
         queries = delta(first, last, "vllm:prefix_cache_queries_total")
         hit_rate = delta(first, last, "vllm:prefix_cache_hits_total") / queries if queries > 0.0 else None
         preemptions = delta(first, last, "vllm:num_preemptions_total")
+        continuum_pins = delta(first, last, "vllm:continuum_pins_total")
+        continuum_ttl = delta(first, last, "vllm:continuum_unpins_total{reason=ttl}")
+        continuum_next = delta(first, last, "vllm:continuum_unpins_total{reason=next_turn}")
+        continuum_pressure = delta(first, last, "vllm:continuum_unpins_total{reason=pressure}")
+        peak_pins = max((s.series.get("vllm:continuum_pinned_blocks", 0.0) for s in samples), default=0.0)
         spec = vllm_spec(first, last)
         buckets = bucket_deltas(first, last, "vllm:request_prompt_tokens")
         prompt = PromptTokens(p99=quantile(buckets, 0.99), max_bucket_upper=max_bucket_upper(buckets))
@@ -231,6 +241,8 @@ def summarize_run(engine: Engine, run_dir: Path) -> Summary:
         tokens = delta(first, last, "sglang:generation_tokens_total")
         hit_rate = gauge_mean(samples, "sglang:cache_hit_rate")
         preemptions = delta(first, last, "sglang:num_retracted_requests_total")
+        continuum_pins = continuum_ttl = continuum_next = continuum_pressure = None
+        peak_pins = None
         spec = sglang_spec(samples)
         prompt = PromptTokens(p99=None, max_bucket_upper=None)
     return Summary(
@@ -249,6 +261,11 @@ def summarize_run(engine: Engine, run_dir: Path) -> Summary:
         spec=spec,
         prefix_cache_hit_rate=hit_rate,
         preemptions=preemptions,
+        continuum_pins=continuum_pins,
+        continuum_unpins_ttl=continuum_ttl,
+        continuum_unpins_next_turn=continuum_next,
+        continuum_unpins_pressure=continuum_pressure,
+        peak_continuum_pinned_blocks=peak_pins,
         prompt_tokens=prompt,
         task_score=task_score(run_dir / "harbor"),
     )

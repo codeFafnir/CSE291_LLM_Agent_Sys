@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Baseline vLLM server: Qwen3-14B-AWQ plus the EAGLE3 head, fp16 KV, prefix caching on, no offload.
 # Run from env-vllm. Needs RUN_ID, MAX_MODEL_LEN, MAX_NUM_SEQS, MAX_BATCHED_TOKENS,
-# EVICTION_POLICY (lru, or agent from the cse291-agent-evict branch) and PREEMPTION_POLICY (fcfs or priority).
+# EVICTION_POLICY (lru, or agent from the cse291-agent-evict branch) and
+# PREEMPTION_POLICY (fcfs, priority, or continuum). Continuum also needs CONTINUUM_TTL_S.
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/serve_env.sh"
@@ -11,6 +12,20 @@ if [[ "${EVICTION_POLICY}" != "lru" && "${EVICTION_POLICY}" != "agent" ]]; then
   exit 2
 fi
 export VLLM_KV_EVICTION_POLICY="${EVICTION_POLICY}"
+
+continuum_args=()
+if [[ "${PREEMPTION_POLICY}" == "continuum" ]]; then
+  if [[ -z "${CONTINUUM_TTL_S:-}" ]]; then
+    echo "PREEMPTION_POLICY=continuum requires CONTINUUM_TTL_S" >&2
+    exit 2
+  fi
+  printf 'CONTINUUM_TTL_S=%s\n' "${CONTINUUM_TTL_S}" >> "${RUN_DIR}/serve_config.env"
+  continuum_args=(--continuum-ttl-s "${CONTINUUM_TTL_S}")
+fi
+
+# GPU_MEMORY_UTILIZATION overrides the 0.90 default (the SWE-smith runs use 1.0).
+GPU_MEMORY_UTILIZATION="${GPU_MEMORY_UTILIZATION:-0.90}"
+printf 'GPU_MEMORY_UTILIZATION=%s\n' "${GPU_MEMORY_UTILIZATION}" >> "${RUN_DIR}/serve_config.env"
 
 # The torch profiler stays idle until /start_profile. DEV_MODE exposes /reset_prefix_cache.
 export VLLM_SERVER_DEV_MODE=1
@@ -32,9 +47,11 @@ vllm serve Qwen/Qwen3-14B-AWQ \
   --max-model-len "${MAX_MODEL_LEN}" \
   --max-num-seqs "${MAX_NUM_SEQS}" \
   --max-num-batched-tokens "${MAX_BATCHED_TOKENS}" \
-  --gpu-memory-utilization 0.90 \
+  --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION}" \
   --enable-prefix-caching \
+  --enable-prompt-tokens-details \
   --scheduling-policy "${PREEMPTION_POLICY}" \
+  "${continuum_args[@]}" \
   "${spec_args[@]}" \
   "${profile_args[@]}" \
   "${trace_args[@]}" \

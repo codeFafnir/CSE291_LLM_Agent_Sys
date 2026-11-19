@@ -23,6 +23,11 @@ class Gauges(BaseModel):
     generation_tokens_total: str
     preemptions_total: str
     prefix_hits_total: str | None
+    continuum_pins_total: str | None = None
+    continuum_unpins_ttl_total: str | None = None
+    continuum_unpins_next_turn_total: str | None = None
+    continuum_unpins_pressure_total: str | None = None
+    continuum_pinned_blocks: str | None = None
 
 
 GAUGES: dict[Engine, Gauges] = {
@@ -34,6 +39,11 @@ GAUGES: dict[Engine, Gauges] = {
         generation_tokens_total="vllm:generation_tokens_total",
         preemptions_total="vllm:num_preemptions_total",
         prefix_hits_total="vllm:prefix_cache_hits_total",
+        continuum_pins_total="vllm:continuum_pins_total",
+        continuum_unpins_ttl_total="vllm:continuum_unpins_total{reason=ttl}",
+        continuum_unpins_next_turn_total="vllm:continuum_unpins_total{reason=next_turn}",
+        continuum_unpins_pressure_total="vllm:continuum_unpins_total{reason=pressure}",
+        continuum_pinned_blocks="vllm:continuum_pinned_blocks",
     ),
     "sglang": Gauges(
         running="sglang:num_running_reqs",

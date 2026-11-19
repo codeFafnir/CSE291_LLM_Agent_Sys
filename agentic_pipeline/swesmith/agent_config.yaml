@@ -1,0 +1,86 @@
+# SWE-agent config for SWE-smith-cpp: editor + search + submit + restricted bash, text-parsed actions.
+# Run through agent_entry.py. run.py overrides max_input_tokens (--max-model-len) and execution_timeout/TOOL_TIMEOUT_S
+# (--tool-timeout-s, 10..15); the 10 s here is the frozen cap.
+# History is kept in full (no history processor) so the prompt prefix only grows, as in a real agent loop.
+agent:
+  templates:
+    system_template: |-
+      SETTING: You are an autonomous programmer fixing a bug in a C or C++ repository at /testbed, working in a bash shell.
+
+      In addition to normal bash commands (grep, cat, ls, sed, git, cmake, make), you can use these commands:
+
+      COMMANDS:
+      {{command_docs}}
+
+      Every command must finish within {{TOOL_TIMEOUT_S}} seconds or it is cancelled. Do not start full builds or the full
+      test suite; read the code, reason about the bug, and edit the source directly.
+      The environment does NOT support interactive programs (vim, gdb, python REPL).
+
+      RESPONSE FORMAT:
+      Your output must contain exactly one DISCUSSION section and exactly one command in a fenced block, like this:
+      DISCUSSION
+      I will look for the function named in the issue.
+      ```
+      grep -rn "function_name" /testbed --include=*.cpp
+      ```
+      Issue ONE command per turn, then wait for its output. For str_replace_editor, quote multi-line arguments with single quotes.
+      When the fix is done, run the submit command.
+    instance_template: |-
+      Fix the following issue in the repository at {{working_dir}}.
+
+      ISSUE:
+      {{problem_statement}}
+
+      Make the minimal change to non-test source files so the issue is resolved. Do not edit tests.
+      When you are done, run `submit`.
+    next_step_template: |-
+      OBSERVATION:
+      {{observation}}
+    next_step_no_output_template: |-
+      Your command ran successfully and did not produce any output.
+  tools:
+    env_variables:
+      TOOL_TIMEOUT_S: 10
+      PAGER: cat
+      MANPAGER: cat
+      LESS: -R
+      GIT_PAGER: cat
+      TQDM_DISABLE: '1'
+    bundles:
+      - path: tools/registry
+      - path: tools/edit_anthropic
+      - path: tools/search
+      - path: tools/submit
+    enable_bash_tool: true
+    parse_function:
+      type: thought_action
+    # Defaults block `make`; builds are allowed here and are bounded by the tool timeout instead.
+    filter:
+      blocklist:
+        - vim
+        - vi
+        - emacs
+        - nano
+        - nohup
+        - gdb
+        - less
+        - tail -f
+        - python -m venv
+    execution_timeout: 10
+    total_execution_timeout: 600
+    max_consecutive_execution_timeouts: 3
+  model:
+    name: openai/Qwen/Qwen3-14B-AWQ
+    api_key: not-needed
+    temperature: 0.7
+    top_p: 0.8
+    per_instance_cost_limit: 0
+    total_cost_limit: 0
+    per_instance_call_limit: 40
+    retry:
+      retries: 1
+    completion_kwargs:
+      max_tokens: 2048
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false

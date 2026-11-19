@@ -89,6 +89,7 @@ build_env sglang
 uv tool install --force 'harbor>=0.22'
 uv tool install --force huggingface_hub
 uv tool install --force py-spy
+python3 "${REPO_ROOT}/experiments/patch_harbor_session.py"
 for model in "${MODELS[@]}"; do hf download "${model}"; done
 
 bash "${REPO_ROOT}/experiments/prepare_sglang_draft.sh"

@@ -37,6 +37,9 @@ VLLM_SERIES: tuple[str, ...] = (
     "vllm:num_requests_running",
     "vllm:num_requests_waiting",
     "vllm:num_preemptions",
+    "vllm:continuum_pins",
+    "vllm:continuum_unpins",
+    "vllm:continuum_pinned_blocks",
     "vllm:request_queue_time_seconds",
     "vllm:request_prefill_time_seconds",
     "vllm:request_decode_time_seconds",
@@ -62,7 +65,7 @@ SGLANG_SERIES: tuple[str, ...] = (
 
 SERIES_BY_ENGINE: dict[Engine, tuple[str, ...]] = {"vllm": VLLM_SERIES, "sglang": SGLANG_SERIES}
 # Labels that split one metric into distinct series. Everything else is summed away.
-KEPT_LABELS: tuple[str, ...] = ("le", "position")
+KEPT_LABELS: tuple[str, ...] = ("le", "position", "reason")
 
 
 def series_key(name: str, labels: dict[str, str]) -> str:

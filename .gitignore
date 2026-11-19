@@ -1,5 +1,5 @@
 graphify-out/
 .env
-
+.superpowers/
 __pycache__/
 *.pyc
