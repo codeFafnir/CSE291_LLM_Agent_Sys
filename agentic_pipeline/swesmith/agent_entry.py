@@ -26,6 +26,8 @@ WGET_NEW = "    wget \\\n    ca-certificates \\\n"
 SWEREX_LINK = "RUN ln -s /root/python3.11/bin/swerex-remote /usr/local/bin/swerex-remote\n"
 PYTHON_LINK = "RUN ln -s /root/python3.11/bin/python3 /usr/local/bin/python\n"
 LIBC6_STEP = "RUN apt-get update && apt-get install -y \\\n    libc6 \\\n    && rm -rf /var/lib/apt/lists/*\n"
+PYTHON_COPY = "COPY --from=builder /root/python3.11 /root/python3.11\n"
+SSL_COPY = "COPY --from=builder /usr/lib/x86_64-linux-gnu/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 /root/python3.11/lib/\n"
 
 
 def tool_end_time(
@@ -44,10 +46,13 @@ def replace_once(text: str, old: str, new: str, name: str) -> str:
 
 
 def patch_glibc_dockerfile(dockerfile: str) -> str:
-    """Build python on ubuntu:20.04 (glibc 2.31), drop the final-stage libc6 install, and expose `python` for tool shebangs."""
+    """Build python on ubuntu:20.04 (glibc 2.31), drop the final-stage libc6 install, and expose `python` for tool shebangs.
+
+    The builder links python to openssl 1.1; its libs ship next to python because Ubuntu 22.04 images only have openssl 3."""
     dockerfile = replace_once(dockerfile, BUILDER_OLD, BUILDER_NEW, "builder stage")
     dockerfile = replace_once(dockerfile, WGET_OLD, WGET_NEW, "builder wget package")
     dockerfile = replace_once(dockerfile, LIBC6_STEP, "", "final-stage libc6 install")
+    dockerfile = replace_once(dockerfile, PYTHON_COPY, PYTHON_COPY + SSL_COPY, "python copy")
     return replace_once(dockerfile, SWEREX_LINK, SWEREX_LINK + PYTHON_LINK, "swerex-remote symlink")
 
 

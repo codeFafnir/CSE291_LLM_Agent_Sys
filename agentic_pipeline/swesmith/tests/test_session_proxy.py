@@ -10,7 +10,7 @@ from aiohttp import web
 from aiohttp.test_utils import TestClient, TestServer
 from pydantic import BaseModel
 
-from session_proxy import ERROR_EXCERPT_CHARS, RequestLog, make_app
+from session_proxy import ERROR_EXCERPT_CHARS, RecordedTurn, RequestLog, make_app
 
 pytestmark = pytest.mark.asyncio
 
@@ -75,7 +75,7 @@ async def upstream() -> AsyncIterator[TestServer]:
 
 @pytest_asyncio.fixture
 async def proxy(upstream: TestServer, tmp_path: Path) -> AsyncIterator[TestClient]:
-    app = make_app(str(upstream.make_url("")).rstrip("/"), tmp_path / "requests.jsonl")
+    app = make_app(str(upstream.make_url("")).rstrip("/"), tmp_path / "requests.jsonl", tmp_path / "record")
     client = TestClient(TestServer(app))
     await client.start_server()
     yield client
@@ -157,7 +157,7 @@ async def test_upstream_connection_failure_returns_502_and_is_logged(tmp_path: P
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         dead_port = sock.getsockname()[1]
-    app = make_app(f"http://127.0.0.1:{dead_port}", tmp_path / "requests.jsonl")
+    app = make_app(f"http://127.0.0.1:{dead_port}", tmp_path / "requests.jsonl", tmp_path / "record")
     client = TestClient(TestServer(app))
     await client.start_server()
     try:
@@ -227,3 +227,15 @@ async def test_non_json_200_on_non_chat_path_passed_through_and_logged(proxy: Te
     assert log.prompt_tokens is None
     assert log.completion_tokens is None
     assert log.cached_tokens is None
+
+
+async def test_chat_completion_records_request_and_completion_tokens(proxy: TestClient, tmp_path: Path) -> None:
+    body = {"case": "ok", "max_tokens": 64}
+    await post(proxy, "sessA", body)
+    record_file = tmp_path / "record" / "sessA" / "t001.json"
+    record = RecordedTurn.model_validate_json(record_file.read_text())
+    assert record == RecordedTurn(session_id="sessA", turn=1, request=body, completion_tokens=20, status=200)
+    assert sorted(p.name for p in record_file.parent.iterdir()) == ["t001.json"]
+    await proxy.get(f"/s/sessA{PLAIN_PATH}")
+    plain = RecordedTurn.model_validate_json((tmp_path / "record" / "sessA" / "t002.json").read_text())
+    assert (plain.request, plain.completion_tokens, plain.status) == (None, None, 200)

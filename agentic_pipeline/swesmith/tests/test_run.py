@@ -215,6 +215,7 @@ def make_args(tmp_path: Path, upstream: str, ids: list[str], concurrency: int) -
         sweagent_python=Path(__import__("sys").executable),
         agent_entry=entry,
         docker=str(tmp_path / "docker"),
+        python_standalone_dir="",
     )
 
 
@@ -357,6 +358,7 @@ def test_sweagent_command_uses_agent_entry(tmp_path: Path) -> None:
     cmd = run.sweagent_command(args, tmp_path / "cfg.yaml", tmp_path / "i.jsonl", "a")
     assert cmd[:2] == [str(args.sweagent_python), str(args.agent_entry)]
     assert cmd[3] == "a" and cmd[4] == "--"
+    assert cmd[cmd.index("--instances.deployment.python_standalone_dir") + 1] == ""
 
 
 def test_end_to_end_dry_run(tmp_path: Path, upstream: str) -> None:
@@ -369,6 +371,7 @@ def test_end_to_end_dry_run(tmp_path: Path, upstream: str) -> None:
         "proxy_requests.jsonl", "preds.json", "agent_config.resolved.yaml",
     ]:
         assert (out / name).exists(), name
+    assert (out / "recorded").is_dir()
     sessions = read_sessions(out)
     assert set(sessions) == set(ids)
     assert sessions[CRASH_ID].status == "crashed" and sessions[CRASH_ID].returncode == 3

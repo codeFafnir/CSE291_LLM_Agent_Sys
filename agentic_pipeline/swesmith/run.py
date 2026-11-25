@@ -168,6 +168,7 @@ class RunArgs(BaseModel):
     sweagent_python: Path
     agent_entry: Path
     docker: str
+    python_standalone_dir: str
 
 
 def check_tool_timeout(tool_timeout_s: int) -> None:
@@ -243,6 +244,7 @@ def sweagent_command(args: RunArgs, config_path: Path, instance_file: Path, inst
         "--output_dir", str(out_dir),
         "--agent.model.api_base", f"http://127.0.0.1:{args.proxy_port}/s/{instance_id}/v1",
         "--instances.deployment.docker_args", json.dumps(["--label", f"{SESSION_LABEL_KEY}={instance_id}"]),
+        "--instances.deployment.python_standalone_dir", args.python_standalone_dir,
         "--num_workers", "1",
     ]
 
@@ -553,12 +555,15 @@ def run(args: RunArgs) -> None:
     check_resolved_timeout(resolved, args.tool_timeout_s)
     config_path = args.run_dir / "agent_config.resolved.yaml"
     config_path.write_text(yaml.safe_dump(resolved.model_dump(exclude_unset=True), sort_keys=False))
+    record_dir = args.run_dir / "recorded"
+    record_dir.mkdir(exist_ok=True)
     proxy = subprocess.Popen(
         [
             sys.executable, str(HERE / "session_proxy.py"),
             "--upstream", args.upstream,
             "--port", str(args.proxy_port),
             "--log-path", str(args.run_dir / "proxy_requests.jsonl"),
+            "--record-dir", str(record_dir),
         ]
     )
     try:
@@ -591,6 +596,7 @@ def parse_args() -> RunArgs:
     parser.add_argument("--sweagent-python", type=Path, required=True)
     parser.add_argument("--agent-entry", type=Path, required=True)
     parser.add_argument("--docker", required=True, help="docker executable used to remove leaked containers")
+    parser.add_argument("--python-standalone-dir", required=True, help="empty skips the swe-rex glibc image build")
     return RunArgs.model_validate(vars(parser.parse_args()))
 
 

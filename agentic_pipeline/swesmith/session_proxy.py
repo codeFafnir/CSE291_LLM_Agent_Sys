@@ -3,17 +3,19 @@
 It adds X-Session-ID (read by the Continuum scheduler) and X-Request-Id=<session>-t<turn>, and appends
 one RequestLog JSON line per request: send / first-byte / end times, status, token usage, cached tokens.
 Failed requests (context overflow, upstream error) are logged with the error text and returned unchanged.
+It also writes <record-dir>/<session>/tNNN.json (RecordedTurn) per request, atomically.
 Responses are buffered, so requests with "stream": true are rejected with a 400 (streaming unsupported).
 """
 
 import argparse
 import asyncio
 import json
+import os
 import time
 from pathlib import Path
 
 from aiohttp import ClientError, ClientSession, ClientTimeout, web
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, JsonValue
 
 UPSTREAM_TIMEOUT_S = 900
 ERROR_EXCERPT_CHARS = 500
@@ -43,6 +45,15 @@ class RequestLog(BaseModel):
     prompt_tokens: int | None
     completion_tokens: int | None
     cached_tokens: int | None
+
+
+class RecordedTurn(BaseModel):
+    model_config = ConfigDict(frozen=True)
+    session_id: str
+    turn: int
+    request: JsonValue
+    completion_tokens: int | None
+    status: int
 
 
 def request_id_of(session_id: str, turn: int) -> str:
@@ -127,10 +138,30 @@ def log_of(
     )
 
 
+def recorded_turn_of(log: RequestLog, raw: bytes) -> RecordedTurn:
+    return RecordedTurn(
+        session_id=log.session_id,
+        turn=log.turn,
+        request=json.loads(raw) if is_json(raw) else None,
+        completion_tokens=log.completion_tokens,
+        status=log.status,
+    )
+
+
+def write_record(record_dir: Path, record: RecordedTurn) -> None:
+    session_dir = record_dir / record.session_id
+    session_dir.mkdir(parents=True, exist_ok=True)
+    final = session_dir / f"t{record.turn:03d}.json"
+    temp = session_dir / f".{final.name}.tmp"
+    temp.write_text(record.model_dump_json())
+    os.replace(temp, final)
+
+
 class ProxyState:
-    def __init__(self, upstream: str, log_path: Path) -> None:
+    def __init__(self, upstream: str, log_path: Path, record_dir: Path) -> None:
         self.upstream = upstream
         self.log_path = log_path
+        self.record_dir = record_dir
         self.turns: dict[str, int] = {}
         self.lock = asyncio.Lock()
 
@@ -172,7 +203,9 @@ async def handle(request: web.Request) -> web.Response:
         payload = f"{type(error).__name__}: {error}".encode()
         status, content_type = 502, "text/plain"
     t_end = time.time()
-    await state.append(log_of(session_id, turn, path, t_send, t_first_byte, t_end, status, payload, raw))
+    log = log_of(session_id, turn, path, t_send, t_first_byte, t_end, status, payload, raw)
+    await state.append(log)
+    write_record(state.record_dir, recorded_turn_of(log, raw))
     return web.Response(body=payload, status=status, content_type=content_type.split(";")[0])
 
 
@@ -188,9 +221,9 @@ async def close_client(app: web.Application) -> None:
     await app["client"].close()
 
 
-def make_app(upstream: str, log_path: Path) -> web.Application:
+def make_app(upstream: str, log_path: Path, record_dir: Path) -> web.Application:
     app = web.Application(client_max_size=64 * 1024 * 1024)
-    app["state"] = ProxyState(upstream, log_path)
+    app["state"] = ProxyState(upstream, log_path, record_dir)
     app.on_startup.append(open_client)
     app.on_cleanup.append(close_client)
     app.router.add_get("/healthz", health)
@@ -203,13 +236,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--upstream", required=True, help="e.g. http://127.0.0.1:8000")
     parser.add_argument("--port", type=int, required=True)
     parser.add_argument("--log-path", type=Path, required=True)
+    parser.add_argument("--record-dir", type=Path, required=True)
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
     args.log_path.parent.mkdir(parents=True, exist_ok=True)
-    web.run_app(make_app(args.upstream, args.log_path), host="127.0.0.1", port=args.port, print=None)
+    web.run_app(make_app(args.upstream, args.log_path, args.record_dir), host="127.0.0.1", port=args.port, print=None)
 
 
 if __name__ == "__main__":

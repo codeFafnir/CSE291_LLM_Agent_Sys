@@ -3,3 +3,4 @@ graphify-out/
 .superpowers/
 __pycache__/
 *.pyc
+HANDOFF_swesmith_experiments.md

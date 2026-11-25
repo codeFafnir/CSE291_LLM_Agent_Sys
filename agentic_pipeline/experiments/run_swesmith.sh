@@ -118,7 +118,8 @@ run_step run "${VLLM_PY}" "${REPO_ROOT}/swesmith/run.py" \
   --max-model-len "${MAX_MODEL_LEN}" --tool-timeout-s "${TOOL_TIMEOUT_S}" \
   --agent-config "${REPO_ROOT}/swesmith/agent_config.yaml" \
   --agent-entry "${REPO_ROOT}/swesmith/agent_entry.py" \
-  --sweagent-python "${SWEAGENT_PY}" --docker "${DOCKER}"
+  --sweagent-python "${SWEAGENT_PY}" --docker "${DOCKER}" \
+  --python-standalone-dir /root
 
 kill "${COLLECTOR_PID}" "${DMON_PID}" 2>/dev/null || true
 wait "${COLLECTOR_PID}" "${DMON_PID}" 2>/dev/null || true

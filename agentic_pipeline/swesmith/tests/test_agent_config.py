@@ -19,7 +19,9 @@ from swerex.deployment.docker import DockerDeployment
 from agent_entry import (
     BUILDER_OLD,
     LIBC6_STEP,
+    PYTHON_COPY,
     PYTHON_LINK,
+    SSL_COPY,
     SWEREX_LINK,
     TIMEOUT_MARKER,
     SpanHook,
@@ -241,8 +243,9 @@ def test_patch_glibc_dockerfile_builds_on_ubuntu_2004_without_libc6_step() -> No
     assert "/usr/local/bin/python3" not in patched
     assert LIBC6_STEP in original
     tail = original.split(LIBC6_STEP)[1]
-    assert patched.endswith("FROM  $BASE_IMAGE\n" + tail.replace(SWEREX_LINK, SWEREX_LINK + PYTHON_LINK))
-    assert "COPY --from=builder /root/python3.11 /root/python3.11\n" in patched
+    expected_tail = tail.replace(SWEREX_LINK, SWEREX_LINK + PYTHON_LINK).replace(PYTHON_COPY, PYTHON_COPY + SSL_COPY)
+    assert patched.endswith("FROM  $BASE_IMAGE\n" + expected_tail)
+    assert PYTHON_COPY + SSL_COPY in patched and patched.count("libssl.so.1.1") == 1
     assert "RUN /root/python3.11/bin/pip3 install --no-cache-dir swe-rex\n" in patched
     build = "WORKDIR /build\n" + original.split("WORKDIR /build\n", 1)[1].split("FROM  $BASE_IMAGE")[0]
     assert build in patched and "make -j$(nproc)" in build
